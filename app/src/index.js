@@ -5,14 +5,17 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import customTheme from "./theme";
 import { ThemeProvider, CSSReset } from "@chakra-ui/core";
-import { UserContextProvider } from "./context/UserContext";
+import { UserContextProvider } from "./context/User";
+import LoginWrapper from "./components/Login";
 
 ReactDOM.render(
   <React.StrictMode>
     <UserContextProvider>
       <ThemeProvider theme={customTheme}>
         <CSSReset />
-        <App />
+        <LoginWrapper>
+          <App />
+        </LoginWrapper>
       </ThemeProvider>
     </UserContextProvider>
   </React.StrictMode>,

@@ -1,14 +1,15 @@
 import React, { createContext, useReducer, useMemo } from "react";
+import { SAVE_TOKEN, SAVE_USER, LOG_OUT} from "./constants";
 
 export const UserContext: any = createContext({});
 
-type UserData = {
+export type UserData = {
     name: string;
     email: string;
     id: number;
 }
 
-interface IUser {
+export interface IUser {
   user: UserData;
   token: string;
 }
@@ -26,11 +27,12 @@ const initialState: IUser = {
 
 const reducer = (state: IUser, action: { type: string; payload: any }) => {
   switch (action.type) {
-    case "SAVE_TOKEN":
+    case SAVE_TOKEN:
       return { ...state, token: action.payload };
-    case "SAVE_USER":
+    case SAVE_USER:
       return { ...state, user: action.payload };
-    case "LOG_OUT":
+    case LOG_OUT:
+      localStorage.removeItem("token");
       return { user: initialUserState, token: "" };
     default:
       throw new Error();
