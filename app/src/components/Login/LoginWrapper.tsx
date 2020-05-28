@@ -7,7 +7,7 @@ import LoginForm from "./LoginForm";
 const localapi = process.env.REACT_APP_ROOT_API;
 const usersUri = localapi + "users/";
 
-//Wrapper del formulario Login, se encarga de guardar la informacion del usuario en la sesion.
+//Wrapper del formulario Login, se encarga de guardar la informacion del usuario en la sesion, y renderizar condicionalmente la app.
 const LoginWrapper: React.FC = ({ children }) => {
   const {
     store: {
@@ -18,6 +18,7 @@ const LoginWrapper: React.FC = ({ children }) => {
   } = useContext(UserContext);
 
   //Revisar almacenamiento local buscando token
+  //Si lo encuentra, lo guarda en UserContext
   useEffect(() => {
     const localToken = localStorage.getItem("token");
     if (localToken) {
@@ -25,7 +26,8 @@ const LoginWrapper: React.FC = ({ children }) => {
     }
   }, [dispatch]);
 
-  //Si hay cambios en el estado del token, se descodifica y se pide al server info del usuario, y se guarda en el almacenamiento local
+  //Si hay cambios en el estado del token, se descodifica y se pide al server info del usuario.
+  //Guarda el token en el almacenamiento local, y los datos del usuario en UserContext
   useEffect(() => {
     const decodedIdentity = jwt.decode(token);
     if (decodedIdentity) {

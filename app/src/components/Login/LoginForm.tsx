@@ -6,13 +6,13 @@ import { UserContext, SAVE_TOKEN } from "../../context/User";
 const localapi = process.env.REACT_APP_ROOT_API;
 const loginUri = localapi+"login";
 
-console.log(loginUri);
-
+//Formulario de login, se encarga de enviar credenciales al server y recibir token
 const LoginForm: React.FC = () => {
   const { dispatch } = useContext(UserContext);
 
   const { register, handleSubmit } = useForm();
 
+  //Peticion al server, guarda token en UserContext, para ser manejado por LoginWrapper
   const onSubmit = handleSubmit(({ email, password }) => {
     axios
       .post(loginUri, {
