@@ -42,6 +42,7 @@ const LoginWrapper: React.FC = ({ children }) => {
   //Si hay cambios en el estado del token, se descodifica y se pide al server info del usuario.
   //Guarda el token en el almacenamiento local, y los datos del usuario en UserContext
   //Desactiva spinner si ya terminó el request o no pudo decodificar el token
+  //decodedIdentity.sub es el ID del usuario
   useEffect(() => {
     dispatch({ type: LOADING, payload: true });
     const decodedIdentity = jwt.decode(token);

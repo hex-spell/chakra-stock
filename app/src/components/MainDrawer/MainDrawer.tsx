@@ -1,47 +1,45 @@
-import React from 'react';
+import React, { useContext } from "react";
 import {
-    Drawer,
-    DrawerBody,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerOverlay,
-    DrawerContent,
-    DrawerCloseButton,
-    Input,
-    Button,
-  } from "@chakra-ui/core";
+  Drawer,
+  DrawerBody,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton
+} from "@chakra-ui/core";
+import { UserContext, LOG_OUT } from "../../context/User";
+import { IMainDrawerListItemProps, default as MainDrawerListItem} from "./MainDrawerListItem";
+import { FaDoorOpen } from "react-icons/fa";
 
 interface IMainDrawerProps {
-    isOpen:boolean;
-    onClose: () => void;
+  isOpen: boolean;
+  onClose: () => void;
+  links: IMainDrawerListItemProps[];
 }
 
-//Drawer que va a mostrar todas las rutas de la app, y un boton de logout
-const MainDrawer : React.FC<IMainDrawerProps> = ({isOpen,onClose}) => {
-    return (
-        <Drawer
-        isOpen={isOpen}
-        placement="left"
-        onClose={onClose}
-      >
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader>Create your account</DrawerHeader>
+//Drawer que va a mostrar todas las rutas de la app, un boton de logout, y un header con tu username
+const MainDrawer: React.FC<IMainDrawerProps> = ({ isOpen, onClose, links }) => {
+  const {
+    store: {
+      user: { name }
+    },
+    dispatch
+  } = useContext(UserContext);
+  return (
+    <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
+      <DrawerOverlay />
+      <DrawerContent>
+        <DrawerCloseButton/>
+        <DrawerHeader>{name}</DrawerHeader>
+       
+        <DrawerBody overflowY="scroll" paddingX="0">
+        {links.map(({name,link,icon},index)=><MainDrawerListItem name={name} link={link} icon={icon} key={index}/>)}
+        <MainDrawerListItem name="Salir" icon={FaDoorOpen} onClick={()=>dispatch({type:LOG_OUT})}/>
+        </DrawerBody>
 
-          <DrawerBody>
-            <Input placeholder="Type here..." />
-          </DrawerBody>
-
-          <DrawerFooter>
-            <Button variant="outline" mr={3} onClick={onClose}>
-              Cancel
-            </Button>
-            <Button color="blue">Save</Button>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
-    )
-}
+      </DrawerContent>
+    </Drawer>
+  );
+};
 
 export default MainDrawer;

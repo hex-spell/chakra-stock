@@ -20,7 +20,7 @@ const Navbar : React.FC<INavbarProps> = ({onMenuClick}) => {
       bg="teal.500"
       color="white"
     >
-      <IconButton aria-label="menu" icon={FaBars} variantColor="teal" size="lg" onClick={onMenuClick}/>
+      <IconButton isRound={true} aria-label="menu" icon={FaBars} variantColor="teal" size="lg" onClick={onMenuClick}/>
     </Flex>
   );
 };

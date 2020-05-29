@@ -23,6 +23,7 @@ const LoginForm: React.FC = () => {
 
   //Peticion al server, guarda token en UserContext, para ser manejado por LoginWrapper
   const onSubmit = handleSubmit(({ email, password }) => {
+    console.log(loginUri);
     axios
       .post(loginUri, {
         email,

@@ -1,0 +1,10 @@
+export {default as Inicio} from "./Inicio";
+export {default as Stock} from "./Stock";
+export {default as Pedidos} from "./Pedidos";
+export {default as Compras} from "./Compras";
+export {default as Clientes} from "./Clientes";
+export {default as Proveedores} from "./Proveedores";
+export {default as Cobros} from "./Cobros";
+export {default as Pagos} from "./Pagos";
+export {default as Gastos} from "./Gastos";
+export {default as Configuracion} from "./Configuracion";
