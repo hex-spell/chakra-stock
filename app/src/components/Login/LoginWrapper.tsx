@@ -9,9 +9,7 @@ import axios from "axios";
 import jwt from "jsonwebtoken";
 import LoginForm from "./LoginForm";
 import { Spinner } from "@chakra-ui/core";
-import classes from "./LoginPage.module.css";
-
-const { loginPage } = classes;
+import { ContainerCentered } from "../Layout";
 
 const localapi = process.env.REACT_APP_ROOT_API;
 const usersUri = localapi + "users/";
@@ -67,15 +65,15 @@ const LoginWrapper: React.FC = ({ children }) => {
   return (
     <>
       {isLoading ? (
-        <div className={loginPage}>
+        <ContainerCentered>
           <Spinner size="xl" />
-        </div>
+        </ContainerCentered>
       ) : name ? (
         <>{children}</>
       ) : (
-        <div className={loginPage}>
+        <ContainerCentered>
           <LoginForm />
-        </div>
+        </ContainerCentered>
       )}
     </>
   );

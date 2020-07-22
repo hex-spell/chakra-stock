@@ -1,11 +1,11 @@
 import React from 'react'
-import { Container } from "../components/Layout";
-
+import { Page, ActionButton } from "../components/Layout";
+import {FaUserPlus} from "react-icons/fa";
 
 export default function Clientes() {
     return (
-        <Container>
-            
-        </Container>
+        <Page title="Clientes">
+            <ActionButton icon={FaUserPlus} ariaLabel="Agregar Cliente" action={()=>alert("hello!")}/>
+        </Page>
     )
 }

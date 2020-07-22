@@ -1,9 +1,10 @@
 import React from 'react'
+import { Page } from "../components/Layout";
 
 export default function Cobros() {
     return (
-        <div>
+        <Page title="Cobros">
             cobros
-        </div>
+        </Page>
     )
 }

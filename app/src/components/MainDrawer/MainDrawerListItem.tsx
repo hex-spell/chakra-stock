@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 //Boton de drawer, si tiene link en props wrappea el componente en un Link de react-router
 //Se puede pasar funcion onClick (yo lo uso para hacer dispatch de cerrar sesion)
+//El onclick va a hacer dispatch para el nombre en el header
 
 interface IMainDrawerButtonProps {
   name: string;

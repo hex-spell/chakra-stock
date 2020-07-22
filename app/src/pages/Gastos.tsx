@@ -1,9 +1,10 @@
 import React from 'react'
+import { Page } from '../components/Layout'
 
 export default function Gastos() {
     return (
-        <div>
-            gastos
-        </div>
+        <Page title="Gastos">
+            Gastos
+        </Page>
     )
 }

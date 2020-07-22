@@ -7,6 +7,7 @@ import customTheme from "./theme";
 import { ThemeProvider, CSSReset } from "@chakra-ui/core";
 import { UserContextProvider } from "./context/User";
 import LoginWrapper from "./components/Login";
+import { LayoutContextProvider } from "./context/Layout";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -14,7 +15,9 @@ ReactDOM.render(
       <ThemeProvider theme={customTheme}>
         <CSSReset />
         <LoginWrapper>
-          <App />
+          <LayoutContextProvider>
+            <App />
+          </LayoutContextProvider>
         </LoginWrapper>
       </ThemeProvider>
     </UserContextProvider>

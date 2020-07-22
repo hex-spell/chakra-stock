@@ -1,12 +1,13 @@
 import React from 'react'
-import { Container } from '../components/Layout'
+import { Page, ActionButton } from '../components/Layout'
 import { Stack } from '@chakra-ui/core'
 import { Searchbar } from '../components/Searchbar'
 import { FilterDropdown } from '../components/FilterDropdown'
+import { FaRegPlusSquare } from 'react-icons/fa'
 
 export default function Stock() {
     return (
-        <Container>
+        <Page title="Stock">
             <Stack spacing={2} shouldWrapChildren={true}>
             <Searchbar />
             <FilterDropdown menu={[
@@ -15,6 +16,7 @@ export default function Stock() {
                 {name:"Cotillón",value:"cotillon"}
             ]}/>
             </Stack>
-        </Container>
+            <ActionButton icon={FaRegPlusSquare} ariaLabel="Agregar Item" action={()=>alert("hello!")}/>
+        </Page>
     )
 }

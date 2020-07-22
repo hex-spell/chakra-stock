@@ -1,9 +1,10 @@
 import React from 'react'
+import { Page } from '../components/Layout'
 
 export default function Proveedores() {
     return (
-        <div>
-            proveedores
-        </div>
+        <Page title="Proveedores">
+            Proveedores
+        </Page>
     )
 }
