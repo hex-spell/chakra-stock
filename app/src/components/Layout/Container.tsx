@@ -7,7 +7,6 @@ const Container: React.FC = ({ children }) => {
   return (
     <Box width="100%" display="flex" justifyContent="center">
       <Box
-        pt="10px"
         width={[
           "95%", // base
           "90%", // 480px upwards
