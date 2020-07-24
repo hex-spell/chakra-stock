@@ -5,7 +5,7 @@ interface IListItemStackProps {
   maxHeight: string;
 }
 
-//abstraccion de contenedor de listas
+//abstraccion de contenedor de listas, tiene un tamaño maximo para hacer scroll en overflow
 const ListItemStack: React.FC<IListItemStackProps> = ({ maxHeight, children }) => {
   return (
     <Stack

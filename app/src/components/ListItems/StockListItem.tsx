@@ -7,6 +7,7 @@ interface IStockListItemProps {
   ammount: number;
   price: number;
   lastUpdateDate: string;
+  onClick: () => void;
 }
 
 const StockListItem: React.FC<IStockListItemProps> = ({
@@ -14,20 +15,23 @@ const StockListItem: React.FC<IStockListItemProps> = ({
   ammount,
   price,
   lastUpdateDate,
+  onClick,
 }) => {
   return (
-    <ListItemBox>
-      <Box display="flex" flexDirection="column" textAlign="left">
-        <Text>{title}</Text>
-        <SubText>
-          {ammount} {ammount > 1 ? "unidades" : "unidad"}
-        </SubText>
-      </Box>
-      <Box display="flex" flexDirection="column" textAlign="right">
-        <MoneyText>${price}</MoneyText>
-        <SubText>{lastUpdateDate}</SubText>
-      </Box>
-    </ListItemBox>
+    <div onClick={()=>onClick()}>
+      <ListItemBox>
+        <Box display="flex" flexDirection="column" textAlign="left">
+          <Text>{title}</Text>
+          <SubText>
+            {ammount} {ammount > 1 ? "unidades" : "unidad"}
+          </SubText>
+        </Box>
+        <Box display="flex" flexDirection="column" textAlign="right">
+          <MoneyText>${price}</MoneyText>
+          <SubText>{lastUpdateDate}</SubText>
+        </Box>
+      </ListItemBox>
+    </div>
   );
 };
 

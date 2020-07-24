@@ -1,6 +1,9 @@
 import React from "react";
 import { Box } from "@chakra-ui/core";
 
+
+//caja para los contenidos de los listitems, da el borde, el relleno y el flex
+
 const ListItemBox: React.FC = ({ children }) => {
   return (
     <Box
