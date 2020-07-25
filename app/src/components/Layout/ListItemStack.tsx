@@ -6,6 +6,7 @@ interface IListItemStackProps {
 }
 
 //abstraccion de contenedor de listas, tiene un tamaño maximo para hacer scroll en overflow
+//el padding bottom es para que los action button no tapen detalles importantes
 const ListItemStack: React.FC<IListItemStackProps> = ({ maxHeight, children }) => {
   return (
     <Stack
@@ -13,7 +14,8 @@ const ListItemStack: React.FC<IListItemStackProps> = ({ maxHeight, children }) =
       shouldWrapChildren={true}
       maxHeight={maxHeight}
       overflowY="scroll"
-      py="2"
+      pt="2"
+      pb="85px"
     >
       {children}
     </Stack>

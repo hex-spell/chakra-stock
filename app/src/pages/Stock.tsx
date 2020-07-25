@@ -9,7 +9,7 @@ import {
   DynamicDrawerMenu,
 } from "../components/Layout";
 import { Searchbar } from "../components/Searchbar";
-import { FaRegPlusSquare } from "react-icons/fa";
+import { FaDropbox } from "react-icons/fa";
 import { StockListItem } from "../components/ListItems";
 import { useDisclosure } from "@chakra-ui/core";
 import { data } from "./";
@@ -17,11 +17,12 @@ import { data } from "./";
 export default function Stock() {
   //mantiene en estado el item clickeado, usa el id para hacer consultas con la api
   const [{ id, name }, setClickedItem] = useState({ id: 0, name: "error" });
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const listItemMenu = useDisclosure();
+  const actionButtonMenu = useDisclosure();
   //guarda el nombre y el id del item en el estado y abre el drawer
   const onItemClick = (id: number, name: string) => {
     setClickedItem({ id, name });
-    onOpen();
+    listItemMenu.onOpen();
   };
   const { dispatch, confirmationMenuDisclosure } = useContext(LayoutContext);
   return (
@@ -48,13 +49,13 @@ export default function Stock() {
         ))}
       </ListItemStack>
       <ActionButton
-        icon={FaRegPlusSquare}
+        icon={FaDropbox}
         ariaLabel="Agregar Item"
-        action={() => alert("hello!")}
+        action={() => actionButtonMenu.onOpen()}
       />
       <DynamicDrawerMenu
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={listItemMenu.isOpen}
+        onClose={listItemMenu.onClose}
         title={name}
         menu={[
           { name: "Modificar", action: () => alert(`Modificar ${name}`) },
@@ -70,6 +71,31 @@ export default function Stock() {
                 },
               });
               confirmationMenuDisclosure.onOpen();
+            },
+          },
+        ]}
+      />
+      <DynamicDrawerMenu
+        isOpen={actionButtonMenu.isOpen}
+        onClose={actionButtonMenu.onClose}
+        title="Menu: Stock"
+        menu={[
+          {
+            name: "Registrar producto nuevo",
+            action: () => {
+              alert(`Registrar producto nuevo`);
+            },
+          },
+          {
+            name: "Sumar producto existente a stock",
+            action: () => {
+              alert(`Sumar producto existente a stock`);
+            },
+          },
+          {
+            name: "Modificar categorías",
+            action: () => {
+              alert(`Modificar categorías`);
             },
           },
         ]}

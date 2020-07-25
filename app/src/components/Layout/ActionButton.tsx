@@ -17,6 +17,10 @@ const ActionButton: React.FC<IActionButtonProps> = ({
 }) => {
   return (
     <IconButton
+      width="70px"
+      height="70px"
+      fontSize="30px"
+      borderRadius="50%"
       aria-label={ariaLabel}
       icon={icon}
       onClick={action}
