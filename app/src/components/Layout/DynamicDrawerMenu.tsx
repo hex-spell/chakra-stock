@@ -24,6 +24,7 @@ interface IDynamicDrawerMenuProps {
 
 //mapea un array de nombres con valores, va a ser usado para hacer requests al servidor filtrando datos
 //por ahi utilizo un wrapper para manejar el estado
+//al tocar un boton cierra el drawer con onClose y ejecuta la funcion asignada en el arreglo "menu"
 const DynamicDrawerMenu: React.FC<IDynamicDrawerMenuProps> = ({
   title,
   menu,
@@ -47,7 +48,7 @@ const DynamicDrawerMenu: React.FC<IDynamicDrawerMenuProps> = ({
               paddingLeft="25px"
               borderBottom="1px"
               borderColor="rgba(0,0,0,0.1);"
-              onClick={()=>action()}
+              onClick={()=>{onClose();action()}}
             >
               <Text fontWeight="lighter" fontSize="smaller">
                 {name}

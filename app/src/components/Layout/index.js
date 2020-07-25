@@ -9,3 +9,4 @@ export {default as MoneyText} from "./MoneyText";
 export {default as ListItemBox} from "./ListItemBox";
 export {default as FilterDropdown} from "./FilterDropdown";
 export {default as DynamicDrawerMenu} from "./DynamicDrawerMenu";
+export {default as ConfirmationMenu} from "./ConfirmationMenu";

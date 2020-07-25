@@ -1,0 +1,2 @@
+export const SET_HEADER = "SET_HEADER";
+export const SET_CONFIRMATION_MENU = "SET_CONFIRMATION_MENU";

@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import Navbar from "./components/Navbar";
 import { useDisclosure } from "@chakra-ui/core";
 import MainDrawer from "./components/MainDrawer";
+import { ConfirmationMenu } from "./components/Layout";
+import { LayoutContext } from "./context/Layout";
 import {
   FaHome,
   FaDropbox,
@@ -32,10 +34,22 @@ import {
 const App: React.FC = () => {
   //Hook que se encarga del manejo del estado del MainDrawer
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  //estado, titulo y funcion que ejecuta el drawer de confirmacion
+  const {
+    store: {
+      confirmationMenu: { title, action },
+    },
+    confirmationMenuDisclosure,
+  } = useContext(LayoutContext);
   return (
     <Router>
       <Navbar onMenuClick={onOpen} />
+      <ConfirmationMenu
+        isOpen={confirmationMenuDisclosure.isOpen}
+        onClose={confirmationMenuDisclosure.onClose}
+        title={title}
+        action={action}
+      />
       <MainDrawer
         isOpen={isOpen}
         onClose={onClose}

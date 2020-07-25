@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { LayoutContext, SET_CONFIRMATION_MENU } from "../context/Layout";
 import {
   Page,
   ActionButton,
@@ -22,6 +23,7 @@ export default function Stock() {
     setClickedItem({ id, name });
     onOpen();
   };
+  const { dispatch, confirmationMenuDisclosure } = useContext(LayoutContext);
   return (
     <Page title="Stock">
       <FilterStack>
@@ -41,7 +43,7 @@ export default function Stock() {
             ammount={ammount}
             price={price}
             lastUpdateDate={lastUpdateDate}
-            onClick={()=>onItemClick(id,title)}
+            onClick={() => onItemClick(id, title)}
           />
         ))}
       </ListItemStack>
@@ -54,7 +56,23 @@ export default function Stock() {
         isOpen={isOpen}
         onClose={onClose}
         title={name}
-        menu={[{ name: "Modificar", action: () => alert(`Modificar ${id}`) },{ name: "Eliminar", action: () => alert(`Eliminar ${id}`) }]}
+        menu={[
+          { name: "Modificar", action: () => alert(`Modificar ${name}`) },
+          {
+            name: "Eliminar",
+            action: () => {
+              //manda titulo y funcion para ejecutar al drawer de confirmacion, y lo abre
+              dispatch({
+                type: SET_CONFIRMATION_MENU,
+                payload: {
+                  title: `eliminar ${name}`,
+                  action: () => alert(`${name} eliminado`),
+                },
+              });
+              confirmationMenuDisclosure.onOpen();
+            },
+          },
+        ]}
       />
     </Page>
   );

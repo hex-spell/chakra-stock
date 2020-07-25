@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from "react";
-import { LayoutContext } from "../../context/Layout";
+import { LayoutContext, SET_HEADER } from "../../context/Layout";
 import { Container } from "./";
 
 interface IPagePropsInterface {
@@ -9,10 +9,10 @@ interface IPagePropsInterface {
 //Layout de pagina, hace despacho de titulo al contexto del header cuando se renderiza
 
 const Page: React.FC<IPagePropsInterface> = ({ title, children }) => {
-  const { setHeader } = useContext(LayoutContext);
+  const { dispatch } = useContext(LayoutContext);
   useEffect(() => {
-    setHeader(title);
-  }, [title, setHeader]);
+    dispatch({type:SET_HEADER,payload:title});
+  }, [title, dispatch]);
   return <Container>{children}</Container>;
 };
 

@@ -11,7 +11,9 @@ interface INavbarProps {
 //Barra de navegacion que tiene un boton que activa el MainDrawer
 //El header usa un context para obtener el titulo desde los botones del drawer (en realidad es un useEffect en las paginas, que se activa al renderizarlas)
 const Navbar: React.FC<INavbarProps> = ({ onMenuClick }) => {
-  const { header } = useContext(LayoutContext);
+  const {
+    store: { header },
+  } = useContext(LayoutContext);
   return (
     <Flex
       as="nav"
