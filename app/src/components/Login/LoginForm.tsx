@@ -12,7 +12,9 @@ import {
   Box,
 } from "@chakra-ui/core";
 
+//Enlace del server backend, guardado en las variables de entorno.
 const localapi = process.env.REACT_APP_ROOT_API;
+//Enlace de login
 const loginUri = localapi + "login";
 
 //Formulario de login, se encarga de enviar credenciales al server y recibir token

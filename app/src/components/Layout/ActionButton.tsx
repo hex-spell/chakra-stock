@@ -9,7 +9,7 @@ interface IActionButtonProps {
 }
 
 //Boton circular en la esquina inferior derecha de la pantalla
-
+//recibe un icono, una accion y un arialabel (titulo para lectores de pantalla)
 const ActionButton: React.FC<IActionButtonProps> = ({
   icon,
   action,

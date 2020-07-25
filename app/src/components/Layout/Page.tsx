@@ -7,7 +7,6 @@ interface IPagePropsInterface {
 }
 
 //Layout de pagina, hace despacho de titulo al contexto del header cuando se renderiza
-
 const Page: React.FC<IPagePropsInterface> = ({ title, children }) => {
   const { dispatch } = useContext(LayoutContext);
   useEffect(() => {

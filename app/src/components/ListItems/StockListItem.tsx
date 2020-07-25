@@ -10,6 +10,7 @@ interface IStockListItemProps {
   onClick: () => void;
 }
 
+//Item de stock, el div en la raiz fue necesario porque de no hacerlo tendria que haber hecho prop drilling con la prop "onClick" hasta el componente de la librería de chakra
 const StockListItem: React.FC<IStockListItemProps> = ({
   title,
   ammount,

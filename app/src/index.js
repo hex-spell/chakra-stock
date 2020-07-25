@@ -9,6 +9,8 @@ import { UserContextProvider } from "./context/User";
 import LoginWrapper from "./components/Login";
 import { LayoutContextProvider } from "./context/Layout";
 
+
+//Raiz verdadera de la aplicacion. proveedores de los contextos, boilerplate de chakra y wrapper condicional de login
 ReactDOM.render(
   <React.StrictMode>
     <UserContextProvider>

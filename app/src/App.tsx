@@ -30,7 +30,7 @@ import {
   Configuracion,
 } from "./pages";
 
-//Raiz de la aplicacion, despues del login, seteo del enrutado
+//Raiz de la funcionalidad de la aplicacion, despues del login, seteo del enrutado y el layout global
 const App: React.FC = () => {
   //Hook que se encarga del manejo del estado del MainDrawer
   const { isOpen, onOpen, onClose } = useDisclosure();

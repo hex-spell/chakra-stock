@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@chakra-ui/core";
 
-//se encarga de agregar margenes a los costados de la pagina, de forma responsiva
+//se encarga de centrar en la pantalla todos los componentes wrappeados
 const ContainerCentered: React.FC = ({ children }) => {
   return (
     <Box

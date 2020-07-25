@@ -17,7 +17,7 @@ interface IMainDrawerProps {
   links: IMainDrawerListItemProps[];
 }
 
-//Drawer que va a mostrar todas las rutas de la app, un boton de logout, y un header con tu username
+//Drawer que muestra todas las rutas de la app con un icono, un boton de logout, y un header con tu username
 const MainDrawer: React.FC<IMainDrawerProps> = ({ isOpen, onClose, links }) => {
   const {
     store: {

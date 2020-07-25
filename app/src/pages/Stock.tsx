@@ -14,6 +14,8 @@ import { StockListItem } from "../components/ListItems";
 import { useDisclosure } from "@chakra-ui/core";
 import { data } from "./";
 
+
+//Pagina de stock, tengo que ver si agregar las funciones con la api del backend en este componente o hacer un wrapper
 export default function Stock() {
   //mantiene en estado el item clickeado, usa el id para hacer consultas con la api
   const [{ id, name }, setClickedItem] = useState({ id: 0, name: "error" });
@@ -81,15 +83,15 @@ export default function Stock() {
         title="Menu: Stock"
         menu={[
           {
-            name: "Registrar producto nuevo",
+            name: "Sumar producto existente al inventario",
             action: () => {
-              alert(`Registrar producto nuevo`);
+              alert(`Sumar producto existente a stock`);
             },
           },
           {
-            name: "Sumar producto existente a stock",
+            name: "Registrar producto nuevo",
             action: () => {
-              alert(`Sumar producto existente a stock`);
+              alert(`Registrar producto nuevo`);
             },
           },
           {

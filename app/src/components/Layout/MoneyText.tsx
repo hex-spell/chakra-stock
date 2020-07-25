@@ -6,7 +6,6 @@ interface IMoneyTextProps {
 }
 
 //texto verde y bold, si red es true pasa a ser rojo
-
 const MoneyText: React.FC<IMoneyTextProps> = ({ children, red }) => {
   const color = red ? "darkred" : "darkgreen";
   return (
