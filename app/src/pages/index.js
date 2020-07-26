@@ -98,7 +98,7 @@ export const contactsData = [
   },
   {
     name: "Agustin",
-    money: 3124,
+    money: -3124,
     id:1,
     address: "Av 10 2822",
     phone: "2252 231231",
@@ -106,7 +106,7 @@ export const contactsData = [
   },
   {
     name: "Agustin",
-    money: 3124,
+    money: -100,
     id:1,
     address: "Av 10 2822",
     phone: "2252 231231",

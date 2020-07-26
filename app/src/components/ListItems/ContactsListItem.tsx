@@ -36,7 +36,7 @@ const ContactsListItem: React.FC<IContactsListItemProps> = ({
           </SubText>
         </Box>
         <Box display="flex" flexDirection="column" textAlign="right" justifyContent="space-between">
-          <MoneyText>${money}</MoneyText>
+          <Box><Text display="inline">{money>0 ? "A favor" : "Deuda"}: </Text><MoneyText ammount={money}/></Box>
           <SubText>{lastUpdateDate}</SubText>
         </Box>
       </ListItemBox>

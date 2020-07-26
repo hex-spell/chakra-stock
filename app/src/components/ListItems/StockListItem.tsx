@@ -28,7 +28,7 @@ const StockListItem: React.FC<IStockListItemProps> = ({
           </SubText>
         </Box>
         <Box display="flex" flexDirection="column" textAlign="right">
-          <MoneyText>${price}</MoneyText>
+          <MoneyText ammount={price}/>
           <SubText>{lastUpdateDate}</SubText>
         </Box>
       </ListItemBox>
