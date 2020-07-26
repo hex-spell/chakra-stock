@@ -1,10 +1,8 @@
 export { default as Inicio } from "./Inicio";
 export { default as Stock } from "./Stock";
 export { default as Pedidos } from "./Pedidos";
-export { default as Compras } from "./Compras";
 export { default as Contactos } from "./Contactos";
-export { default as Cobros } from "./Cobros";
-export { default as Pagos } from "./Pagos";
+export { default as Transacciones } from "./Transacciones";
 export { default as Gastos } from "./Gastos";
 export { default as Configuracion } from "./Configuracion";
 export const stockData = [
@@ -91,7 +89,7 @@ export const contactsData = [
   {
     name: "Agustin",
     money: 3124,
-    id:1,
+    id: 1,
     address: "Av 10 2822",
     phone: "2252 231231",
     lastUpdateDate: "10/1/2000",
@@ -99,7 +97,7 @@ export const contactsData = [
   {
     name: "Agustin",
     money: -3124,
-    id:1,
+    id: 1,
     address: "Av 10 2822",
     phone: "2252 231231",
     lastUpdateDate: "10/1/2000",
@@ -107,7 +105,7 @@ export const contactsData = [
   {
     name: "Agustin",
     money: -100,
-    id:1,
+    id: 1,
     address: "Av 10 2822",
     phone: "2252 231231",
     lastUpdateDate: "10/1/2000",
@@ -115,7 +113,7 @@ export const contactsData = [
   {
     name: "Agustin",
     money: 3124,
-    id:1,
+    id: 1,
     address: "Av 10 2822",
     phone: "2252 231231",
     lastUpdateDate: "10/1/2000",
@@ -123,7 +121,7 @@ export const contactsData = [
   {
     name: "Agustin",
     money: 3124,
-    id:1,
+    id: 1,
     address: "Av 10 2822",
     phone: "2252 231231",
     lastUpdateDate: "10/1/2000",
@@ -131,7 +129,7 @@ export const contactsData = [
   {
     name: "Agustin",
     money: 3124,
-    id:1,
+    id: 1,
     address: "Av 10 2822",
     phone: "2252 231231",
     lastUpdateDate: "10/1/2000",
@@ -139,7 +137,7 @@ export const contactsData = [
   {
     name: "Agustin",
     money: 3124,
-    id:1,
+    id: 1,
     address: "Av 10 2822",
     phone: "2252 231231",
     lastUpdateDate: "10/1/2000",
@@ -147,9 +145,76 @@ export const contactsData = [
   {
     name: "Agustin",
     money: 3124,
-    id:1,
+    id: 1,
     address: "Av 10 2822",
     phone: "2252 231231",
+    lastUpdateDate: "10/1/2000",
+  },
+];
+
+export const ordersData = [
+  {
+    name: "Roticeria 10",
+    itemAmmount: 4,
+    delivered: true,
+    sum: 4120,
+    debt: 200,
+    lastUpdateDate: "10/1/2000",
+  },
+  {
+    name: "Roticeria 10",
+    itemAmmount: 4,
+    delivered: false,
+    sum: 4120,
+    debt: 0,
+    lastUpdateDate: "10/1/2000",
+  },
+  {
+    name: "Roticeria 10",
+    itemAmmount: 1,
+    delivered: true,
+    sum: 200,
+    debt: 0,
+    lastUpdateDate: "10/1/2000",
+  },
+  {
+    name: "Roticeria 10",
+    itemAmmount: 4,
+    delivered: true,
+    sum: 4120,
+    debt: 200,
+    lastUpdateDate: "10/1/2000",
+  },
+  {
+    name: "Roticeria 10",
+    itemAmmount: 4,
+    delivered: true,
+    sum: 4120,
+    debt: 200,
+    lastUpdateDate: "10/1/2000",
+  },
+  {
+    name: "Roticeria 10",
+    itemAmmount: 4,
+    delivered: true,
+    sum: 4120,
+    debt: 200,
+    lastUpdateDate: "10/1/2000",
+  },
+  {
+    name: "Roticeria 10",
+    itemAmmount: 4,
+    delivered: true,
+    sum: 4120,
+    debt: 200,
+    lastUpdateDate: "10/1/2000",
+  },
+  {
+    name: "Roticeria 10",
+    itemAmmount: 4,
+    delivered: true,
+    sum: 4120,
+    debt: 200,
     lastUpdateDate: "10/1/2000",
   },
 ];

@@ -9,9 +9,7 @@ import {
   FaDropbox,
   FaListUl,
   FaUsers,
-  FaDollarSign,
   FaDonate,
-  FaShoppingCart,
   FaCog,
   FaBookOpen,
 } from "react-icons/fa";
@@ -20,10 +18,8 @@ import {
   Inicio,
   Stock,
   Pedidos,
-  Compras,
   Contactos,
-  Cobros,
-  Pagos,
+  Transacciones,
   Gastos,
   Configuracion,
 } from "./pages";
@@ -55,10 +51,8 @@ const App: React.FC = () => {
           { name: "Inicio", link: "/", icon: FaHome },
           { name: "Stock", link: "/stock", icon: FaDropbox },
           { name: "Pedidos", link: "/pedidos", icon: FaListUl },
-          { name: "Compras", link: "/compras", icon: FaShoppingCart },
           { name: "Contactos", link: "/contactos", icon: FaUsers },
-          { name: "Cobros", link: "/cobros", icon: FaDollarSign },
-          { name: "Pagos", link: "/pagos", icon: FaDonate },
+          { name: "Transacciones", link: "/transacciones", icon: FaDonate },
           { name: "Gastos", link: "/gastos", icon: FaBookOpen },
           { name: "Configuracion", link: "/configuracion", icon: FaCog },
         ]}
@@ -67,10 +61,8 @@ const App: React.FC = () => {
         <Route exact path="/" component={Inicio} />
         <Route path="/stock" component={Stock} />
         <Route path="/pedidos" component={Pedidos} />
-        <Route path="/compras" component={Compras} />
         <Route path="/contactos" component={Contactos} />
-        <Route path="/cobros" component={Cobros} />
-        <Route path="/pagos" component={Pagos} />
+        <Route path="/transacciones" component={Transacciones} />
         <Route path="/gastos" component={Gastos} />
         <Route path="/configuracion" component={Configuracion} />
       </Switch>

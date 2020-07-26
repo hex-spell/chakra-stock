@@ -1,10 +1,10 @@
 import React from 'react'
 import { Page } from '../components/Layout'
 
-export default function Compras() {
+export default function Transacciones() {
     return (
-        <Page title="Compras">
-            Compras
+        <Page title="Transacciones">
+            Transacciones
         </Page>
     )
 }
