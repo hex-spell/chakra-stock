@@ -9,7 +9,6 @@ import {
   FaDropbox,
   FaListUl,
   FaUsers,
-  FaUserTie,
   FaDollarSign,
   FaDonate,
   FaShoppingCart,
@@ -22,8 +21,7 @@ import {
   Stock,
   Pedidos,
   Compras,
-  Clientes,
-  Proveedores,
+  Contactos,
   Cobros,
   Pagos,
   Gastos,
@@ -58,8 +56,7 @@ const App: React.FC = () => {
           { name: "Stock", link: "/stock", icon: FaDropbox },
           { name: "Pedidos", link: "/pedidos", icon: FaListUl },
           { name: "Compras", link: "/compras", icon: FaShoppingCart },
-          { name: "Clientes", link: "/clientes", icon: FaUsers },
-          { name: "Proveedores", link: "/proveedores", icon: FaUserTie },
+          { name: "Contactos", link: "/contactos", icon: FaUsers },
           { name: "Cobros", link: "/cobros", icon: FaDollarSign },
           { name: "Pagos", link: "/pagos", icon: FaDonate },
           { name: "Gastos", link: "/gastos", icon: FaBookOpen },
@@ -71,8 +68,7 @@ const App: React.FC = () => {
         <Route path="/stock" component={Stock} />
         <Route path="/pedidos" component={Pedidos} />
         <Route path="/compras" component={Compras} />
-        <Route path="/clientes" component={Clientes} />
-        <Route path="/proveedores" component={Proveedores} />
+        <Route path="/contactos" component={Contactos} />
         <Route path="/cobros" component={Cobros} />
         <Route path="/pagos" component={Pagos} />
         <Route path="/gastos" component={Gastos} />

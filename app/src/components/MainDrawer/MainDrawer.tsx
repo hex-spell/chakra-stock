@@ -33,7 +33,7 @@ const MainDrawer: React.FC<IMainDrawerProps> = ({ isOpen, onClose, links }) => {
         <DrawerHeader>{name}</DrawerHeader>
        
         <DrawerBody overflowY="scroll" paddingX="0">
-        {links.map(({name,link,icon},index)=><MainDrawerListItem name={name} link={link} icon={icon} key={index}/>)}
+        {isOpen && links.map(({name,link,icon},index)=><MainDrawerListItem name={name} link={link} icon={icon} key={index}/>)}
         <MainDrawerListItem name="Salir" icon={FaDoorOpen} onClick={()=>dispatch({type:LOG_OUT})}/>
         </DrawerBody>
 

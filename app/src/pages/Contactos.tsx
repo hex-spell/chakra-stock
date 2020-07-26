@@ -1,58 +1,64 @@
 import React, { useState, useContext } from "react";
-import { LayoutContext, SET_CONFIRMATION_MENU } from "../context/Layout";
 import {
   Page,
   ActionButton,
-  ListItemStack,
   FilterStack,
   FilterDropdown,
+  ListItemStack,
   DynamicDrawerMenu,
 } from "../components/Layout";
+import { FaUsers } from "react-icons/fa";
 import { Searchbar } from "../components/Searchbar";
-import { FaDropbox } from "react-icons/fa";
-import { StockListItem } from "../components/ListItems";
+import { ContactsListItem } from "../components/ListItems";
+import { contactsData } from "./";
 import { useDisclosure } from "@chakra-ui/core";
-import { stockData } from "./";
+import { LayoutContext, SET_CONFIRMATION_MENU } from "../context/Layout";
 
-
-//Pagina de stock, tengo que ver si agregar las funciones con la api del backend en este componente o hacer un wrapper
-export default function Stock() {
-  //mantiene en estado el item clickeado, usa el id para hacer consultas con la api
+export default function Contactos() {
   const [{ id, name }, setClickedItem] = useState({ id: 0, name: "error" });
   const listItemMenu = useDisclosure();
   const actionButtonMenu = useDisclosure();
-  //guarda el nombre y el id del item en el estado y abre el drawer
+  const { dispatch, confirmationMenuDisclosure } = useContext(LayoutContext);
   const onItemClick = (id: number, name: string) => {
     setClickedItem({ id, name });
     listItemMenu.onOpen();
   };
-  const { dispatch, confirmationMenuDisclosure } = useContext(LayoutContext);
   return (
-    <Page title="Stock">
+    <Page title="Contactos">
       <FilterStack>
         <Searchbar />
         <FilterDropdown
           menu={[
-            { name: "Todas las categorías", value: "all" },
-            { name: "Especias", value: "especias" },
-            { name: "Cotillón", value: "cotillon" },
+            { name: "Clientes", value: "clientes" },
+            { name: "Proveedores", value: "proveedores" },
+          ]}
+        />
+        <FilterDropdown
+          menu={[
+            { name: "Ordenar por nombre", value: "ordenarPorNombre" },
+            { name: "Ordenar por deuda", value: "ordenarPorDeuda" },
+            {
+              name: "Ordenar por fecha de ult. Actualización",
+              value: "ordenarPorFecha",
+            },
           ]}
         />
       </FilterStack>
-      <ListItemStack maxHeight="72vh">
-        {stockData.map(({ title, ammount, price, lastUpdateDate, id }) => (
-          <StockListItem
-            title={title}
-            ammount={ammount}
-            price={price}
+      <ListItemStack maxHeight="63vh">
+        {contactsData.map(({ name, address, phone, money, lastUpdateDate }) => (
+          <ContactsListItem
+            name={name}
+            address={address}
+            phone={phone}
+            money={money}
             lastUpdateDate={lastUpdateDate}
-            onClick={() => onItemClick(id, title)}
+            onClick={() => onItemClick(id, name)}
           />
         ))}
       </ListItemStack>
       <ActionButton
-        icon={FaDropbox}
-        ariaLabel="Agregar Item"
+        icon={FaUsers}
+        ariaLabel="Agregar Contacto"
         action={() => actionButtonMenu.onOpen()}
       />
       <DynamicDrawerMenu
@@ -68,7 +74,7 @@ export default function Stock() {
               dispatch({
                 type: SET_CONFIRMATION_MENU,
                 payload: {
-                  title: `eliminar ${name}`,
+                  title: `eliminar a ${name}`,
                   action: () => alert(`${name} eliminado`),
                 },
               });
@@ -80,24 +86,12 @@ export default function Stock() {
       <DynamicDrawerMenu
         isOpen={actionButtonMenu.isOpen}
         onClose={actionButtonMenu.onClose}
-        title="Menu: Stock"
+        title="Menu: Contactos"
         menu={[
           {
-            name: "Sumar producto existente al inventario",
+            name: "Agregar nuevo contacto",
             action: () => {
-              alert(`Sumar producto existente a stock`);
-            },
-          },
-          {
-            name: "Registrar producto nuevo",
-            action: () => {
-              alert(`Registrar producto nuevo`);
-            },
-          },
-          {
-            name: "Modificar categorías",
-            action: () => {
-              alert(`Modificar categorías`);
+              alert(`Agregar nuevo contacto`);
             },
           },
         ]}

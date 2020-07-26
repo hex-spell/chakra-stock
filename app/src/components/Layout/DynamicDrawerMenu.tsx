@@ -38,7 +38,7 @@ const DynamicDrawerMenu: React.FC<IDynamicDrawerMenuProps> = ({
         <DrawerCloseButton />
         <DrawerHeader>{title}</DrawerHeader>
         <DrawerBody>
-          {menu.map(({ name, action }) => (
+          {isOpen && menu.map(({ name, action }) => (
             <Button
               variant="ghost"
               size="lg"
