@@ -7,12 +7,13 @@ import {
   ListItemStack,
   ListItemBox,
   DynamicDrawerMenu,
+  CheckboxFilter,
 } from "../components/Layout";
 import { FaListUl } from "react-icons/fa";
 import { Searchbar } from "../components/Searchbar";
 import { OrdersListItem } from "../components/ListItems";
 import { ordersData } from "./";
-import { useDisclosure, Stack, Checkbox } from "@chakra-ui/core";
+import { useDisclosure } from "@chakra-ui/core";
 import { LayoutContext, SET_CONFIRMATION_MENU } from "../context/Layout";
 
 export default function Pedidos() {
@@ -51,15 +52,20 @@ export default function Pedidos() {
           ]}
         />
         <ListItemBox>
-        {/* DEBERIA SEPARAR ESTE STACK EN UN COMPONENTE APARTE QUE TOME UN ARREGLO CON NOMBRES, VALORES BOOLEANOS Y FUNCIONES QUE LOS CAMBIAN, PARA MANEJAR SU ESTADO DESDE ACA */}
-        <Stack spacing={10} isInline>
-          <Checkbox>
-            Omitir entregadas
-          </Checkbox>
-          <Checkbox>
-            Omitir pagadas
-          </Checkbox>
-        </Stack>
+          <CheckboxFilter
+            checkboxes={[
+              {
+                name: "Omitir pagados",
+                isChecked: false,
+                onChange: () => console.log("hello"),
+              },
+              {
+                name: "Omitir entregados",
+                isChecked: false,
+                onChange: () => console.log("hello"),
+              },
+            ]}
+          />
         </ListItemBox>
       </FilterStack>
       <ListItemStack maxHeight="59vh">
