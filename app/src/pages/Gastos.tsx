@@ -41,6 +41,11 @@ export default function Gastos() {
           />
         ))}
       </ListItemStack>
+      <ActionButton
+        icon={FaBookOpen}
+        ariaLabel="Agregar Pedido"
+        action={() => actionButtonMenu.onOpen()}
+      />
       <DynamicDrawerMenu
         isOpen={listItemMenu.isOpen}
         onClose={listItemMenu.onClose}
@@ -62,11 +67,6 @@ export default function Gastos() {
             },
           },
         ]}
-      />
-      <ActionButton
-        icon={FaBookOpen}
-        ariaLabel="Agregar Pedido"
-        action={() => actionButtonMenu.onOpen()}
       />
       <DynamicDrawerMenu
         isOpen={actionButtonMenu.isOpen}
