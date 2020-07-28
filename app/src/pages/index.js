@@ -155,6 +155,7 @@ export const contactsData = [
 export const ordersData = [
   {
     name: "Roticeria 10",
+    id: 1,
     itemAmmount: 4,
     delivered: true,
     sum: 4120,
@@ -163,6 +164,7 @@ export const ordersData = [
   },
   {
     name: "Roticeria 10",
+    id: 1,
     itemAmmount: 4,
     delivered: false,
     sum: 4120,
@@ -171,6 +173,7 @@ export const ordersData = [
   },
   {
     name: "Roticeria 10",
+    id: 1,
     itemAmmount: 1,
     delivered: true,
     sum: 200,
@@ -179,6 +182,7 @@ export const ordersData = [
   },
   {
     name: "Roticeria 10",
+    id: 1,
     itemAmmount: 4,
     delivered: true,
     sum: 4120,
@@ -187,6 +191,7 @@ export const ordersData = [
   },
   {
     name: "Roticeria 10",
+    id: 1,
     itemAmmount: 4,
     delivered: true,
     sum: 4120,
@@ -195,6 +200,7 @@ export const ordersData = [
   },
   {
     name: "Roticeria 10",
+    id: 1,
     itemAmmount: 4,
     delivered: true,
     sum: 4120,
@@ -203,6 +209,7 @@ export const ordersData = [
   },
   {
     name: "Roticeria 10",
+    id: 1,
     itemAmmount: 4,
     delivered: true,
     sum: 4120,
@@ -211,10 +218,149 @@ export const ordersData = [
   },
   {
     name: "Roticeria 10",
+    id: 1,
     itemAmmount: 4,
     delivered: true,
     sum: 4120,
     debt: 200,
     lastUpdateDate: "10/1/2000",
+  },
+];
+
+export const transactionData = [
+  {
+    title: "Roticeria 10",
+    sum: 4120,
+    lastUpdateDate: "10/1/2000",
+    id: 1,
+  },
+  {
+    title: "Roticeria 10",
+    sum: 4120,
+    lastUpdateDate: "10/1/2000",
+    id: 1,
+  },
+  {
+    title: "Roticeria 10",
+    sum: 4120,
+    lastUpdateDate: "10/1/2000",
+    id: 1,
+  },
+  {
+    title: "Roticeria 10",
+    sum: 4120,
+    lastUpdateDate: "10/1/2000",
+    id: 1,
+  },
+  {
+    title: "Roticeria 10",
+    sum: 4120,
+    lastUpdateDate: "10/1/2000",
+    id: 1,
+  },
+  {
+    title: "Roticeria 10",
+    sum: 4120,
+    lastUpdateDate: "10/1/2000",
+    id: 1,
+  },
+  {
+    title: "Roticeria 10",
+    sum: 4120,
+    lastUpdateDate: "10/1/2000",
+    id: 1,
+  },
+  {
+    title: "Roticeria 10",
+    sum: 4120,
+    lastUpdateDate: "10/1/2000",
+    id: 1,
+  },
+  {
+    title: "Roticeria 10",
+    sum: 4120,
+    lastUpdateDate: "10/1/2000",
+    id: 1,
+  },
+  {
+    title: "Roticeria 10",
+    sum: 4120,
+    lastUpdateDate: "10/1/2000",
+    id: 1,
+  },
+  {
+    title: "Roticeria 10",
+    sum: 4120,
+    lastUpdateDate: "10/1/2000",
+    id: 1,
+  },
+];
+
+export const expensesData = [
+  {
+    title: "Luz",
+    sum: -4120,
+    lastUpdateDate: "10/1/2000",
+    id: 1,
+  },
+  {
+    title: "Luz",
+    sum: -4120,
+    lastUpdateDate: "10/1/2000",
+    id: 1,
+  },
+  {
+    title: "Luz",
+    sum: -4120,
+    lastUpdateDate: "10/1/2000",
+    id: 1,
+  },
+  {
+    title: "Luz",
+    sum: -4120,
+    lastUpdateDate: "10/1/2000",
+    id: 1,
+  },
+  {
+    title: "Luz",
+    sum: -4120,
+    lastUpdateDate: "10/1/2000",
+    id: 1,
+  },
+  {
+    title: "Luz",
+    sum: -4120,
+    lastUpdateDate: "10/1/2000",
+    id: 1,
+  },
+  {
+    title: "Luz",
+    sum: -4120,
+    lastUpdateDate: "10/1/2000",
+    id: 1,
+  },
+  {
+    title: "Luz",
+    sum: -4120,
+    lastUpdateDate: "10/1/2000",
+    id: 1,
+  },
+  {
+    title: "Luz",
+    sum: -4120,
+    lastUpdateDate: "10/1/2000",
+    id: 1,
+  },
+  {
+    title: "Luz",
+    sum: -4120,
+    lastUpdateDate: "10/1/2000",
+    id: 1,
+  },
+  {
+    title: "Luz",
+    sum: -4120,
+    lastUpdateDate: "10/1/2000",
+    id: 1,
   },
 ];

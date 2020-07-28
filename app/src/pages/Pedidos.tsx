@@ -57,12 +57,12 @@ export default function Pedidos() {
               {
                 name: "Omitir pagados",
                 isChecked: false,
-                onChange: () => console.log("hello"),
+                onChange: () => alert("hello"),
               },
               {
                 name: "Omitir entregados",
                 isChecked: false,
-                onChange: () => console.log("hello"),
+                onChange: () => alert("hello"),
               },
             ]}
           />
