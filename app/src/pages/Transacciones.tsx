@@ -33,14 +33,16 @@ export default function Transacciones() {
             { name: "Cobros", value: "cobros" },
             { name: "Pagos", value: "pagos" },
           ]}
+          onChange={()=>console.log("hello")}
+          defaultValue="cobros"
         />
       </FilterStack>
-      <ListItemStack maxHeight="80vh">
-        {transactionData.map(({ title, sum, lastUpdateDate, id }) => (
+      <ListItemStack maxHeight="72vh">
+        {transactionData.map(({ title, sum, updatedAt, id }) => (
           <TransactionsListItem
             title={title}
             sum={sum}
-            lastUpdateDate={lastUpdateDate}
+            updatedAt={updatedAt}
             onClick={() => onItemClick(id, title)}
           />
         ))}

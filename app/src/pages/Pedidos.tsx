@@ -34,12 +34,15 @@ export default function Pedidos() {
             { name: "Ventas", value: "ventas" },
             { name: "Compras", value: "compras" },
           ]}
-        />
+          onChange={()=>console.log("hello")}
+          defaultValue="ventas"/>
         <FilterDropdown
           menu={[
             { name: "Pendientes", value: "pendientes" },
             { name: "Completadas", value: "completadas" },
           ]}
+          onChange={()=>console.log("hello")}
+          defaultValue="pendientes"
         />
         <FilterDropdown
           menu={[
@@ -50,6 +53,8 @@ export default function Pedidos() {
               value: "ordenarPorFecha",
             },
           ]}
+          onChange={()=>console.log("hello")}
+          defaultValue="ordenarPorNombre"
         />
         <ListItemBox>
           <CheckboxFilter
@@ -70,14 +75,14 @@ export default function Pedidos() {
       </FilterStack>
       <ListItemStack maxHeight="59vh">
         {ordersData.map(
-          ({ name, itemAmmount, delivered, sum, debt, lastUpdateDate }) => (
+          ({ name, itemAmmount, delivered, sum, debt, updatedAt }) => (
             <OrdersListItem
               name={name}
               itemAmmount={itemAmmount}
               delivered={delivered}
               sum={sum}
               debt={debt}
-              lastUpdateDate={lastUpdateDate}
+              updatedAt={updatedAt}
               onClick={() => onItemClick(id, name)}
             />
           )

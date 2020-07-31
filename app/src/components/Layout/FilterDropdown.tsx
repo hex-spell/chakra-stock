@@ -8,15 +8,19 @@ type MenuOption = {
 
 interface IFilterDropdownProps {
     menu:MenuOption[];
+    onChange:()=>void;
+    defaultValue:string;
+    name:string;
+    ref?:any;
 }
 
 
 //mapea un array de nombres con valores, va a ser usado para hacer requests al servidor filtrando datos
 //por ahi utilizo un wrapper para manejar el estado
-const FilterDropdown: React.FC<IFilterDropdownProps> = ({ menu }) => {
+const FilterDropdown: React.FC<IFilterDropdownProps> = ({ menu, onChange, defaultValue, name, ref }) => {
   return (
-    <Select>
-      {menu.map(({name,value})=><option value={value}>{name}</option>)}
+    <Select onChange={onChange} defaultValue={defaultValue} name={name} ref={ref}>
+      {menu.map(({name,value})=><option key={value} value={value} ref={ref}>{name}</option>) }
     </Select>
   );
 };

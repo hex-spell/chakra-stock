@@ -8,7 +8,7 @@ interface IContactsListItemProps {
   address: string;
   phone: string;
   money: number;
-  lastUpdateDate: string;
+  updatedAt: Date;
   onClick: () => void;
 }
 
@@ -18,7 +18,7 @@ const ContactsListItem: React.FC<IContactsListItemProps> = ({
   address,
   phone,
   money,
-  lastUpdateDate,
+  updatedAt,
   onClick,
 }) => {
   return (
@@ -37,7 +37,7 @@ const ContactsListItem: React.FC<IContactsListItemProps> = ({
         </Box>
         <Box display="flex" flexDirection="column" textAlign="right" justifyContent="space-between">
           <Box><Text display="inline">{money>0 ? "A favor" : "Deuda"}: </Text><MoneyText ammount={money}/></Box>
-          <SubText>{lastUpdateDate}</SubText>
+          <SubText>{updatedAt}</SubText>
         </Box>
       </ListItemBox>
     </div>

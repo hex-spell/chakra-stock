@@ -37,15 +37,17 @@ export default function Stock() {
             { name: "Especias", value: "especias" },
             { name: "Cotillón", value: "cotillon" },
           ]}
+          onChange={()=>console.log("hello")}
+          defaultValue="all"
         />
       </FilterStack>
       <ListItemStack maxHeight="72vh">
-        {stockData.map(({ title, ammount, price, lastUpdateDate, id }) => (
+        {stockData.map(({ title, ammount, price, updatedAt, id }) => (
           <StockListItem
             title={title}
             ammount={ammount}
             price={price}
-            lastUpdateDate={lastUpdateDate}
+            updatedAt={updatedAt}
             onClick={() => onItemClick(id, title)}
           />
         ))}

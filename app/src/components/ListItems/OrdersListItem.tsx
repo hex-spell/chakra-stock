@@ -8,7 +8,7 @@ interface IOrdersListItemProps {
   delivered: boolean;
   sum: number;
   debt: number;
-  lastUpdateDate: string;
+  updatedAt: string;
   onClick: () => void;
 }
 
@@ -19,7 +19,7 @@ const OrdersListItem: React.FC<IOrdersListItemProps> = ({
   delivered,
   sum,
   debt,
-  lastUpdateDate,
+  updatedAt,
   onClick
 }) => {
   return (
@@ -37,7 +37,7 @@ const OrdersListItem: React.FC<IOrdersListItemProps> = ({
         <Box display="flex" flexDirection="column" textAlign="right">
           <Box><Text display="inline"> Suma: </Text><MoneyText ammount={sum}/></Box>
           <Box><Text display="inline"> Falta pagar: </Text><MoneyText ammount={debt} red/></Box>
-          <SubText>{lastUpdateDate}</SubText>
+          <SubText>{updatedAt}</SubText>
         </Box>
       </ListItemBox>
     </div>

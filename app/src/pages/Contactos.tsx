@@ -2,17 +2,18 @@ import React, { useState, useContext } from "react";
 import {
   Page,
   ActionButton,
-  FilterStack,
-  FilterDropdown,
+
   ListItemStack,
   DynamicDrawerMenu,
 } from "../components/Layout";
 import { FaUsers } from "react-icons/fa";
-import { Searchbar } from "../components/Searchbar";
 import { ContactsListItem } from "../components/ListItems";
 import { contactsData } from "./";
 import { useDisclosure } from "@chakra-ui/core";
 import { LayoutContext, SET_CONFIRMATION_MENU } from "../context/Layout";
+import { useContactsService } from "../services";
+import { Contact } from "../services/interfaces";
+import { ContactsFilter } from "../components/Filters";
 
 export default function Contactos() {
   const [{ id, name }, setClickedItem] = useState({ id: 0, name: "error" });
@@ -23,35 +24,19 @@ export default function Contactos() {
     setClickedItem({ id, name });
     listItemMenu.onOpen();
   };
+  const { result, search, role, setFilters } = useContactsService();
+ 
   return (
     <Page title="Contactos">
-      <FilterStack>
-        <Searchbar />
-        <FilterDropdown
-          menu={[
-            { name: "Clientes", value: "clientes" },
-            { name: "Proveedores", value: "proveedores" },
-          ]}
-        />
-        <FilterDropdown
-          menu={[
-            { name: "Ordenar por nombre", value: "ordenarPorNombre" },
-            { name: "Ordenar por deuda", value: "ordenarPorDeuda" },
-            {
-              name: "Ordenar por fecha de ult. Actualización",
-              value: "ordenarPorFecha",
-            },
-          ]}
-        />
-      </FilterStack>
+      <ContactsFilter setFilters={setFilters} search={search} role={role}/>
       <ListItemStack maxHeight="63vh">
-        {contactsData.map(({ name, address, phone, money, lastUpdateDate }) => (
+        {result.payload && result.payload.map(({ name, address, phone, money, updated_at } : Contact) => (
           <ContactsListItem
             name={name}
             address={address}
             phone={phone}
             money={money}
-            lastUpdateDate={lastUpdateDate}
+            updatedAt={updated_at}
             onClick={() => onItemClick(id, name)}
           />
         ))}
@@ -67,7 +52,10 @@ export default function Contactos() {
         title={`Menu: ${name}`}
         menu={[
           { name: "Modificar", action: () => alert(`Modificar ${name}`) },
-          { name: "Saldar deuda", action: () => alert(`Saldar deuda de ${name}`) },
+          {
+            name: "Saldar deuda",
+            action: () => alert(`Saldar deuda de ${name}`),
+          },
           {
             name: "Reiniciar el contador de dinero",
             action: () => {
@@ -94,7 +82,7 @@ export default function Contactos() {
                 },
               });
               confirmationMenuDisclosure.onOpen();
-            },    
+            },
           },
         ]}
       />

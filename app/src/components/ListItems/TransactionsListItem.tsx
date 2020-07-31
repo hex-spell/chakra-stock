@@ -5,7 +5,7 @@ import { SubText, MoneyText, ListItemBox } from "../Layout";
 interface ITransactionsListItemProps {
   title: string;
   sum: number;
-  lastUpdateDate: string;
+  updatedAt: string;
   onClick: () => void;
 }
 
@@ -13,7 +13,7 @@ interface ITransactionsListItemProps {
 const TransactionsListItem: React.FC<ITransactionsListItemProps> = ({
   title,
   sum,
-  lastUpdateDate,
+  updatedAt,
   onClick,
 }) => {
   return (
@@ -24,7 +24,7 @@ const TransactionsListItem: React.FC<ITransactionsListItemProps> = ({
         </Box>
         <Box display="flex" flexDirection="column" textAlign="right">
           <MoneyText ammount={sum}/>
-          <SubText>{lastUpdateDate}</SubText>
+          <SubText>{updatedAt}</SubText>
         </Box>
       </ListItemBox>
     </div>

@@ -32,11 +32,11 @@ export default function Gastos() {
         <Searchbar />
       </FilterStack>
       <ListItemStack maxHeight="80vh">
-        {expensesData.map(({ title, sum, lastUpdateDate, id }) => (
+        {expensesData.map(({ title, sum, updatedAt, id }) => (
           <TransactionsListItem
             title={title}
             sum={sum}
-            lastUpdateDate={lastUpdateDate}
+            updatedAt={updatedAt}
             onClick={() => onItemClick(id, title)}
           />
         ))}
