@@ -35,6 +35,7 @@ export default function Transacciones() {
           ]}
           onChange={()=>console.log("hello")}
           defaultValue="cobros"
+          name="hello"
         />
       </FilterStack>
       <ListItemStack maxHeight="72vh">

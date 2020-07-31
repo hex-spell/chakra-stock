@@ -21,6 +21,8 @@ const ContactsListItem: React.FC<IContactsListItemProps> = ({
   updatedAt,
   onClick,
 }) => {
+  const updatedAtDate = new Date(updatedAt);
+  const formattedUpdatedAtDate = `${updatedAtDate.getDay()}/${updatedAtDate.getMonth()}/${updatedAtDate.getFullYear()}`;
   return (
     <div onClick={() => onClick()}>
       <ListItemBox>
@@ -37,7 +39,7 @@ const ContactsListItem: React.FC<IContactsListItemProps> = ({
         </Box>
         <Box display="flex" flexDirection="column" textAlign="right" justifyContent="space-between">
           <Box><Text display="inline">{money>0 ? "A favor" : "Deuda"}: </Text><MoneyText ammount={money}/></Box>
-          <SubText>{updatedAt}</SubText>
+          <SubText>{formattedUpdatedAtDate}</SubText>
         </Box>
       </ListItemBox>
     </div>

@@ -35,7 +35,9 @@ export default function Pedidos() {
             { name: "Compras", value: "compras" },
           ]}
           onChange={()=>console.log("hello")}
-          defaultValue="ventas"/>
+          defaultValue="ventas"
+          name="hello"
+          />  
         <FilterDropdown
           menu={[
             { name: "Pendientes", value: "pendientes" },
@@ -43,6 +45,7 @@ export default function Pedidos() {
           ]}
           onChange={()=>console.log("hello")}
           defaultValue="pendientes"
+          name="hello"
         />
         <FilterDropdown
           menu={[
@@ -55,6 +58,7 @@ export default function Pedidos() {
           ]}
           onChange={()=>console.log("hello")}
           defaultValue="ordenarPorNombre"
+          name="hello"
         />
         <ListItemBox>
           <CheckboxFilter

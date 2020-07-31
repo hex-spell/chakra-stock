@@ -39,6 +39,7 @@ export default function Stock() {
           ]}
           onChange={()=>console.log("hello")}
           defaultValue="all"
+          name="hello"
         />
       </FilterStack>
       <ListItemStack maxHeight="72vh">

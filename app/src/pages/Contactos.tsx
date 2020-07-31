@@ -8,7 +8,6 @@ import {
 } from "../components/Layout";
 import { FaUsers } from "react-icons/fa";
 import { ContactsListItem } from "../components/ListItems";
-import { contactsData } from "./";
 import { useDisclosure } from "@chakra-ui/core";
 import { LayoutContext, SET_CONFIRMATION_MENU } from "../context/Layout";
 import { useContactsService } from "../services";
@@ -16,28 +15,29 @@ import { Contact } from "../services/interfaces";
 import { ContactsFilter } from "../components/Filters";
 
 export default function Contactos() {
-  const [{ id, name }, setClickedItem] = useState({ id: 0, name: "error" });
+  const [{ contact_id, name }, setClickedItem] = useState({ contact_id: 0, name: "error" });
   const listItemMenu = useDisclosure();
   const actionButtonMenu = useDisclosure();
   const { dispatch, confirmationMenuDisclosure } = useContext(LayoutContext);
-  const onItemClick = (id: number, name: string) => {
-    setClickedItem({ id, name });
+  const onItemClick = (contact_id: number, name: string) => {
+    setClickedItem({ contact_id, name });
     listItemMenu.onOpen();
   };
   const { result, search, role, setFilters } = useContactsService();
  
   return (
     <Page title="Contactos">
+      {/* TENGO QUE ABSTRAER ESTE FILTRO */}
       <ContactsFilter setFilters={setFilters} search={search} role={role}/>
       <ListItemStack maxHeight="63vh">
-        {result.payload && result.payload.map(({ name, address, phone, money, updated_at } : Contact) => (
+        {result.payload && result.payload.map(({ name, address, phone, money, updated_at, contact_id } : Contact) => (
           <ContactsListItem
             name={name}
             address={address}
             phone={phone}
             money={money}
             updatedAt={updated_at}
-            onClick={() => onItemClick(id, name)}
+            onClick={() => onItemClick(contact_id, name)}
           />
         ))}
       </ListItemStack>
