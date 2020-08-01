@@ -14,7 +14,7 @@ export interface Contacts {
 
 const useContactsService = () => {
   //filtros y seteadores
-  const [{search,role}, setFilters] = useState({search:"",role:"c"});
+  const [{search,role,order}, setFilters] = useState({search:"",role:"c",order:"name"});
 
   //token para autorizar las peticiones
   const {
@@ -29,12 +29,12 @@ const useContactsService = () => {
 
   useEffect(() => {
       axios
-      .get(contactsDataUri, { params: { token, search, role } })
+      .get(contactsDataUri, { params: { token, search, role, order } })
       .then((response: AxiosResponse<Contacts>) => setResult({ status: "loaded", payload: response.data, error: null }))
       .catch((error) => setResult({ status: "error", error, payload: null }));
-  }, [role,search,token]);
+  }, [role,search,order,token]);
 
-  return {result,search,role,setFilters};
+  return {result,search,role,order,setFilters};
 };
 
 export default useContactsService;

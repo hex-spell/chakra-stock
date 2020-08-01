@@ -23,12 +23,12 @@ export default function Contactos() {
     setClickedItem({ contact_id, name });
     listItemMenu.onOpen();
   };
-  const { result, search, role, setFilters } = useContactsService();
+  const { result, search, role, order, setFilters } = useContactsService();
  
   return (
     <Page title="Contactos">
       {/* TENGO QUE ABSTRAER ESTE FILTRO */}
-      <ContactsFilter setFilters={setFilters} search={search} role={role}/>
+      <ContactsFilter setFilters={setFilters} search={search} role={role} order={order} />
       <ListItemStack maxHeight="63vh">
         {result.payload && result.payload.map(({ name, address, phone, money, updated_at, contact_id } : Contact) => (
           <ContactsListItem
