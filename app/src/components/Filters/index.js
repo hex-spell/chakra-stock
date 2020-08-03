@@ -1,1 +1,1 @@
-export {default as ContactsFilter} from "./ContactsFilter";
+export {default as FilterForm} from "./FilterForm";
