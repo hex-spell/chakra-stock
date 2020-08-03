@@ -11,3 +11,4 @@ export {default as FilterDropdown} from "./FilterDropdown";
 export {default as DynamicDrawerMenu} from "./DynamicDrawerMenu";
 export {default as ConfirmationMenu} from "./ConfirmationMenu";
 export {default as CheckboxFilter} from "./CheckboxFilter";
+export {default as LoadMoreButton} from "./LoadMoreButton";

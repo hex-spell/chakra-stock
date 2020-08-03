@@ -25,19 +25,19 @@ interface filterConfig {
 }
 
 interface IFilterFormProps {
-  setFilters: (filters: any) => void;
+  updateFilters: (filters: any) => void;
   filtersData: filterConfig;
 }
 
 //TOMA UN FUNCION PARA SETEAR LAS VARIABLES DE LOS FILTROS, Y UN OBJETO CON UN POSIBLE SEARCHBAR Y UN ARREGLO DE DROPDOWNS
 
 const FilterForm: React.FC<IFilterFormProps> = ({
-  setFilters,
+  updateFilters,
   filtersData,
 }) => {
   const { register, handleSubmit, control } = useForm();
   const onSubmit = handleSubmit((filters) => {
-    setFilters(filters);
+    updateFilters(filters);
   });
   return (
     <FormControl>

@@ -4,6 +4,7 @@ import {
   ActionButton,
   ListItemStack,
   DynamicDrawerMenu,
+  LoadMoreButton
 } from "../components/Layout";
 import { FaUsers } from "react-icons/fa";
 import { ContactsListItem } from "../components/ListItems";
@@ -29,12 +30,12 @@ export default function Contactos() {
   };
 
   //servicio que toma valores de los filtros, hace una peticion al server y devuelve datos
-  const { result, setFilters } = useContactsService();
+  const { result, count, updateFilters, loadMoreData } = useContactsService();
 
   return (
     <Page title="Contactos">
       <FilterForm
-        setFilters={setFilters}
+        updateFilters={updateFilters}
         filtersData={{
           searchBar: {
             name: "search",
@@ -84,6 +85,7 @@ export default function Contactos() {
               />
             )
           )}
+          {result.payload && result.payload.length<count && <LoadMoreButton action={loadMoreData}/>}
       </ListItemStack>
       <ActionButton
         icon={FaUsers}
