@@ -7,9 +7,8 @@ import {
   DynamicDrawerMenu,
   FilterDropdown,
 } from "../components/Layout";
-import { Searchbar } from "../components/Searchbar";
 import { TransactionsListItem } from "../components/ListItems";
-import { useDisclosure } from "@chakra-ui/core";
+import { useDisclosure, Input } from "@chakra-ui/core";
 import { transactionData } from "./";
 
 //TENGO QUE VER SI USAR FECHA DE REGISTRO O DE ULTIMA MODIFICACION, O AMBAS
@@ -27,7 +26,7 @@ export default function Transacciones() {
   return (
     <Page title="Transacciones">
       <FilterStack>
-        <Searchbar />
+      <Input name="search" />
         <FilterDropdown
           menu={[
             { name: "Cobros", value: "cobros" },

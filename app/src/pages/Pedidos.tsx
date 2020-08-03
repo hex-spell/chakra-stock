@@ -10,10 +10,9 @@ import {
   CheckboxFilter,
 } from "../components/Layout";
 import { FaListUl } from "react-icons/fa";
-import { Searchbar } from "../components/Searchbar";
 import { OrdersListItem } from "../components/ListItems";
 import { ordersData } from "./";
-import { useDisclosure } from "@chakra-ui/core";
+import { useDisclosure, Input } from "@chakra-ui/core";
 import { LayoutContext, SET_CONFIRMATION_MENU } from "../context/Layout";
 
 export default function Pedidos() {
@@ -28,7 +27,7 @@ export default function Pedidos() {
   return (
     <Page title="Pedidos">
       <FilterStack>
-        <Searchbar />
+      <Input name="search" />
         <FilterDropdown
           menu={[
             { name: "Ventas", value: "ventas" },

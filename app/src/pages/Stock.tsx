@@ -8,10 +8,9 @@ import {
   FilterDropdown,
   DynamicDrawerMenu,
 } from "../components/Layout";
-import { Searchbar } from "../components/Searchbar";
 import { FaDropbox } from "react-icons/fa";
 import { StockListItem } from "../components/ListItems";
-import { useDisclosure } from "@chakra-ui/core";
+import { useDisclosure, Input } from "@chakra-ui/core";
 import { stockData } from "./";
 
 
@@ -30,7 +29,7 @@ export default function Stock() {
   return (
     <Page title="Stock">
       <FilterStack>
-        <Searchbar />
+      <Input name="search" />
         <FilterDropdown
           menu={[
             { name: "Todas las categorías", value: "all" },

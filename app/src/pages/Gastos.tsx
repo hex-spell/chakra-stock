@@ -7,9 +7,8 @@ import {
   DynamicDrawerMenu,
   ActionButton,
 } from "../components/Layout";
-import { Searchbar } from "../components/Searchbar";
 import { TransactionsListItem } from "../components/ListItems";
-import { useDisclosure } from "@chakra-ui/core";
+import { useDisclosure, Input } from "@chakra-ui/core";
 import { expensesData } from "./";
 import { FaBookOpen } from "react-icons/fa";
 
@@ -29,7 +28,7 @@ export default function Gastos() {
   return (
     <Page title="Gastos">
       <FilterStack>
-        <Searchbar />
+        <Input name="search" />
       </FilterStack>
       <ListItemStack maxHeight="80vh">
         {expensesData.map(({ title, sum, updatedAt, id }) => (

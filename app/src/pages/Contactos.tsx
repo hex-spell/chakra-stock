@@ -11,7 +11,7 @@ import { useDisclosure } from "@chakra-ui/core";
 import { LayoutContext, SET_CONFIRMATION_MENU } from "../context/Layout";
 import { useContactsService } from "../services";
 import { Contact } from "../services/interfaces";
-import { FilterForm } from "../components/Filters";
+import { FilterForm } from "../components/Forms";
 
 export default function Contactos() {
   const [{ contact_id, name }, setClickedItem] = useState({
