@@ -1,13 +1,16 @@
 import React from "react";
 import { ListItemStack, LoadMoreButton } from "../../components/Layout";
 import { ContactsListItem } from "../../components/ListItems";
-import { Contact } from "../../services/interfaces";
-import { IClickedItem } from "./Contactos";
+import { ServerContact, Contact } from "../../services/interfaces";
 
 interface IContactsListProps {
-  result: any;
+  result: {
+    payload:ServerContact[];
+    status:string;
+    error:any;
+  };
   count: number;
-  onItemClick: (data: IClickedItem) => void;
+  onItemClick: (data: Contact) => void;
   loadMoreData: () => void;
 }
 
@@ -19,16 +22,17 @@ const ContactsList: React.FC<IContactsListProps> = ({
 }) => {
   return (
     <ListItemStack maxHeight="63vh">
-      {result.payload &&
+      {result.status==="loaded" && result.payload &&
         result.payload.map(
           ({
             name,
             address,
             phone,
             money,
+            role,
             updated_at,
             contact_id,
-          }: Contact) => (
+          }: ServerContact) => (
             <ContactsListItem
               name={name}
               address={address}
@@ -36,7 +40,7 @@ const ContactsList: React.FC<IContactsListProps> = ({
               money={money}
               updatedAt={updated_at}
               onClick={() =>
-                onItemClick({ name, address, phone, money, contact_id })
+                onItemClick({ name, address, phone, money, role, contact_id })
               }
             />
           )

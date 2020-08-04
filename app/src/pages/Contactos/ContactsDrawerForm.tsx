@@ -1,7 +1,7 @@
 import React from "react";
 import { DrawerForm } from "../../components/Forms";
 import { UseDisclosureReturn } from "@chakra-ui/core/dist/useDisclosure";
-import { IClickedItem } from "./Contactos";
+import { Contact } from "../../services/interfaces";
 
 interface IContactsDrawerFormProps {
   contactMenu: UseDisclosureReturn;
@@ -9,20 +9,25 @@ interface IContactsDrawerFormProps {
     title: string;
     mode: string;
   };
-  clickedItem: IClickedItem;
+  clickedItem: Contact;
+  submitFunction: (data: Contact) => void;
 }
 
 const ContactsDrawerForm: React.FC<IContactsDrawerFormProps> = ({
   contactMenu,
   contactMenuFormState,
   clickedItem,
+  submitFunction,
 }) => {
+  const { contact_id, role } = clickedItem;
   return (
     <DrawerForm
       title={contactMenuFormState.title}
       isOpen={contactMenu.isOpen}
       onClose={contactMenu.onClose}
-      onFormSubmit={(values) => console.log(values)}
+      onFormSubmit={({ address, money, name, phone }) =>
+        submitFunction({ address, money, name, phone, contact_id, role })
+      }
       inputs={[
         {
           name: "name",

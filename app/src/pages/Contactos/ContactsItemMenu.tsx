@@ -1,14 +1,14 @@
 import React from "react";
 import { DynamicDrawerMenu } from "../../components/Layout";
 import { UseDisclosureReturn } from "@chakra-ui/core/dist/useDisclosure";
-import { SET_CONFIRMATION_MENU } from "../../context/Layout";
+import { IConfirmationMenu } from "../../context/Layout";
 
 interface IContactsItemMenuProps {
   listItemMenu: UseDisclosureReturn;
   contactMenu: UseDisclosureReturn;
   confirmationMenu: UseDisclosureReturn;
   name: string;
-  dispatch: (action: any) => void;
+  setConfirmationMenu: (confirmationMenu: IConfirmationMenu) => void;
 }
 
 const ContactsItemMenu: React.FC<IContactsItemMenuProps> = ({
@@ -16,7 +16,7 @@ const ContactsItemMenu: React.FC<IContactsItemMenuProps> = ({
   contactMenu,
   confirmationMenu,
   name,
-  dispatch,
+  setConfirmationMenu,
 }) => {
   return (
     <DynamicDrawerMenu
@@ -35,13 +35,9 @@ const ContactsItemMenu: React.FC<IContactsItemMenuProps> = ({
         {
           name: "Reiniciar el contador de dinero",
           action: () => {
-            //manda titulo y funcion para ejecutar al drawer de confirmacion, y lo abre
-            dispatch({
-              type: SET_CONFIRMATION_MENU,
-              payload: {
-                title: `reiniciar el contador de ${name}`,
-                action: () => alert(`${name} ahora se encuentra en $0`),
-              },
+            setConfirmationMenu({
+              title: `reiniciar el contador de ${name}`,
+              action: () => alert(`${name} ahora se encuentra en $0`),
             });
             confirmationMenu.onOpen();
           },
@@ -50,12 +46,9 @@ const ContactsItemMenu: React.FC<IContactsItemMenuProps> = ({
           name: "Eliminar",
           action: () => {
             //manda titulo y funcion para ejecutar al drawer de confirmacion, y lo abre
-            dispatch({
-              type: SET_CONFIRMATION_MENU,
-              payload: {
-                title: `eliminar a ${name}`,
-                action: () => alert(`${name} eliminado`),
-              },
+            setConfirmationMenu({
+              title: `eliminar a ${name}`,
+              action: () => alert(`${name} eliminado`),
             });
             confirmationMenu.onOpen();
           },

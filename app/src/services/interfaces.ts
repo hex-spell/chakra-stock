@@ -1,12 +1,15 @@
 export interface Contact {
-  created_at: Date;
-  deleted_at: Date | null;
   address: string;
   contact_id: number;
   money: number;
   name: string;
-  role: string;
+  role: "c"|"p";
   phone: string;
+}
+
+export interface ServerContact extends Contact{
+  created_at: Date;
+  deleted_at: Date | null;
   updated_at: Date;
 }
 

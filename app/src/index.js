@@ -12,7 +12,7 @@ import { LayoutContextProvider } from "./context/Layout";
 
 //Raiz verdadera de la aplicacion. proveedores de los contextos, boilerplate de chakra y wrapper condicional de login
 ReactDOM.render(
-  <React.StrictMode>
+  //<React.StrictMode>
     <UserContextProvider>
       <ThemeProvider theme={customTheme}>
         <CSSReset />
@@ -23,7 +23,8 @@ ReactDOM.render(
         </LoginWrapper>
       </ThemeProvider>
     </UserContextProvider>
-  </React.StrictMode>,
+  //</React.StrictMode>,
+  ,
   document.getElementById("root")
 );
 

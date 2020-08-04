@@ -4,31 +4,36 @@ import { FaUsers } from "react-icons/fa";
 import { useDisclosure } from "@chakra-ui/core";
 import { LayoutContext } from "../../context/Layout";
 import { useContactsService } from "../../services";
-import { ContactsFilterForm, ContactsList, ContactsItemMenu, ContactsMainMenu } from "./";
+import {
+  ContactsFilterForm,
+  ContactsList,
+  ContactsItemMenu,
+  ContactsMainMenu,
+} from "./";
 import ContactsDrawerForm from "./ContactsDrawerForm";
+import { Contact } from "../../services/interfaces";
 
-export interface IClickedItem {
-  name: string;
-  address: string;
-  phone: string;
-  money: number;
-  contact_id: number;
-}
-
-const ClickedItemInitialState = {
+const ClickedItemInitialState : Contact = {
   contact_id: 0,
   name: "",
   phone: "",
   money: 0,
+  role: "c",
   address: "",
 };
+
+interface IContactsMenuState {
+  title: string;
+  mode: "error"|"edit"|"create";
+  role: "c"|"p";
+}
 
 export default function Contactos() {
   //guarda datos del contacto que clickeaste para usarlos en un formulario
   const [
-    { name, address, phone, money, contact_id },
+    { name, address, phone, money, role, contact_id },
     setClickedItem,
-  ] = useState<IClickedItem>(ClickedItemInitialState);
+  ] = useState<Contact>(ClickedItemInitialState);
 
   //menu de clickear items
   const listItemMenu = useDisclosure();
@@ -43,20 +48,21 @@ export default function Contactos() {
   const [contactMenuFormState, setContactMenuFormState] = useState({
     title: "error",
     mode: "error",
+    role: "c"
   });
 
   //menu de "estas seguro?"
-  const { dispatch, confirmationMenuDisclosure } = useContext(LayoutContext);
+  const { confirmationMenuDisclosure, setConfirmationMenu } = useContext(LayoutContext);
 
   //almacena los datos del item clickeado y modifica el estado del formulario de contactos
-  const onItemClick = (data: IClickedItem) => {
+  const onItemClick = (data: Contact) => {
     setClickedItem({ ...data });
-    setContactMenuFormState({ title: `Modificar: ${data.name}`, mode: "edit" });
+    setContactMenuFormState({ title: `Modificar: ${data.name}`, mode: "edit", role:data.role });
     listItemMenu.onOpen();
   };
 
   //servicio que toma valores de los filtros, hace una peticion al server y devuelve datos
-  const { result, count, updateFilters, loadMoreData } = useContactsService();
+  const { result, count, updateFilters, loadMoreData, updateContact } = useContactsService();
 
   return (
     <Page title="Contactos">
@@ -81,12 +87,17 @@ export default function Contactos() {
         contactMenu={contactMenu}
         confirmationMenu={confirmationMenuDisclosure}
         name={name}
-        dispatch={dispatch}
+        setConfirmationMenu={setConfirmationMenu}
       />
       {/* MENU PRINCIPAL */}
-      <ContactsMainMenu actionButtonMenu={actionButtonMenu}/>
+      <ContactsMainMenu actionButtonMenu={actionButtonMenu} />
       {/* FORMULARIO DE MODIFICAR/ELIMINAR CONTACTOS */}
-      <ContactsDrawerForm contactMenu={contactMenu} contactMenuFormState={contactMenuFormState} clickedItem={{name, address, phone, money, contact_id}}/>
+      <ContactsDrawerForm
+        contactMenu={contactMenu}
+        contactMenuFormState={contactMenuFormState}
+        submitFunction={(data:Contact)=>updateContact(data)}
+        clickedItem={{ name, address, phone, money, role, contact_id }}
+      />
     </Page>
   );
 }

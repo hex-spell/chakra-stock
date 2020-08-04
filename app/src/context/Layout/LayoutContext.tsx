@@ -1,4 +1,4 @@
-import React, { createContext, useReducer, useMemo } from "react";
+import React, { createContext, useReducer, useMemo, useCallback } from "react";
 import { useDisclosure } from "@chakra-ui/core";
 import { SET_HEADER, SET_CONFIRMATION_MENU } from "./";
 
@@ -8,16 +8,15 @@ y la store (donde estan los valores del estado) usando el hook "useContext" con 
 siempre y cuando sea invocado en un componente que esté wrappeado por el provider que createContext te da*/
 export const LayoutContext: any = createContext({});
 
-
 //interfaces para tipear el estado de la store
-interface IConfirmationMenuState {
+export interface IConfirmationMenu {
   title: string;
   action: () => void;
 }
 
 interface ILayoutState {
   header: string;
-  confirmationMenu: IConfirmationMenuState;
+  confirmationMenu: IConfirmationMenu;
 }
 
 //el estado inicial de la store
@@ -50,10 +49,23 @@ const reducer = (
 //el provider del context del layout, asegurate de wrappear todos los componentes con los que quieras acceder al estado y al dispatch del layout en este componente
 export const LayoutContextProvider: React.FC = ({ children }) => {
   const [store, dispatch] = useReducer(reducer, initialState);
+
   const confirmationMenuDisclosure = useDisclosure();
+
+  const setHeader = useCallback(
+    (header: string) => dispatch({ type: SET_HEADER, payload: header }),
+    []
+  );
+
+  const setConfirmationMenu = useCallback(
+    (confirmationMenu: IConfirmationMenu) =>
+      dispatch({ type: SET_CONFIRMATION_MENU, payload: confirmationMenu }),
+    []
+  );
+
   const layoutContextValue = useMemo(() => {
-    return { store, dispatch, confirmationMenuDisclosure };
-  }, [store, dispatch, confirmationMenuDisclosure]);
+    return { store, dispatch, confirmationMenuDisclosure, setHeader, setConfirmationMenu };
+  }, [store, dispatch, confirmationMenuDisclosure, setHeader, setConfirmationMenu]);
 
   return (
     <LayoutContext.Provider value={layoutContextValue}>

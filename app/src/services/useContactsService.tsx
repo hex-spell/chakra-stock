@@ -1,5 +1,5 @@
-import { useEffect, useContext, useReducer } from "react";
-import { Service, Contact } from "./interfaces";
+import { useEffect, useContext, useReducer, useCallback } from "react";
+import { Service, ServerContact, Contact } from "./interfaces";
 import { UserContext } from "../context/User";
 import axios, { AxiosResponse } from "axios";
 import {
@@ -12,9 +12,10 @@ import {
 const localapi = process.env.REACT_APP_ROOT_API;
 const contactsDataUri = localapi + "contacts";
 
+
 //contenido del response
 export interface Contacts {
-  contacts: Contact[];
+  contacts: ServerContact[];
   count: number;
 }
 
@@ -23,6 +24,11 @@ export interface IContactFilters {
   search: string;
   role: "c" | "p";
   order: "name" | "money" | "updated_at";
+}
+
+interface IContactRequestParams extends IContactFilters {
+  offset: number;
+  token: string;
 }
 
 interface IContactsServiceState extends IContactFilters {
@@ -46,7 +52,7 @@ const InitialState: IContactsServiceState = {
 
 const reducer = (
   state: IContactsServiceState,
-  action: { type: string; payload: any }
+  action: { type: string; payload?: any }
 ) => {
   switch (action.type) {
     case SET_FILTERS:
@@ -55,15 +61,25 @@ const reducer = (
     case SET_OFFSET:
       return { ...state, offset: action.payload };
     case SET_RESULTS:
-      return { ...state, results: action.payload.results, count:action.payload.count };
-    case PUSH_RESULTS:
+      console.log(SET_RESULTS);
       return {
-        ...state,  
+        ...state,
+        results: action.payload.results,
+        count: action.payload.count,
+        offset: 0,
+      };
+    case PUSH_RESULTS:
+      console.log(PUSH_RESULTS);
+      return {
+        ...state,
         count: action.payload.count,
         results: {
           status: action.payload.results.status,
           error: action.payload.results.error,
-          payload: [...state.results.payload,...action.payload.results.payload],
+          payload: [
+            ...state.results.payload,
+            ...action.payload.results.payload,
+          ],
         },
       };
     default:
@@ -74,7 +90,6 @@ const reducer = (
 //debería comenzar a hacer error handling con toasts
 
 const useContactsService = () => {
-
   const [state, dispatch] = useReducer(reducer, InitialState);
   const { search, role, order, offset } = state;
 
@@ -83,35 +98,74 @@ const useContactsService = () => {
     store: { token },
   } = useContext(UserContext);
 
+  //cambia los filtros usados en los parametros del request fetchContacts
+  //por el useEffect esta funcion triggerea el request mismo
+  const updateFilters = (filters: IContactFilters) => {
+    dispatch({ type: SET_FILTERS, payload: filters });
+  }
 
-  useEffect(() => {
-    //tipo de accion que sera utilizado en el dispatch en caso de que la peticion sea exitosa
-    const updateAction = offset ? PUSH_RESULTS : SET_RESULTS;
+  //al sumar al offset, se va a triggerear fetchContacts y va a pushear al arreglo de contactos ya existente
+  const loadMoreData = () => {
+    dispatch({ type: SET_OFFSET, payload: state.offset + 10 });
+  }
+
+  //funcion que obtiene los datos del server
+  const fetchContacts = useCallback(
+    ({ search, role, order, offset, token }: IContactRequestParams) => {
+      axios
+        .get(contactsDataUri, {
+          params: { search, role, order, offset: offset },
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response: AxiosResponse<Contacts>) =>
+          dispatch({
+            type: offset ? PUSH_RESULTS : SET_RESULTS,
+            payload: {
+              results: {
+                status: "loaded",
+                payload: response.data.contacts,
+                error: null,
+              },
+              count: response.data.count,
+            },
+          })
+        )
+        .catch((error) =>
+          dispatch({
+            type: SET_RESULTS,
+            payload: { status: "error", error, payload: null },
+          })
+        );
+    },
+    []
+  );
+
+  //actualiza un contacto y despues refresca los datos con offset en 0
+  const updateContact = (data: Contact) => {
+    //seteo el offset a 0 para que no me pushee datos repetidos (tengo que cambiar esta lógica en un futuro)
     axios
-      .get(contactsDataUri, { params: { search, role, order, offset }, headers: {"Authorization" : `Bearer ${token}`} } )
-      .then((response: AxiosResponse<Contacts>) =>
-        dispatch({
-          type: updateAction,
-          payload: { results:{status: "loaded", payload: response.data.contacts, error: null}, count: response.data.count },
-        })
-      )
-      .catch((error) =>
-        dispatch({
-          type: SET_RESULTS,
-          payload: { status: "error", error, payload: null },
-        })
-      );
-  }, [dispatch, search, role, order, offset, token]);
+      .request({
+        url: contactsDataUri,
+        method: "PUT",
+        data,
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => console.log(response.status))
+      .catch((error) => console.log(error))
+      .finally(() => fetchContacts({ search, role, order, offset:0, token }));
+  };
 
-  //al ser un hook puedo retornar los dispatchs prefabricados, con los context no puedo y no se por que
-  //me generan un bucle infinito de cambios en alguna parte de la jerarquia
+  //un listener que se triggerea en el primer render y cada vez que se cambian los filtros o el offset
+  useEffect(() => {
+    fetchContacts({ search, role, order, offset, token });
+  }, [search, role, order, offset, token, fetchContacts]);
+
   return {
     result: state.results,
     count: state.count,
-    updateFilters: (filters: IContactFilters) =>
-      dispatch({ type: SET_FILTERS, payload: filters }),
-    loadMoreData: () =>
-      dispatch({ type: SET_OFFSET, payload: state.offset + 10 }),
+    updateFilters,
+    loadMoreData,
+    updateContact,
   };
 };
 
