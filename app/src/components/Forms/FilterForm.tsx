@@ -6,6 +6,7 @@ import { Input, FormControl } from "@chakra-ui/core";
 type DropdownFilterOption = {
   name: string;
   value: string;
+  disabled?:boolean;
 };
 
 type DropdownFilter = {

@@ -3,7 +3,8 @@ import { Select } from "@chakra-ui/core";
 
 type MenuOption = {
     name:string,
-    value:string
+    value:string,
+    disabled?:boolean,
 }
 
 interface IFilterDropdownProps {
@@ -19,7 +20,7 @@ interface IFilterDropdownProps {
 const FilterDropdown: React.FC<IFilterDropdownProps> = ({ menu, onChange, defaultValue, name }) => {
   return (
     <Select onChange={onChange} defaultValue={defaultValue} name={name}>
-      {menu.map(({name,value})=><option key={value} value={value}>{name}</option>) }
+      {menu.map(({name,value,disabled})=><option disabled={disabled} key={value} value={value}>{name}</option>) }
     </Select>
   );
 };
