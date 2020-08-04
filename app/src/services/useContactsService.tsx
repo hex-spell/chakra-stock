@@ -12,6 +12,7 @@ import {
 const localapi = process.env.REACT_APP_ROOT_API;
 const contactsDataUri = localapi + "contacts";
 
+//contenido del response
 export interface Contacts {
   contacts: Contact[];
   count: number;
@@ -54,10 +55,8 @@ const reducer = (
     case SET_OFFSET:
       return { ...state, offset: action.payload };
     case SET_RESULTS:
-      console.log(state);
       return { ...state, results: action.payload.results, count:action.payload.count };
     case PUSH_RESULTS:
-      console.log(state);
       return {
         ...state,  
         count: action.payload.count,
@@ -72,7 +71,7 @@ const reducer = (
   }
 };
 
-//fijarme si separar los filtros en un hook aparte o dejarlos aca
+//debería comenzar a hacer error handling con toasts
 
 const useContactsService = () => {
 
@@ -104,6 +103,8 @@ const useContactsService = () => {
       );
   }, [dispatch, search, role, order, offset, token]);
 
+  //al ser un hook puedo retornar los dispatchs prefabricados, con los context no puedo y no se por que
+  //me generan un bucle infinito de cambios en alguna parte de la jerarquia
   return {
     result: state.results,
     count: state.count,

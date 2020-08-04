@@ -1,7 +1,7 @@
 export { default as Inicio } from "./Inicio";
 export { default as Stock } from "./Stock";
 export { default as Pedidos } from "./Pedidos";
-export { default as Contactos } from "./Contactos";
+export { default as Contactos } from "./Contactos/Contactos";
 export { default as Transacciones } from "./Transacciones";
 export { default as Gastos } from "./Gastos";
 export { default as Configuracion } from "./Configuracion";
