@@ -88,7 +88,7 @@ const useContactsService = () => {
     //tipo de accion que sera utilizado en el dispatch en caso de que la peticion sea exitosa
     const updateAction = offset ? PUSH_RESULTS : SET_RESULTS;
     axios
-      .get(contactsDataUri, { params: { token, search, role, order, offset } })
+      .get(contactsDataUri, { params: { search, role, order, offset }, headers: {"Authorization" : `Bearer ${token}`} } )
       .then((response: AxiosResponse<Contacts>) =>
         dispatch({
           type: updateAction,

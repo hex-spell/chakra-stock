@@ -11,7 +11,6 @@ import {
   DrawerContent,
   DrawerBody,
   InputGroup,
-  Text,
   Button,
   InputLeftAddon,
 } from "@chakra-ui/core";

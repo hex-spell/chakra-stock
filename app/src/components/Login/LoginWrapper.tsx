@@ -48,7 +48,7 @@ const LoginWrapper: React.FC = ({ children }) => {
       localStorage.setItem("token", token);
       const userDataUri = usersUri + decodedIdentity.sub;
       axios
-        .get(userDataUri, { params: { token } })
+        .get(userDataUri, { headers: {"Authorization" : `Bearer ${token}`} })
         .then((res: any) => dispatch({ type: SAVE_USER, payload: res.data }))
         .catch((err) => console.log(err))
         .finally(() => dispatch({ type: LOADING, payload: false }));
