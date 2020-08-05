@@ -13,7 +13,7 @@ import {
 import ContactsDrawerForm from "./ContactsDrawerForm";
 import { Contact } from "../../services/interfaces";
 
-const ClickedItemInitialState : Contact = {
+const ClickedItemInitialState: Contact = {
   contact_id: 0,
   name: "",
   phone: "",
@@ -24,8 +24,8 @@ const ClickedItemInitialState : Contact = {
 
 interface IContactsMenuState {
   title: string;
-  mode: "error"|"edit"|"create";
-  role: "c"|"p";
+  mode: "error" | "edit" | "create";
+  role: "c" | "p";
 }
 
 export default function Contactos() {
@@ -48,21 +48,42 @@ export default function Contactos() {
   const [contactMenuFormState, setContactMenuFormState] = useState({
     title: "error",
     mode: "error",
-    role: "c"
+    role: "c",
   });
 
   //menu de "estas seguro?"
-  const { confirmationMenuDisclosure, setConfirmationMenu } = useContext(LayoutContext);
+  const { confirmationMenuDisclosure, setConfirmationMenu } = useContext(
+    LayoutContext
+  );
 
   //almacena los datos del item clickeado y modifica el estado del formulario de contactos
   const onItemClick = (data: Contact) => {
     setClickedItem({ ...data });
-    setContactMenuFormState({ title: `Modificar: ${data.name}`, mode: "edit", role:data.role });
+    setContactMenuFormState({
+      title: `Modificar: ${data.name}`,
+      mode: "edit",
+      role: data.role,
+    });
     listItemMenu.onOpen();
   };
 
+  //funcion ejecutada por los botones de agregar cliente/proveedor
+  const onAddContactClick = (role: "c" | "p", title: string) => {
+    //meto en el clickeditem los datos del estado inicial menos el rol, que lo saco de los parametros
+    //esto es medio quilombo porque no describe bien lo que quiero hacer, en un futuro lo voy a cambiar
+    setClickedItem({...ClickedItemInitialState, role});
+    setContactMenuFormState({ title, mode: "create", role });
+    contactMenu.onOpen();
+  };
+
   //servicio que toma valores de los filtros, hace una peticion al server y devuelve datos
-  const { result, count, updateFilters, loadMoreData, updateContact } = useContactsService();
+  const {
+    result,
+    count,
+    updateFilters,
+    loadMoreData,
+    postOrUpdateContact,
+  } = useContactsService();
 
   return (
     <Page title="Contactos">
@@ -90,12 +111,15 @@ export default function Contactos() {
         setConfirmationMenu={setConfirmationMenu}
       />
       {/* MENU PRINCIPAL */}
-      <ContactsMainMenu actionButtonMenu={actionButtonMenu} />
+      <ContactsMainMenu
+        actionButtonMenu={actionButtonMenu}
+        onAddContactClick={(role, title) => onAddContactClick(role, title)}
+      />
       {/* FORMULARIO DE MODIFICAR/ELIMINAR CONTACTOS */}
       <ContactsDrawerForm
         contactMenu={contactMenu}
         contactMenuFormState={contactMenuFormState}
-        submitFunction={(data:Contact)=>updateContact(data)}
+        submitFunction={(data: Contact) => postOrUpdateContact(data)}
         clickedItem={{ name, address, phone, money, role, contact_id }}
       />
     </Page>

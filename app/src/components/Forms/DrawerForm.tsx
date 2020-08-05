@@ -1,6 +1,6 @@
 import React from "react";
 import { FilterStack } from "../Layout";
-import { useForm } from "react-hook-form";
+import { useForm, ValidationOptions } from "react-hook-form";
 import {
   Input,
   FormControl,
@@ -13,12 +13,14 @@ import {
   InputGroup,
   Button,
   InputLeftAddon,
+  FormErrorMessage,
 } from "@chakra-ui/core";
 
 type FormInput = {
   name: string;
   title: string;
   defaultValue: any;
+  validationRules: ValidationOptions;
 };
 
 interface IDrawerFormProps {
@@ -36,7 +38,7 @@ const DrawerForm: React.FC<IDrawerFormProps> = ({
   inputs,
   onFormSubmit,
 }) => {
-  const { register, handleSubmit, formState } = useForm();
+  const { register, handleSubmit, formState, errors } = useForm();
   const onSubmit = handleSubmit((values) => {
     onFormSubmit(values);
     onClose();
@@ -48,19 +50,29 @@ const DrawerForm: React.FC<IDrawerFormProps> = ({
         <DrawerCloseButton />
         <DrawerHeader>{title}</DrawerHeader>
         <DrawerBody>
-          <FormControl>
+          {/* ESTA MINIFUNCION EN EL FORMCONTROL BUSCA SI TIENE ERRORES EL OBJETO, HACIENDO TYPECASTING A BOOLEAN TODAS SUS PROPIEDADES */}
+          <FormControl
+            isInvalid={Object.values(errors).find((value) => !!value)}
+          >
             <form onSubmit={onSubmit}>
               <FilterStack>
-                {inputs.map(({ name, title, defaultValue }) => (
-                  <InputGroup>
-                    <InputLeftAddon children={title} />
-                    <Input
-                      name={name}
-                      defaultValue={defaultValue}
-                      ref={register}
-                    />
-                  </InputGroup>
-                ))}
+                {inputs.map(
+                  ({ name, title, defaultValue, validationRules }) => (
+                    <>
+                      {errors[name] && errors[name].message && (
+                        <FormErrorMessage>{errors[name].message}</FormErrorMessage>
+                      )}
+                      <InputGroup>
+                        <InputLeftAddon children={title} />
+                        <Input
+                          name={name}
+                          defaultValue={defaultValue}
+                          ref={register(validationRules)}
+                        />
+                      </InputGroup>
+                    </>
+                  )
+                )}
                 <Button
                   mt={4}
                   variantColor="teal"

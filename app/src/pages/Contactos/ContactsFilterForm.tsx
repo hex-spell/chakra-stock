@@ -31,7 +31,6 @@ const ContactsFilterForm : React.FC<IContactsFilterFormProps> = ({updateFilters}
                 {
                   name: "Ordenar por fecha de ult. Actualización",
                   value: "updated_at",
-                  disabled: true
                 },
               ],
             },

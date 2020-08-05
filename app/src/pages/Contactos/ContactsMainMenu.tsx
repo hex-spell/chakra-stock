@@ -4,9 +4,10 @@ import { UseDisclosureReturn } from "@chakra-ui/core/dist/useDisclosure";
 
 interface IContactsMainMenuProps {
   actionButtonMenu:UseDisclosureReturn;
+  onAddContactClick:(role:"c"|"p",title:string)=>void;
 }
 
-const ContactsMainMenu: React.FC<IContactsMainMenuProps> = ({actionButtonMenu}) => {
+const ContactsMainMenu: React.FC<IContactsMainMenuProps> = ({actionButtonMenu,onAddContactClick}) => {
   return (
     <DynamicDrawerMenu
       isOpen={actionButtonMenu.isOpen}
@@ -14,15 +15,15 @@ const ContactsMainMenu: React.FC<IContactsMainMenuProps> = ({actionButtonMenu}) 
       title="Menu: Contactos"
       menu={[
         {
-          name: "Agregar nuevo cliente",
+          name: "Registrar nuevo cliente",
           action: () => {
-            alert(`Agregar nuevo cliente`);
+            onAddContactClick("c","Registrar nuevo cliente");
           },
         },
         {
-          name: "Agregar nuevo proveedor",
+          name: "Registrar nuevo proveedor",
           action: () => {
-            alert(`Agregar nuevo proveedor`);
+            onAddContactClick("p","Registrar nuevo proveedor");
           },
         },
       ]}

@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Text } from "@chakra-ui/core";
 import { SubText, MoneyText, ListItemBox } from "../Layout";
 import { FaMapMarkedAlt, FaPhoneAlt } from "react-icons/fa";
+import { dateHelper } from "../../services";
 
 interface IContactsListItemProps {
   name: string;
@@ -22,7 +23,7 @@ const ContactsListItem: React.FC<IContactsListItemProps> = ({
   onClick,
 }) => {
   const updatedAtDate = new Date(updatedAt);
-  const formattedUpdatedAtDate = `${updatedAtDate.getDay()}/${updatedAtDate.getMonth()}/${updatedAtDate.getFullYear()}`;
+  const formattedUpdatedAtDate = dateHelper(updatedAtDate);
   return (
     <div onClick={() => onClick()}>
       <ListItemBox>

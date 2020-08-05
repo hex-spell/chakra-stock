@@ -12,7 +12,6 @@ import {
 const localapi = process.env.REACT_APP_ROOT_API;
 const contactsDataUri = localapi + "contacts";
 
-
 //contenido del response
 export interface Contacts {
   contacts: ServerContact[];
@@ -102,12 +101,12 @@ const useContactsService = () => {
   //por el useEffect esta funcion triggerea el request mismo
   const updateFilters = (filters: IContactFilters) => {
     dispatch({ type: SET_FILTERS, payload: filters });
-  }
+  };
 
   //al sumar al offset, se va a triggerear fetchContacts y va a pushear al arreglo de contactos ya existente
   const loadMoreData = () => {
     dispatch({ type: SET_OFFSET, payload: state.offset + 10 });
-  }
+  };
 
   //funcion que obtiene los datos del server
   const fetchContacts = useCallback(
@@ -141,18 +140,19 @@ const useContactsService = () => {
   );
 
   //actualiza un contacto y despues refresca los datos con offset en 0
-  const updateContact = (data: Contact) => {
-    //seteo el offset a 0 para que no me pushee datos repetidos (tengo que cambiar esta lógica en un futuro)
+  const postOrUpdateContact = (data: Contact) => {
+    //el id es un discernible, la unica forma de que sea 0 es si estoy creando un contacto nuevo
+    const method = data.contact_id === 0 ? "POST" : "PUT";
     axios
       .request({
         url: contactsDataUri,
-        method: "PUT",
+        method,
         data,
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => console.log(response.status))
       .catch((error) => console.log(error))
-      .finally(() => fetchContacts({ search, role, order, offset:0, token }));
+      .finally(() => fetchContacts({ search, role, order, offset: 0, token }));
   };
 
   //un listener que se triggerea en el primer render y cada vez que se cambian los filtros o el offset
@@ -165,7 +165,7 @@ const useContactsService = () => {
     count: state.count,
     updateFilters,
     loadMoreData,
-    updateContact,
+    postOrUpdateContact,
   };
 };
 
