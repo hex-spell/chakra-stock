@@ -31,7 +31,7 @@ interface IContactsMenuState {
 export default function Contactos() {
   //guarda datos del contacto que clickeaste para usarlos en un formulario
   const [
-    { name, address, phone, money, role, contact_id },
+    clickedItem,
     setClickedItem,
   ] = useState<Contact>(ClickedItemInitialState);
 
@@ -107,8 +107,9 @@ export default function Contactos() {
         listItemMenu={listItemMenu}
         contactMenu={contactMenu}
         confirmationMenu={confirmationMenuDisclosure}
-        name={name}
+        contactData={clickedItem}
         setConfirmationMenu={setConfirmationMenu}
+        postOrUpdateContact={(data: Contact) => postOrUpdateContact(data)}
       />
       {/* MENU PRINCIPAL */}
       <ContactsMainMenu
@@ -120,7 +121,7 @@ export default function Contactos() {
         contactMenu={contactMenu}
         contactMenuFormState={contactMenuFormState}
         submitFunction={(data: Contact) => postOrUpdateContact(data)}
-        clickedItem={{ name, address, phone, money, role, contact_id }}
+        contactData={clickedItem}
       />
     </Page>
   );

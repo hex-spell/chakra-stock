@@ -9,17 +9,17 @@ interface IContactsDrawerFormProps {
     title: string;
     mode: string;
   };
-  clickedItem: Contact;
+  contactData: Contact;
   submitFunction: (data: Contact) => void;
 }
 
 const ContactsDrawerForm: React.FC<IContactsDrawerFormProps> = ({
   contactMenu,
   contactMenuFormState,
-  clickedItem,
+  contactData,
   submitFunction,
 }) => {
-  const { contact_id, role } = clickedItem;
+  const { contact_id, role } = contactData;
   return (
     <DrawerForm
       title={contactMenuFormState.title}
@@ -32,7 +32,7 @@ const ContactsDrawerForm: React.FC<IContactsDrawerFormProps> = ({
         {
           name: "name",
           title: "Nombre",
-          defaultValue: clickedItem.name,
+          defaultValue: contactData.name,
           validationRules: {
             required: "Falta completar el nombre",
             minLength: {
@@ -48,7 +48,7 @@ const ContactsDrawerForm: React.FC<IContactsDrawerFormProps> = ({
         {
           name: "phone",
           title: "Teléfono",
-          defaultValue: clickedItem.phone,
+          defaultValue: contactData.phone,
           validationRules: {
             required: "Falta completar el teléfono",
             minLength: {
@@ -68,7 +68,7 @@ const ContactsDrawerForm: React.FC<IContactsDrawerFormProps> = ({
         {
           name: "address",
           title: "Dirección",
-          defaultValue: clickedItem.address,
+          defaultValue: contactData.address,
           validationRules: {
             required: "Falta completar la dirección",
             minLength: {
@@ -84,7 +84,7 @@ const ContactsDrawerForm: React.FC<IContactsDrawerFormProps> = ({
         {
           name: "money",
           title: "Dinero",
-          defaultValue: clickedItem.money,
+          defaultValue: contactData.money,
           validationRules: {
             required: false,
             pattern: {
