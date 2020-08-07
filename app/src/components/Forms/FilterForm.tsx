@@ -2,16 +2,11 @@ import React from "react";
 import { FilterStack, FilterDropdown } from "../Layout";
 import { useForm, Controller } from "react-hook-form";
 import { Input, FormControl } from "@chakra-ui/core";
-
-type DropdownFilterOption = {
-  name: string;
-  value: string;
-  disabled?:boolean;
-};
+import { MenuOption } from "../Layout/FilterDropdown";
 
 type DropdownFilter = {
   name: string;
-  menu: DropdownFilterOption[];
+  menu: MenuOption[];
 };
 
 type SearchFilter = {

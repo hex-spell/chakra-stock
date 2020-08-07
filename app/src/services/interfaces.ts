@@ -1,3 +1,4 @@
+
 export interface Contact {
   address: string;
   contact_id: number;
@@ -12,6 +13,25 @@ export interface ServerContact extends Contact{
   deleted_at: Date | null;
   updated_at: Date;
 }
+
+export interface Expense {
+  description: string;
+  expense_id: number;
+  category_id: number;
+  sum: number;
+}
+
+export interface ServerExpense extends Expense{
+  created_at: Date;
+  deleted_at: Date | null;
+  updated_at: Date;
+}
+
+export interface ExpenseCategory {
+  name: string;
+  category_id: number;
+}
+
 
 
 //pattern from https://dev.to/camilomejia/fetch-data-with-react-hooks-and-typescript-390c

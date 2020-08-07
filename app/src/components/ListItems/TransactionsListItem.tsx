@@ -1,11 +1,12 @@
 import React from "react";
 import { Box, Text } from "@chakra-ui/core";
 import { SubText, MoneyText, ListItemBox } from "../Layout";
+import { dateHelper } from "../../services";
 
 interface ITransactionsListItemProps {
   title: string;
   sum: number;
-  updatedAt: string;
+  createdAt: Date;
   onClick: () => void;
 }
 
@@ -13,9 +14,11 @@ interface ITransactionsListItemProps {
 const TransactionsListItem: React.FC<ITransactionsListItemProps> = ({
   title,
   sum,
-  updatedAt,
+  createdAt,
   onClick,
 }) => {
+  const createdAtDate = new Date(createdAt);
+  const formattedCreatedAtDate = dateHelper(createdAtDate);
   return (
     <div onClick={()=>onClick()}>
       <ListItemBox>
@@ -24,7 +27,7 @@ const TransactionsListItem: React.FC<ITransactionsListItemProps> = ({
         </Box>
         <Box display="flex" flexDirection="column" textAlign="right">
           <MoneyText ammount={sum}/>
-          <SubText>{updatedAt}</SubText>
+          <SubText>{formattedCreatedAtDate}</SubText>
         </Box>
       </ListItemBox>
     </div>

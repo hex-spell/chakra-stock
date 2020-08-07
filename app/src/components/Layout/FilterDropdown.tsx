@@ -1,9 +1,9 @@
 import React from "react";
 import { Select } from "@chakra-ui/core";
 
-type MenuOption = {
+export type MenuOption = {
     name:string,
-    value:string,
+    value:string | number,
     disabled?:boolean,
 }
 

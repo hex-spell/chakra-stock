@@ -3,7 +3,7 @@ export { default as Stock } from "./Stock";
 export { default as Pedidos } from "./Pedidos";
 export { default as Contactos } from "./Contactos/Contactos";
 export { default as Transacciones } from "./Transacciones";
-export { default as Gastos } from "./Gastos";
+export { default as Gastos } from "./Gastos/Gastos";
 export { default as Configuracion } from "./Configuracion";
 export const stockData = [
   {
@@ -231,67 +231,67 @@ export const transactionData = [
   {
     title: "Roticeria 10",
     sum: 4120,
-    updatedAt: "10/1/2000",
+    updatedAt: new Date('1970-01-01 00:00:01'),
     id: 1,
   },
   {
     title: "Roticeria 10",
     sum: 4120,
-    updatedAt: "10/1/2000",
+    updatedAt: new Date('1970-01-01 00:00:01'),
     id: 1,
   },
   {
     title: "Roticeria 10",
     sum: 4120,
-    updatedAt: "10/1/2000",
+    updatedAt: new Date('1970-01-01 00:00:01'),
     id: 1,
   },
   {
     title: "Roticeria 10",
     sum: 4120,
-    updatedAt: "10/1/2000",
+    updatedAt: new Date('1970-01-01 00:00:01'),
     id: 1,
   },
   {
     title: "Roticeria 10",
     sum: 4120,
-    updatedAt: "10/1/2000",
+    updatedAt: new Date('1970-01-01 00:00:01'),
     id: 1,
   },
   {
     title: "Roticeria 10",
     sum: 4120,
-    updatedAt: "10/1/2000",
+    updatedAt: new Date('1970-01-01 00:00:01'),
     id: 1,
   },
   {
     title: "Roticeria 10",
     sum: 4120,
-    updatedAt: "10/1/2000",
+    updatedAt: new Date('1970-01-01 00:00:01'),
     id: 1,
   },
   {
     title: "Roticeria 10",
     sum: 4120,
-    updatedAt: "10/1/2000",
+    updatedAt: new Date('1970-01-01 00:00:01'),
     id: 1,
   },
   {
     title: "Roticeria 10",
     sum: 4120,
-    updatedAt: "10/1/2000",
+    updatedAt: new Date('1970-01-01 00:00:01'),
     id: 1,
   },
   {
     title: "Roticeria 10",
     sum: 4120,
-    updatedAt: "10/1/2000",
+    updatedAt: new Date('1970-01-01 00:00:01'),
     id: 1,
   },
   {
     title: "Roticeria 10",
     sum: 4120,
-    updatedAt: "10/1/2000",
+    updatedAt: new Date('1970-01-01 00:00:01'),
     id: 1,
   },
 ];

@@ -42,7 +42,7 @@ export default function Transacciones() {
           <TransactionsListItem
             title={title}
             sum={sum}
-            updatedAt={updatedAt}
+            createdAt={updatedAt}
             onClick={() => onItemClick(id, title)}
           />
         ))}

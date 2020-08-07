@@ -1,6 +1,6 @@
 import React from "react";
 import { FilterStack } from "../Layout";
-import { useForm, ValidationOptions } from "react-hook-form";
+import { useForm, ValidationOptions, Controller } from "react-hook-form";
 import {
   Input,
   FormControl,
@@ -15,12 +15,14 @@ import {
   InputLeftAddon,
   FormErrorMessage,
 } from "@chakra-ui/core";
+import FilterDropdown, { MenuOption } from "../Layout/FilterDropdown";
 
 type FormInput = {
   name: string;
   title: string;
   defaultValue: any;
   validationRules: ValidationOptions;
+  options?: MenuOption[] | null;
 };
 
 interface IDrawerFormProps {
@@ -38,7 +40,7 @@ const DrawerForm: React.FC<IDrawerFormProps> = ({
   inputs,
   onFormSubmit,
 }) => {
-  const { register, handleSubmit, formState, errors } = useForm();
+  const { register, handleSubmit, formState, errors, control } = useForm();
   const onSubmit = handleSubmit((values) => {
     onFormSubmit(values);
     onClose();
@@ -57,18 +59,36 @@ const DrawerForm: React.FC<IDrawerFormProps> = ({
             <form onSubmit={onSubmit}>
               <FilterStack>
                 {inputs.map(
-                  ({ name, title, defaultValue, validationRules }) => (
+                  ({ name, title, defaultValue, validationRules, options }) => (
                     <>
                       {errors[name] && errors[name].message && (
-                        <FormErrorMessage>{errors[name].message}</FormErrorMessage>
+                        <FormErrorMessage>
+                          {errors[name].message}
+                        </FormErrorMessage>
                       )}
                       <InputGroup>
                         <InputLeftAddon children={title} />
-                        <Input
-                          name={name}
-                          defaultValue={defaultValue}
-                          ref={register(validationRules)}
-                        />
+                        {/* SI EL OBJETO TIENE OPCIONES, TIENE QUE SER DROPDOWN */}
+                        {options ? (
+                          <Controller
+                            control={control}
+                            name={name}
+                            as={({ onChange, value, name }) => (
+                              <FilterDropdown
+                                menu={options}
+                                onChange={(e) => onChange(e.target.value)}
+                                defaultValue={defaultValue}
+                                name={name}
+                              />
+                            )}
+                          />
+                        ) : (
+                          <Input
+                            name={name}
+                            defaultValue={defaultValue}
+                            ref={register(validationRules)}
+                          />
+                        )}
                       </InputGroup>
                     </>
                   )
