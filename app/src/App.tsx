@@ -31,7 +31,7 @@ const App: React.FC = () => {
   //estado, titulo y funcion que ejecuta el drawer de confirmacion
   const {
     store: {
-      confirmationMenu: { title, action },
+      confirmationMenu: { title, action, subtitle },
     },
     confirmationMenuDisclosure,
   } = useContext(LayoutContext);
@@ -43,6 +43,7 @@ const App: React.FC = () => {
         onClose={confirmationMenuDisclosure.onClose}
         title={title}
         action={action}
+        subtitle={subtitle}
       />
       <MainDrawer
         isOpen={isOpen}

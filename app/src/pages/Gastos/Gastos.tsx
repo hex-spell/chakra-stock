@@ -89,6 +89,7 @@ export default function Gastos() {
     fetchExpenseCategories,
     postOrUpdateExpenseCategory,
     deleteExpenseCategoryById,
+    deleteExpenseById,
     categories,
     category_id
   } = useExpensesService();
@@ -139,6 +140,7 @@ export default function Gastos() {
         confirmationMenu={confirmationMenuDisclosure}
         expenseData={clickedItem}
         setConfirmationMenu={setConfirmationMenu}
+        deleteFunction={deleteExpenseById}
       />
       {/* MENU PRINCIPAL */}
       <ExpensesMainMenu
@@ -155,17 +157,21 @@ export default function Gastos() {
         submitFunction={(data: Expense) => postOrUpdateExpense(data)}
         expenseData={clickedItem}
       />
+      {/* FORMULARIO DE CREAR CATEGORIA DE GASTOS */}
       <ExpenseCategoriesDrawerForm
         submitFunction={postOrUpdateExpenseCategory}
         expenseCategoryMenu={expenseCategoryMenu}
         categories={categoryDropdown}
       />
+      {/* FORMULARIO DE MODIFICAR/ELIMINAR CATEGORIA DE GASTOS */}
       <ModifyExpenseCategoriesDrawerForm
         submitFunction={postOrUpdateExpenseCategory}
         modifyExpenseCategoryMenu={modifyExpenseCategoryMenu}
         categories={categoryDropdown}
         selectedCategory={category_id}
         deleteExpenseCategoryById={deleteExpenseCategoryById}
+        confirmationMenu={confirmationMenuDisclosure}
+        setConfirmationMenu={setConfirmationMenu}
       />
     </Page>
   );

@@ -15,6 +15,8 @@ interface IExpensesItemMenuProps {
   expenseData: Expense;
   //dispatch para abrir el drawer de confirmacion
   setConfirmationMenu: (confirmationMenu: IConfirmationMenu) => void;
+  //funcion de eliminar gasto por id
+  deleteFunction: (expense_id:number)=>void;
 }
 
 const ExpensesItemMenu: React.FC<IExpensesItemMenuProps> = ({
@@ -22,9 +24,10 @@ const ExpensesItemMenu: React.FC<IExpensesItemMenuProps> = ({
   expenseMenu,
   confirmationMenu,
   expenseData,
-  setConfirmationMenu
+  setConfirmationMenu,
+  deleteFunction
 }) => {
-  const {description} = expenseData;
+  const {description, expense_id} = expenseData;
   return (
     <DynamicDrawerMenu
       isOpen={listItemMenu.isOpen}
@@ -33,7 +36,7 @@ const ExpensesItemMenu: React.FC<IExpensesItemMenuProps> = ({
       menu={[
         {
           name: "Modificar",
-          action: () => /* alert(`Modificar ${name}`) */ expenseMenu.onOpen(),
+          action: () => expenseMenu.onOpen(),
         },
         {
           name: "Eliminar",
@@ -41,7 +44,7 @@ const ExpensesItemMenu: React.FC<IExpensesItemMenuProps> = ({
             //manda titulo y funcion para ejecutar al drawer de confirmacion, y lo abre
             setConfirmationMenu({
               title: `eliminar ${description}`,
-              action: () => alert(`${description} eliminado`),
+              action: () => deleteFunction(expense_id),
             });
             confirmationMenu.onOpen();
           },

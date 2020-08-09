@@ -198,7 +198,7 @@ const useExpensesService = () => {
       .finally(() => fetchExpenseCategories());
   };
 
-  //actualiza un contacto y despues refresca los datos con offset en 0
+  //elimina una categoria por id
   const deleteExpenseCategoryById = (category_id: number) => {
     console.log(category_id);
     axios
@@ -209,6 +209,19 @@ const useExpensesService = () => {
       .then((response) => console.log(response.status))
       .catch((error) => console.log(error))
       .finally(() => fetchExpenseCategories());
+  };
+ 
+  //elimina un gasto por id
+  const deleteExpenseById = (expense_id: number) => {
+    console.log(expense_id);
+    axios
+      .delete(expensesDataUri, {
+        params: { expense_id },
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => console.log(response.status))
+      .catch((error) => console.log(error))
+      .finally(() => fetchExpenses({ search, category_id, order, offset: 0, token }));
   };
 
   //un listener que se triggerea en el primer render y cada vez que se cambian los filtros o el offset
@@ -225,6 +238,7 @@ const useExpensesService = () => {
     fetchExpenseCategories,
     postOrUpdateExpenseCategory,
     deleteExpenseCategoryById,
+    deleteExpenseById,
     categories,
     category_id,
   };

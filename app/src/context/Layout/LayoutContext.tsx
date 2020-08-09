@@ -11,6 +11,7 @@ export const LayoutContext: any = createContext({});
 //interfaces para tipear el estado de la store
 export interface IConfirmationMenu {
   title: string;
+  subtitle?: string;
   action: () => void;
 }
 
@@ -24,6 +25,7 @@ const initialState: ILayoutState = {
   header: "Error",
   confirmationMenu: {
     title: "Error",
+    subtitle: undefined,
     action: () => console.log("Confirmation menu action error"),
   },
 };
@@ -40,6 +42,7 @@ const reducer = (
     case SET_HEADER:
       return { ...state, header: action.payload };
     case SET_CONFIRMATION_MENU:
+      console.log(action.payload);
       return { ...state, confirmationMenu: action.payload };
     default:
       throw new Error();

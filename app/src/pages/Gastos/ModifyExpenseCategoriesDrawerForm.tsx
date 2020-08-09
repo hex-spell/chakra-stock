@@ -3,13 +3,18 @@ import { DrawerForm } from "../../components/Forms";
 import { UseDisclosureReturn } from "@chakra-ui/core/dist/useDisclosure";
 import { ExpenseCategory } from "../../services/interfaces";
 import { MenuOption } from "../../components/Layout/FilterDropdown";
+import { IConfirmationMenu } from "../../context/Layout";
 
 interface IModifyExpensesDrawerFormProps {
   categories: MenuOption[] | null;
   modifyExpenseCategoryMenu: UseDisclosureReturn;
   submitFunction: (data: ExpenseCategory) => void;
-  deleteExpenseCategoryById: (id:number) => void;
+  deleteExpenseCategoryById: (id: number) => void;
   selectedCategory: number;
+  //dispatch para dar datos al drawer de confirmacion
+  setConfirmationMenu: (confirmationMenu: IConfirmationMenu) => void;
+  //estado del drawer de "estas seguro?"
+  confirmationMenu: UseDisclosureReturn;
 }
 
 const ModifyExpensesDrawerForm: React.FC<IModifyExpensesDrawerFormProps> = ({
@@ -18,6 +23,8 @@ const ModifyExpensesDrawerForm: React.FC<IModifyExpensesDrawerFormProps> = ({
   categories,
   deleteExpenseCategoryById,
   selectedCategory,
+  setConfirmationMenu,
+  confirmationMenu,
 }) => {
   return (
     <DrawerForm
@@ -27,7 +34,14 @@ const ModifyExpensesDrawerForm: React.FC<IModifyExpensesDrawerFormProps> = ({
       onFormSubmit={({ name, category_id }) => {
         submitFunction({ name, category_id });
       }}
-      deleteFunction={deleteExpenseCategoryById}
+      deleteFunction={(id: number) => {
+        setConfirmationMenu({
+          title: `eliminar la categoría seleccionada`,
+          subtitle: "Todos los gastos que son de esta categoría serán eliminados en el proceso.",
+          action: () => deleteExpenseCategoryById(id),
+        });
+        confirmationMenu.onOpen();
+      }}
       deleteFieldName="category_id"
       inputs={[
         {
