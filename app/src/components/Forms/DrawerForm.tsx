@@ -119,7 +119,7 @@ const DrawerForm: React.FC<IDrawerFormProps> = ({
                     </>
                   )
                 )}
-                <Flex justify="right">
+                <Flex justify="flex-end">
                   {/* BOTON QUE SOLO APARECE SI LE DOY UNA FUNCION PARA ELIMINAR E INDICO COMO IDENTIFICAR QUE ELIMINAR */}
                   {deleteFunction && deleteFieldName && (
                     <Button
