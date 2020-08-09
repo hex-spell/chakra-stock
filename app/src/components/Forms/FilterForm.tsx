@@ -7,6 +7,7 @@ import { MenuOption } from "../Layout/FilterDropdown";
 type DropdownFilter = {
   name: string;
   menu: MenuOption[];
+  defaultValue: any;
 };
 
 type SearchFilter = {
@@ -48,20 +49,24 @@ const FilterForm: React.FC<IFilterFormProps> = ({
             />
           )}
           {filtersData.dropdowns &&
-            filtersData.dropdowns.map(({ name, menu }) => (
-              <Controller
-                control={control}
-                name={name}
-                as={({ onChange, value, name }) => (
-                  <FilterDropdown
-                    menu={menu}
-                    onChange={(e) => onChange(e.target.value)}
-                    defaultValue={value}
-                    name={name}
-                  />
-                )}
-              />
-            ))}
+            filtersData.dropdowns.map(({ name, menu, defaultValue }) => {
+              console.log(defaultValue);
+              return (
+                <Controller
+                  defaultValue={defaultValue}
+                  control={control}
+                  name={name}
+                  as={({ onChange, value, name }) => (
+                    <FilterDropdown
+                      menu={menu}
+                      onChange={(e) => onChange(e.target.value)}
+                      defaultValue={value}
+                      name={name}
+                    />
+                  )}
+                />
+              );
+            })}
         </FilterStack>
       </form>
     </FormControl>

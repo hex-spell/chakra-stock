@@ -9,6 +9,7 @@ const ContactsFilterForm : React.FC<IContactsFilterFormProps> = ({updateFilters}
     return (
         <FilterForm
         updateFilters={updateFilters}
+
         filtersData={{
           searchBar: {
             name: "search",
@@ -22,6 +23,7 @@ const ContactsFilterForm : React.FC<IContactsFilterFormProps> = ({updateFilters}
                 { name: "Clientes", value: "c" },
                 { name: "Proveedores", value: "p" },
               ],
+              defaultValue: "c"
             },
             {
               name: "order",
@@ -33,6 +35,7 @@ const ContactsFilterForm : React.FC<IContactsFilterFormProps> = ({updateFilters}
                   value: "updated_at",
                 },
               ],
+              defaultValue: "name"
             },
           ],
         }}

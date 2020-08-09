@@ -6,12 +6,14 @@ interface IExpensesMainMenuProps {
   actionButtonMenu: UseDisclosureReturn;
   onAddExpenseClick: (title: string) => void;
   onAddExpenseCategoryClick: UseDisclosureReturn;
+  onModifyExpenseCategoryClick: UseDisclosureReturn;
 }
 
 const ExpensesMainMenu: React.FC<IExpensesMainMenuProps> = ({
   actionButtonMenu,
   onAddExpenseClick,
   onAddExpenseCategoryClick,
+  onModifyExpenseCategoryClick
 }) => {
   return (
     <DynamicDrawerMenu
@@ -23,6 +25,12 @@ const ExpensesMainMenu: React.FC<IExpensesMainMenuProps> = ({
           name: "Registrar nueva categoría",
           action: () => {
             onAddExpenseCategoryClick.onOpen();
+          },
+        },
+        {
+          name: "Modificar categoría existente",
+          action: () => {
+            onModifyExpenseCategoryClick.onOpen();
           },
         },
         {

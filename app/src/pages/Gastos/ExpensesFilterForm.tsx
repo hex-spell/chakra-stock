@@ -23,18 +23,23 @@ const ExpensesFilterForm: React.FC<IExpensesFilterFormProps> = ({
         dropdowns: [
           {
             name: "category_id",
-            menu: categories ? categories : [{ name: "...", value: "1" }],
+            // el valor 0 el server identifica como "todas las categorías"
+            menu: categories
+              ? [{ name: "Todas las categorías", value: "0" }, ...categories]
+              : [{ name: "...", value: "0" }],
+            defaultValue: 0,
           },
           {
             name: "order",
             menu: [
-              { name: "Ordenar por descripcion", value: "description" },
-              { name: "Ordenar por suma", value: "sum" },
               {
                 name: "Ordenar por fecha de creación",
                 value: "created_at",
               },
+              { name: "Ordenar por descripcion", value: "description" },
+              { name: "Ordenar por suma", value: "sum" },
             ],
+            defaultValue: "created_at",
           },
         ],
       }}

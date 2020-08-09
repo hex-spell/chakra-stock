@@ -11,6 +11,7 @@ import {
   ExpensesMainMenu,
   ExpenseCategoriesDrawerForm,
   ExpensesDrawerForm,
+  ModifyExpenseCategoriesDrawerForm,
 } from "./";
 import { Expense, ExpenseCategory } from "../../services/interfaces";
 import { MenuOption } from "../../components/Layout/FilterDropdown";
@@ -43,8 +44,11 @@ export default function Gastos() {
   //menu de crear/modifcar gasto
   const expenseMenu = useDisclosure();
 
-  //menu de crear/modifcar categoría de gasto
+  //menu de crear categoría de gasto
   const expenseCategoryMenu = useDisclosure();
+
+  //menu de modifcar categoría de gasto
+  const modifyExpenseCategoryMenu = useDisclosure();
 
   //define si el formulario de gastos va a ser usado para modificar uno existente o agregar uno nuevo
   const [expenseMenuFormState, setExpenseMenuFormState] = useState({
@@ -84,7 +88,9 @@ export default function Gastos() {
     postOrUpdateExpense,
     fetchExpenseCategories,
     postOrUpdateExpenseCategory,
+    deleteExpenseCategoryById,
     categories,
+    category_id
   } = useExpensesService();
 
   useEffect(() => {
@@ -139,6 +145,7 @@ export default function Gastos() {
         actionButtonMenu={actionButtonMenu}
         onAddExpenseClick={(title) => onAddExpenseClick(title)}
         onAddExpenseCategoryClick={expenseCategoryMenu}
+        onModifyExpenseCategoryClick={modifyExpenseCategoryMenu}
       />
       {/* FORMULARIO DE MODIFICAR/ELIMINAR GASTOS */}
       <ExpensesDrawerForm
@@ -152,6 +159,13 @@ export default function Gastos() {
         submitFunction={postOrUpdateExpenseCategory}
         expenseCategoryMenu={expenseCategoryMenu}
         categories={categoryDropdown}
+      />
+      <ModifyExpenseCategoriesDrawerForm
+        submitFunction={postOrUpdateExpenseCategory}
+        modifyExpenseCategoryMenu={modifyExpenseCategoryMenu}
+        categories={categoryDropdown}
+        selectedCategory={category_id}
+        deleteExpenseCategoryById={deleteExpenseCategoryById}
       />
     </Page>
   );

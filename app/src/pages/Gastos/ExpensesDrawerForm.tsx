@@ -28,8 +28,8 @@ const ExpensesDrawerForm: React.FC<IExpensesDrawerFormProps> = ({
       title={expenseMenuFormState.title}
       isOpen={expenseMenu.isOpen}
       onClose={expenseMenu.onClose}
-      onFormSubmit={({ description, sum, category_id }) =>
-        submitFunction({ description, sum, category_id, expense_id })
+      onFormSubmit={({ description, sum, category_id }) =>{
+        submitFunction({ description, sum, category_id, expense_id })}
       }
       inputs={[
         {

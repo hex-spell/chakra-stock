@@ -115,25 +115,21 @@ const useExpensesService = () => {
   };
 
   //funcion que obtiene los datos del server
-  const fetchExpenseCategories = useCallback(
-    () => {
-      axios
-        .get(expenseCategoriesDataUri, {
-          headers: { Authorization: `Bearer ${token}` },
+  const fetchExpenseCategories = useCallback(() => {
+    axios
+      .get(expenseCategoriesDataUri, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response: AxiosResponse<Expenses>) =>
+        dispatch({
+          type: SET_CATEGORIES,
+          payload: response.data,
         })
-        .then((response: AxiosResponse<Expenses>) =>
-          dispatch({
-            type: SET_CATEGORIES,
-            payload: response.data
-            },
-          )
-        )
-        .catch((error) =>{
-          throw new Error('no se han podido obtener datos del server')}
-        );
-    },
-    [token]
-  );
+      )
+      .catch((error) => {
+        throw new Error("no se han podido obtener datos del server");
+      });
+  }, [token]);
 
   //funcion que obtiene los datos del server
   const fetchExpenses = useCallback(
@@ -188,7 +184,8 @@ const useExpensesService = () => {
   //actualiza un contacto y despues refresca los datos con offset en 0
   const postOrUpdateExpenseCategory = (data: ExpenseCategory) => {
     //el id es un discernible, la unica forma de que sea 0 es si estoy creando un contacto nuevo
-    const method = (data.category_id === 0 || data.category_id === undefined)? "POST" : "PUT";
+    const method =
+      data.category_id === 0 || data.category_id === undefined ? "POST" : "PUT";
     axios
       .request({
         url: expenseCategoriesDataUri,
@@ -198,9 +195,20 @@ const useExpensesService = () => {
       })
       .then((response) => console.log(response.status))
       .catch((error) => console.log(error))
-      .finally(() =>
-        fetchExpenseCategories()
-      );
+      .finally(() => fetchExpenseCategories());
+  };
+
+  //actualiza un contacto y despues refresca los datos con offset en 0
+  const deleteExpenseCategoryById = (category_id: number) => {
+    console.log(category_id);
+    axios
+      .delete(expenseCategoriesDataUri, {
+        params: { category_id },
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => console.log(response.status))
+      .catch((error) => console.log(error))
+      .finally(() => fetchExpenseCategories());
   };
 
   //un listener que se triggerea en el primer render y cada vez que se cambian los filtros o el offset
@@ -216,7 +224,9 @@ const useExpensesService = () => {
     postOrUpdateExpense,
     fetchExpenseCategories,
     postOrUpdateExpenseCategory,
-    categories
+    deleteExpenseCategoryById,
+    categories,
+    category_id,
   };
 };
 

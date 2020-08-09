@@ -14,13 +14,14 @@ import {
   Button,
   InputLeftAddon,
   FormErrorMessage,
+  Flex,
 } from "@chakra-ui/core";
 import FilterDropdown, { MenuOption } from "../Layout/FilterDropdown";
 
 type FormInput = {
   name: string;
   title: string;
-  defaultValue: any;
+  defaultValue: NonNullable<any>;
   validationRules: ValidationOptions;
   options?: MenuOption[] | null;
 };
@@ -31,6 +32,8 @@ interface IDrawerFormProps {
   title: string;
   inputs: FormInput[];
   onFormSubmit: (values: Record<string, any>) => void;
+  deleteFunction?: (id: number) => void;
+  deleteFieldName?: string;
 }
 
 const DrawerForm: React.FC<IDrawerFormProps> = ({
@@ -39,12 +42,32 @@ const DrawerForm: React.FC<IDrawerFormProps> = ({
   title,
   inputs,
   onFormSubmit,
+  deleteFunction,
+  deleteFieldName,
 }) => {
-  const { register, handleSubmit, formState, errors, control } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState,
+    errors,
+    control,
+    getValues,
+  } = useForm();
+
   const onSubmit = handleSubmit((values) => {
     onFormSubmit(values);
     onClose();
   });
+
+  const onDelete = (
+    deleteFieldName: string,
+    deleteFunction: (id: number) => void
+  ) => {
+    const itemID = getValues(deleteFieldName);
+    deleteFunction(itemID);
+    onClose();
+  };
+
   return (
     <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
       <DrawerOverlay />
@@ -71,12 +94,15 @@ const DrawerForm: React.FC<IDrawerFormProps> = ({
                         {/* SI EL OBJETO TIENE OPCIONES, TIENE QUE SER DROPDOWN */}
                         {options ? (
                           <Controller
+                            defaultValue={defaultValue}
                             control={control}
                             name={name}
                             as={({ onChange, value, name }) => (
                               <FilterDropdown
                                 menu={options}
-                                onChange={(e) => onChange(e.target.value)}
+                                onChange={(e) => {
+                                  onChange(e.target.value);
+                                }}
                                 defaultValue={defaultValue}
                                 name={name}
                               />
@@ -93,15 +119,30 @@ const DrawerForm: React.FC<IDrawerFormProps> = ({
                     </>
                   )
                 )}
-                <Button
-                  mt={4}
-                  variantColor="teal"
-                  isLoading={formState.isSubmitting}
-                  type="submit"
-                  float="right"
-                >
-                  Guardar
-                </Button>
+                <Flex justify="right">
+                  {/* BOTON QUE SOLO APARECE SI LE DOY UNA FUNCION PARA ELIMINAR E INDICO COMO IDENTIFICAR QUE ELIMINAR */}
+                  {deleteFunction && deleteFieldName && (
+                    <Button
+                      mt={4}
+                      variantColor="red"
+                      isLoading={formState.isSubmitting}
+                      onClick={() => onDelete(deleteFieldName, deleteFunction)}
+                      float="right"
+                    >
+                      Borrar
+                    </Button>
+                  )}
+                  <Button
+                    mt={4}
+                    ml={4}
+                    variantColor="teal"
+                    isLoading={formState.isSubmitting}
+                    type="submit"
+                    float="right"
+                  >
+                    Guardar
+                  </Button>
+                </Flex>
               </FilterStack>
             </form>
           </FormControl>
