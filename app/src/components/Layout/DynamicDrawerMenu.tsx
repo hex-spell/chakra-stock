@@ -45,7 +45,7 @@ const DynamicDrawerMenu: React.FC<IDynamicDrawerMenuProps> = ({
         <DrawerHeader>
           {title} 
           <Text></Text>
-          {subtitle && <SubText>   • {subtitle}</SubText>}
+          {subtitle && <SubText>{subtitle}</SubText>}
         </DrawerHeader>
         <DrawerBody>
           {isOpen &&

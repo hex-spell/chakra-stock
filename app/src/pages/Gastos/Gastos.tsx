@@ -36,28 +36,28 @@ export default function Gastos() {
   );
 
   //menu de clickear items
-  const listItemMenu = useDisclosure();
+  const listItemDrawerState = useDisclosure();
 
   //menu de action button
-  const actionButtonMenu = useDisclosure();
+  const actionButtonDrawerState = useDisclosure();
 
   //menu de crear/modifcar gasto
-  const expenseMenu = useDisclosure();
+  const expenseDrawerState = useDisclosure();
 
   //menu de crear categoría de gasto
-  const expenseCategoryMenu = useDisclosure();
+  const expenseCategoryDrawerState = useDisclosure();
 
   //menu de modifcar categoría de gasto
-  const modifyExpenseCategoryMenu = useDisclosure();
+  const modifyExpenseCategoryDrawerState = useDisclosure();
 
   //define si el formulario de gastos va a ser usado para modificar uno existente o agregar uno nuevo
-  const [expenseMenuFormState, setExpenseMenuFormState] = useState({
+  const [expenseDrawerFormState, setExpenseMenuFormState] = useState({
     title: "error",
     mode: "error",
   });
 
   //menu de "estas seguro?"
-  const { confirmationMenuDisclosure, setConfirmationMenu } = useContext(
+  const { confirmationDrawerState, setConfirmationMenuData } = useContext(
     LayoutContext
   );
 
@@ -68,7 +68,7 @@ export default function Gastos() {
       title: `Modificar: ${data.description}`,
       mode: "edit",
     });
-    listItemMenu.onOpen();
+    listItemDrawerState.onOpen();
   };
 
   //funcion ejecutada por los botones de agregar
@@ -76,7 +76,7 @@ export default function Gastos() {
     //meto en el clickeditem los datos del estado inicial
     setClickedItem({ ...ClickedItemInitialState });
     setExpenseMenuFormState({ title, mode: "create" });
-    expenseMenu.onOpen();
+    expenseDrawerState.onOpen();
   };
 
   //servicio que toma valores de los filtros, hace una peticion al server y devuelve datos
@@ -131,47 +131,48 @@ export default function Gastos() {
       <ActionButton
         icon={FaBookOpen}
         ariaLabel="Menu: Gastos"
-        action={() => actionButtonMenu.onOpen()}
+        action={() => actionButtonDrawerState.onOpen()}
       />
       {/* MENU DE GASTO ESPECIFICO */}
       <ExpensesItemMenu
-        listItemMenu={listItemMenu}
-        expenseMenu={expenseMenu}
-        confirmationMenu={confirmationMenuDisclosure}
+        listItemDrawerState={listItemDrawerState}
+        expenseDrawerState={expenseDrawerState}
+        confirmationDrawerState={confirmationDrawerState}
         expenseData={clickedItem}
-        setConfirmationMenu={setConfirmationMenu}
+        setConfirmationMenuData={setConfirmationMenuData}
         deleteFunction={deleteExpenseById}
       />
       {/* MENU PRINCIPAL */}
       <ExpensesMainMenu
-        actionButtonMenu={actionButtonMenu}
+        actionButtonDrawerState={actionButtonDrawerState}
         onAddExpenseClick={(title) => onAddExpenseClick(title)}
-        onAddExpenseCategoryClick={expenseCategoryMenu}
-        onModifyExpenseCategoryClick={modifyExpenseCategoryMenu}
+        onAddExpenseCategoryClick={expenseCategoryDrawerState}
+        onModifyExpenseCategoryClick={modifyExpenseCategoryDrawerState}
       />
       {/* FORMULARIO DE MODIFICAR/ELIMINAR GASTOS */}
       <ExpensesDrawerForm
         categories={categoryDropdown}
-        expenseMenu={expenseMenu}
-        expenseMenuFormState={expenseMenuFormState}
+        expenseDrawerState={expenseDrawerState}
+        expenseDrawerFormState={expenseDrawerFormState}
         submitFunction={(data: Expense) => postOrUpdateExpense(data)}
         expenseData={clickedItem}
       />
       {/* FORMULARIO DE CREAR CATEGORIA DE GASTOS */}
       <ExpenseCategoriesDrawerForm
         submitFunction={postOrUpdateExpenseCategory}
-        expenseCategoryMenu={expenseCategoryMenu}
+        expenseCategoryDrawerState={expenseCategoryDrawerState}
         categories={categoryDropdown}
       />
       {/* FORMULARIO DE MODIFICAR/ELIMINAR CATEGORIA DE GASTOS */}
       <ModifyExpenseCategoriesDrawerForm
         submitFunction={postOrUpdateExpenseCategory}
-        modifyExpenseCategoryMenu={modifyExpenseCategoryMenu}
+        modifyExpenseCategoryDrawerState={modifyExpenseCategoryDrawerState}
         categories={categoryDropdown}
         selectedCategory={category_id}
         deleteExpenseCategoryById={deleteExpenseCategoryById}
-        confirmationMenu={confirmationMenuDisclosure}
-        setConfirmationMenu={setConfirmationMenu}
+        confirmationDrawerState={confirmationDrawerState}
+        setConfirmationMenuData={setConfirmationMenuData}
+        expenseCategoryDrawerState={expenseCategoryDrawerState}
       />
     </Page>
   );

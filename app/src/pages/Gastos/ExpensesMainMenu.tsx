@@ -3,22 +3,22 @@ import { DynamicDrawerMenu } from "../../components/Layout";
 import { UseDisclosureReturn } from "@chakra-ui/core/dist/useDisclosure";
 
 interface IExpensesMainMenuProps {
-  actionButtonMenu: UseDisclosureReturn;
+  actionButtonDrawerState: UseDisclosureReturn;
   onAddExpenseClick: (title: string) => void;
   onAddExpenseCategoryClick: UseDisclosureReturn;
   onModifyExpenseCategoryClick: UseDisclosureReturn;
 }
 
 const ExpensesMainMenu: React.FC<IExpensesMainMenuProps> = ({
-  actionButtonMenu,
+  actionButtonDrawerState,
   onAddExpenseClick,
   onAddExpenseCategoryClick,
   onModifyExpenseCategoryClick
 }) => {
   return (
     <DynamicDrawerMenu
-      isOpen={actionButtonMenu.isOpen}
-      onClose={actionButtonMenu.onClose}
+      isOpen={actionButtonDrawerState.isOpen}
+      onClose={actionButtonDrawerState.onClose}
       title="Menu: Gastos"
       menu={[
         {

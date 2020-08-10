@@ -6,20 +6,20 @@ import { MenuOption } from "../../components/Layout/FilterDropdown";
 
 interface IExpensesDrawerFormProps {
   categories: MenuOption[] | null;
-  expenseCategoryMenu: UseDisclosureReturn;
+  expenseCategoryDrawerState: UseDisclosureReturn;
   submitFunction: (data: ExpenseCategory) => void;
 }
 
 const ExpensesDrawerForm: React.FC<IExpensesDrawerFormProps> = ({
-  expenseCategoryMenu,
+  expenseCategoryDrawerState,
   submitFunction,
   categories
 }) => {
   return (
     <DrawerForm
       title={"Crear nueva categoría"}
-      isOpen={expenseCategoryMenu.isOpen}
-      onClose={expenseCategoryMenu.onClose}
+      isOpen={expenseCategoryDrawerState.isOpen}
+      onClose={expenseCategoryDrawerState.onClose}
       onFormSubmit={({ name, category_id }) =>
         submitFunction({ name, category_id })
       }

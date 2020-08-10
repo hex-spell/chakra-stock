@@ -33,14 +33,14 @@ const App: React.FC = () => {
     store: {
       confirmationMenu: { title, action, subtitle },
     },
-    confirmationMenuDisclosure,
+    confirmationDrawerState,
   } = useContext(LayoutContext);
   return (
     <Router>
       <Navbar onMenuClick={onOpen} />
       <ConfirmationMenu
-        isOpen={confirmationMenuDisclosure.isOpen}
-        onClose={confirmationMenuDisclosure.onClose}
+        isOpen={confirmationDrawerState.isOpen}
+        onClose={confirmationDrawerState.onClose}
         title={title}
         action={action}
         subtitle={subtitle}

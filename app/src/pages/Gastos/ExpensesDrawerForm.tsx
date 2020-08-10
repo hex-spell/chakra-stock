@@ -6,8 +6,8 @@ import { MenuOption } from "../../components/Layout/FilterDropdown";
 
 interface IExpensesDrawerFormProps {
   categories: MenuOption[] | null;
-  expenseMenu: UseDisclosureReturn;
-  expenseMenuFormState: {
+  expenseDrawerState: UseDisclosureReturn;
+  expenseDrawerFormState: {
     title: string;
     mode: string;
   };
@@ -16,21 +16,21 @@ interface IExpensesDrawerFormProps {
 }
 
 const ExpensesDrawerForm: React.FC<IExpensesDrawerFormProps> = ({
-  expenseMenu,
-  expenseMenuFormState,
+  expenseDrawerState,
+  expenseDrawerFormState,
   expenseData,
   submitFunction,
-  categories
+  categories,
 }) => {
   const { expense_id } = expenseData;
   return (
     <DrawerForm
-      title={expenseMenuFormState.title}
-      isOpen={expenseMenu.isOpen}
-      onClose={expenseMenu.onClose}
-      onFormSubmit={({ description, sum, category_id }) =>{
-        submitFunction({ description, sum, category_id, expense_id })}
-      }
+      title={expenseDrawerFormState.title}
+      isOpen={expenseDrawerState.isOpen}
+      onClose={expenseDrawerState.onClose}
+      onFormSubmit={({ description, sum, category_id }) => {
+        submitFunction({ description, sum, category_id, expense_id });
+      }}
       inputs={[
         {
           name: "description",
@@ -63,13 +63,15 @@ const ExpensesDrawerForm: React.FC<IExpensesDrawerFormProps> = ({
         {
           name: "category_id",
           title: "Categoría",
-          defaultValue: expenseData.category_id,
+          defaultValue:
+            expenseData.category_id,
           options: categories,
           validationRules: {
-            required: 'Debes elegir una categoría',
+            required:
+              "Parece que no has creado ninguna categoría, hace eso primero",
             pattern: {
-              value: /^[0-9]*$/,
-              message: "La categoría debe ser un numero",
+              value: /^[1-9]\d*$/,
+              message: "Parece que no has creado ninguna categoría, hace eso primero",
             },
           },
         },

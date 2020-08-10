@@ -95,6 +95,7 @@ const DrawerForm: React.FC<IDrawerFormProps> = ({
                         {options ? (
                           <Controller
                             defaultValue={defaultValue}
+                            rules={validationRules}
                             control={control}
                             name={name}
                             as={({ onChange, value, name }) => (

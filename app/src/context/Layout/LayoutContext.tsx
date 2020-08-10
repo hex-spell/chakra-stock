@@ -53,22 +53,22 @@ const reducer = (
 export const LayoutContextProvider: React.FC = ({ children }) => {
   const [store, dispatch] = useReducer(reducer, initialState);
 
-  const confirmationMenuDisclosure = useDisclosure();
+  const confirmationDrawerState = useDisclosure();
 
   const setHeader = useCallback(
     (header: string) => dispatch({ type: SET_HEADER, payload: header }),
     []
   );
 
-  const setConfirmationMenu = useCallback(
+  const setConfirmationMenuData = useCallback(
     (confirmationMenu: IConfirmationMenu) =>
       dispatch({ type: SET_CONFIRMATION_MENU, payload: confirmationMenu }),
     []
   );
 
   const layoutContextValue = useMemo(() => {
-    return { store, dispatch, confirmationMenuDisclosure, setHeader, setConfirmationMenu };
-  }, [store, dispatch, confirmationMenuDisclosure, setHeader, setConfirmationMenu]);
+    return { store, dispatch, confirmationDrawerState, setHeader, setConfirmationMenuData };
+  }, [store, dispatch, confirmationDrawerState, setHeader, setConfirmationMenuData]);
 
   return (
     <LayoutContext.Provider value={layoutContextValue}>
