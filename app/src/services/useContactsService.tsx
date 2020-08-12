@@ -33,14 +33,10 @@ const reducer = serverReducerFactory<Contacts, IContactFilters>();
 
 //debería comenzar a hacer error handling con toasts
 
-
 //esto se puede abstraer aun mas
 const useContactsService = () => {
   const [state, dispatch] = useReducer(reducer, InitialState);
-  const {
-    filters,
-    offset,
-  } = state;
+  const { filters, offset, count } = state;
 
   //token para autorizar las peticiones
   const {
@@ -55,6 +51,7 @@ const useContactsService = () => {
 
   //al sumar al offset, se va a triggerear fetchContacts y va a pushear al arreglo de contactos ya existente
   const loadMoreData = () => {
+    console.log(state.offset);
     dispatch({ type: SET_OFFSET, payload: state.offset + 10 });
   };
 
@@ -73,16 +70,15 @@ const useContactsService = () => {
   const postOrUpdateContact = (data: Contact) =>
     postFunctionFactory<Contact, IContactFilters>(
       contactsDataUri,
-      { offset, token },
+      token,
       filters,
       fetchContacts
     )(data, data.contact_id);
 
-
   //un listener que se triggerea en el primer render y cada vez que se cambian los filtros o el offset
   useEffect(() => {
-    fetchContacts({ offset: 0, token }, filters);
-  }, [filters, offset, token, fetchContacts]);
+    fetchContacts({ offset, token }, filters);
+  }, [filters, count, offset, token, fetchContacts]);
 
   return {
     result: state.results,

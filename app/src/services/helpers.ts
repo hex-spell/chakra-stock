@@ -11,7 +11,7 @@ export function serverReducerFactory<Entity,Filters>() {
   return (state: IServiceState<Entity,Filters>, action: { type: string; payload?: any }) => {
     switch (action.type) {
       case SET_FILTERS:
-        return { ...state, filters:{...action.payload} }; //search, role, order, offset: 0 };
+        return { ...state, filters:action.payload, offset:0 }; //search, role, order, offset: 0 };
       case SET_OFFSET:
         return { ...state, offset: action.payload };
       case SET_RESULTS:
@@ -73,7 +73,7 @@ export function fetchFunctionFactory<Entity,Filters>(DataUri:string,dispatch:any
 }
 }
 
-export function postFunctionFactory<Entity,Filters>(DataUri:string,params:IServiceRequestParamsWithPagination,filters:Filters,fetchFunction:axiosRequest<Filters>){
+export function postFunctionFactory<Entity,Filters>(DataUri:string,token:string,filters:Filters,fetchFunction:axiosRequest<Filters>){
     return (data: Entity,identifier:number) => {
         //el id es un discernible, la unica forma de que sea 0 es si estoy creando un contacto nuevo
         const method = identifier === 0 ? "POST" : "PUT";
@@ -82,10 +82,10 @@ export function postFunctionFactory<Entity,Filters>(DataUri:string,params:IServi
             url: DataUri,
             method,
             data,
-            headers: { Authorization: `Bearer ${params.token}` },
+            headers: { Authorization: `Bearer ${token}` },
           })
           .then((response) => console.log(response.status))
           .catch((error) => console.log(error))
-          .finally(() =>fetchFunction(params,filters));
+          .finally(() =>fetchFunction({token,offset:0},filters));
       };
 }

@@ -10,11 +10,11 @@ interface IContactsItemMenuProps {
   //estado del drawer del formulario de modificar contactos
   contactMenu: UseDisclosureReturn;
   //estado del drawer de "estas seguro?"
-  confirmationMenu: UseDisclosureReturn;
+  confirmationDrawerState: UseDisclosureReturn;
   //datos del contacto clickeado
   contactData: Contact;
   //dispatch para abrir el drawer de confirmacion
-  setConfirmationMenu: (confirmationMenu: IConfirmationMenu) => void;
+  setConfirmationMenuData: (confirmationDrawerState: IConfirmationMenu) => void;
   //funcion de actualizar contactos, la uso para reiniciar el contador de dinero a 0
   postOrUpdateContact: (data: Contact) => void;
 }
@@ -22,9 +22,9 @@ interface IContactsItemMenuProps {
 const ContactsItemMenu: React.FC<IContactsItemMenuProps> = ({
   listItemMenu,
   contactMenu,
-  confirmationMenu,
+  confirmationDrawerState,
   contactData,
-  setConfirmationMenu,
+  setConfirmationMenuData,
   postOrUpdateContact
 }) => {
   const {name} = contactData;
@@ -45,22 +45,22 @@ const ContactsItemMenu: React.FC<IContactsItemMenuProps> = ({
         {
           name: "Reiniciar el contador de dinero",
           action: () => {
-            setConfirmationMenu({
+            setConfirmationMenuData({
               title: `reiniciar el contador de ${name}`,
               action: () => postOrUpdateContact({...contactData, money:0}),
             });
-            confirmationMenu.onOpen();
+            confirmationDrawerState.onOpen();
           },
         },
         {
           name: "Eliminar",
           action: () => {
             //manda titulo y funcion para ejecutar al drawer de confirmacion, y lo abre
-            setConfirmationMenu({
+            setConfirmationMenuData({
               title: `eliminar a ${name}`,
               action: () => alert(`${name} eliminado`),
             });
-            confirmationMenu.onOpen();
+            confirmationDrawerState.onOpen();
           },
         },
       ]}

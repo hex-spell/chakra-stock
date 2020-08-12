@@ -52,7 +52,7 @@ export default function Contactos() {
   });
 
   //menu de "estas seguro?"
-  const { confirmationMenuDisclosure, setConfirmationMenu } = useContext(
+  const { confirmationDrawerState, setConfirmationMenuData } = useContext(
     LayoutContext
   );
 
@@ -106,9 +106,9 @@ export default function Contactos() {
       <ContactsItemMenu
         listItemMenu={listItemMenu}
         contactMenu={contactMenu}
-        confirmationMenu={confirmationMenuDisclosure}
+        confirmationDrawerState={confirmationDrawerState}
         contactData={clickedItem}
-        setConfirmationMenu={setConfirmationMenu}
+        setConfirmationMenuData={setConfirmationMenuData}
         postOrUpdateContact={(data: Contact) => postOrUpdateContact(data)}
       />
       {/* MENU PRINCIPAL */}
