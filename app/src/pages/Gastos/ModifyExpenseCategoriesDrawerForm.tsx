@@ -3,7 +3,7 @@ import { DrawerForm } from "../../components/Forms";
 import {
   UseDisclosureReturn,
 } from "@chakra-ui/core/dist/useDisclosure";
-import { ExpenseCategory } from "../../services/interfaces";
+import { Category } from "../../services/interfaces";
 import { MenuOption } from "../../components/Layout/FilterDropdown";
 import { IConfirmationMenu } from "../../context/Layout";
 import { DynamicDrawerMenu } from "../../components/Layout";
@@ -11,7 +11,7 @@ import { DynamicDrawerMenu } from "../../components/Layout";
 interface IModifyExpensesDrawerFormProps {
   categories: MenuOption[] | null;
   modifyExpenseCategoryDrawerState: UseDisclosureReturn;
-  submitFunction: (data: ExpenseCategory) => void;
+  submitFunction: (data: Category) => void;
   deleteExpenseCategoryById: (id: number) => void;
   selectedCategory: number;
   //dispatch para dar datos al drawer de confirmacion

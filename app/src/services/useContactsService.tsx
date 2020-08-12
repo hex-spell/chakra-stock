@@ -51,7 +51,6 @@ const useContactsService = () => {
 
   //al sumar al offset, se va a triggerear fetchContacts y va a pushear al arreglo de contactos ya existente
   const loadMoreData = () => {
-    console.log(state.offset);
     dispatch({ type: SET_OFFSET, payload: state.offset + 10 });
   };
 
@@ -68,11 +67,10 @@ const useContactsService = () => {
 
   //actualiza un contacto y despues refresca los datos con offset en 0
   const postOrUpdateContact = (data: Contact) =>
-    postFunctionFactory<Contact, IContactFilters>(
+    postFunctionFactory<Contact>(
       contactsDataUri,
       token,
-      filters,
-      fetchContacts
+      ()=>fetchContacts({ token, offset: 0 }, filters)
     )(data, data.contact_id);
 
   //un listener que se triggerea en el primer render y cada vez que se cambian los filtros o el offset

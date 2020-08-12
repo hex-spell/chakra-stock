@@ -20,7 +20,7 @@ export interface Expense {
   sum: number;
 }
 
-export interface ExpenseCategory {
+export interface Category {
   name: string;
   category_id: number;
 }
@@ -61,6 +61,7 @@ export interface IServiceState<Entity, Filters> {
   offset: number;
   count: number;
   results: Service<Entity>;
+  categories?: Category[] | null;
 }
 
 export interface IServiceResponse<Entity>{
@@ -73,6 +74,8 @@ export interface IServiceRequestParamsWithPagination {
   token:string;
 }
 
+//CONTACTOS
+
 //contenido del response
 export interface Contacts extends IServiceResponse<ServerContact> {};
 
@@ -84,3 +87,21 @@ export interface IContactFilters {
 
 //parametros del request
 export interface IContactRequestParams extends IContactFilters, IServiceRequestParamsWithPagination {}
+
+//GASTOS
+
+//filtros
+export interface IExpenseFilters {
+  search: string;
+  category_id: number | null;
+  order: "description" | "sum" | "created_at";
+}
+
+//parametros del request
+export interface IExpenseRequestParams extends IExpenseFilters, IServiceRequestParamsWithPagination {}
+
+//contenido del response
+export interface Expenses extends IServiceResponse<ServerExpense> {};
+
+//contenido del response
+export interface ExpenseCategories extends IServiceResponse<Category> {};

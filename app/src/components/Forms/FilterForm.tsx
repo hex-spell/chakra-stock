@@ -50,7 +50,6 @@ const FilterForm: React.FC<IFilterFormProps> = ({
           )}
           {filtersData.dropdowns &&
             filtersData.dropdowns.map(({ name, menu, defaultValue }) => {
-              console.log(defaultValue);
               return (
                 <Controller
                   defaultValue={defaultValue}

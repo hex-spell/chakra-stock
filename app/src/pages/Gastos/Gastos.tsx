@@ -13,7 +13,7 @@ import {
   ExpensesDrawerForm,
   ModifyExpenseCategoriesDrawerForm,
 } from "./";
-import { Expense, ExpenseCategory } from "../../services/interfaces";
+import { Expense, Category } from "../../services/interfaces";
 import { MenuOption } from "../../components/Layout/FilterDropdown";
 
 const ClickedItemInitialState: Expense = {
@@ -105,7 +105,7 @@ export default function Gastos() {
   useEffect(() => {
     if (categories) {
       setCategoryDropdown(
-        categories.map(({ name, category_id }: ExpenseCategory) => ({
+        categories.map(({ name, category_id }: Category) => ({
           name,
           value: category_id,
         }))

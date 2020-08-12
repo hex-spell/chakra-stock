@@ -1,13 +1,13 @@
 import React from "react";
 import { DrawerForm } from "../../components/Forms";
 import { UseDisclosureReturn } from "@chakra-ui/core/dist/useDisclosure";
-import { ExpenseCategory } from "../../services/interfaces";
+import { Category } from "../../services/interfaces";
 import { MenuOption } from "../../components/Layout/FilterDropdown";
 
 interface IExpensesDrawerFormProps {
   categories: MenuOption[] | null;
   expenseCategoryDrawerState: UseDisclosureReturn;
-  submitFunction: (data: ExpenseCategory) => void;
+  submitFunction: (data: Category) => void;
 }
 
 const ExpensesDrawerForm: React.FC<IExpensesDrawerFormProps> = ({
