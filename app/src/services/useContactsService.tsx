@@ -1,45 +1,25 @@
 import { useEffect, useContext, useReducer, useCallback } from "react";
-import { Service, ServerContact, Contact } from "./interfaces";
-import { UserContext } from "../context/User";
-import axios, { AxiosResponse } from "axios";
 import {
-  SET_FILTERS,
-  SET_OFFSET,
-  SET_RESULTS,
-  PUSH_RESULTS,
-} from "./constants";
+  Contact,
+  IServiceState,
+  Contacts,
+  IContactFilters,
+  ServerContact,
+  IServiceRequestParamsWithPagination,
+} from "./interfaces";
+import { UserContext } from "../context/User";
+import { SET_FILTERS, SET_OFFSET } from "./constants";
+import {
+  serverReducerFactory,
+  fetchFunctionFactory,
+  postFunctionFactory,
+} from "./helpers";
 
 const localapi = process.env.REACT_APP_ROOT_API;
 const contactsDataUri = localapi + "contacts";
 
-//contenido del response
-export interface Contacts {
-  contacts: ServerContact[];
-  count: number;
-}
-
-//parametros del request
-export interface IContactFilters {
-  search: string;
-  role: "c" | "p";
-  order: "name" | "money" | "updated_at";
-}
-
-interface IContactRequestParams extends IContactFilters {
-  offset: number;
-  token: string;
-}
-
-interface IContactsServiceState extends IContactFilters {
-  offset: number;
-  count: number;
-  results: Service<Contacts>;
-}
-
-const InitialState: IContactsServiceState = {
-  search: "",
-  role: "c",
-  order: "name",
+const InitialState: IServiceState<Contacts, IContactFilters> = {
+  filters: { search: "", role: "c", order: "name" },
   offset: 0,
   count: 0,
   results: {
@@ -49,48 +29,18 @@ const InitialState: IContactsServiceState = {
   },
 };
 
-const reducer = (
-  state: IContactsServiceState,
-  action: { type: string; payload?: any }
-) => {
-  switch (action.type) {
-    case SET_FILTERS:
-      const { search, role, order } = action.payload;
-      return { ...state, search, role, order, offset: 0 };
-    case SET_OFFSET:
-      return { ...state, offset: action.payload };
-    case SET_RESULTS:
-      console.log(SET_RESULTS);
-      return {
-        ...state,
-        results: action.payload.results,
-        count: action.payload.count,
-        offset: 0,
-      };
-    case PUSH_RESULTS:
-      console.log(PUSH_RESULTS);
-      return {
-        ...state,
-        count: action.payload.count,
-        results: {
-          status: action.payload.results.status,
-          error: action.payload.results.error,
-          payload: [
-            ...state.results.payload,
-            ...action.payload.results.payload,
-          ],
-        },
-      };
-    default:
-      throw new Error();
-  }
-};
+const reducer = serverReducerFactory<Contacts, IContactFilters>();
 
 //debería comenzar a hacer error handling con toasts
 
+
+//esto se puede abstraer aun mas
 const useContactsService = () => {
   const [state, dispatch] = useReducer(reducer, InitialState);
-  const { search, role, order, offset } = state;
+  const {
+    filters,
+    offset,
+  } = state;
 
   //token para autorizar las peticiones
   const {
@@ -110,55 +60,29 @@ const useContactsService = () => {
 
   //funcion que obtiene los datos del server
   const fetchContacts = useCallback(
-    ({ search, role, order, offset, token }: IContactRequestParams) => {
-      axios
-        .get(contactsDataUri, {
-          params: { search, role, order, offset: offset },
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((response: AxiosResponse<Contacts>) =>
-          dispatch({
-            type: offset ? PUSH_RESULTS : SET_RESULTS,
-            payload: {
-              results: {
-                status: "loaded",
-                payload: response.data.contacts,
-                error: null,
-              },
-              count: response.data.count,
-            },
-          })
-        )
-        .catch((error) =>
-          dispatch({
-            type: SET_RESULTS,
-            payload: { status: "error", error, payload: null },
-          })
-        );
+    (params: IServiceRequestParamsWithPagination, filters: IContactFilters) => {
+      fetchFunctionFactory<ServerContact, IContactFilters>(
+        contactsDataUri,
+        dispatch
+      )(params, filters);
     },
     []
   );
 
   //actualiza un contacto y despues refresca los datos con offset en 0
-  const postOrUpdateContact = (data: Contact) => {
-    //el id es un discernible, la unica forma de que sea 0 es si estoy creando un contacto nuevo
-    const method = data.contact_id === 0 ? "POST" : "PUT";
-    axios
-      .request({
-        url: contactsDataUri,
-        method,
-        data,
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => console.log(response.status))
-      .catch((error) => console.log(error))
-      .finally(() => fetchContacts({ search, role, order, offset: 0, token }));
-  };
+  const postOrUpdateContact = (data: Contact) =>
+    postFunctionFactory<Contact, IContactFilters>(
+      contactsDataUri,
+      { offset, token },
+      filters,
+      fetchContacts
+    )(data, data.contact_id);
+
 
   //un listener que se triggerea en el primer render y cada vez que se cambian los filtros o el offset
   useEffect(() => {
-    fetchContacts({ search, role, order, offset, token });
-  }, [search, role, order, offset, token, fetchContacts]);
+    fetchContacts({ offset: 0, token }, filters);
+  }, [filters, offset, token, fetchContacts]);
 
   return {
     result: state.results,

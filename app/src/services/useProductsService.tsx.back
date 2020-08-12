@@ -1,0 +1,247 @@
+import { useEffect, useContext, useReducer, useCallback } from "react";
+import { Service, ServerProduct, Product, ProductCategory } from "./interfaces";
+import { UserContext } from "../context/User";
+import axios, { AxiosResponse } from "axios";
+import {
+  SET_FILTERS,
+  SET_OFFSET,
+  SET_RESULTS,
+  PUSH_RESULTS,
+  SET_CATEGORIES,
+} from "./constants";
+
+const localapi = process.env.REACT_APP_ROOT_API;
+const productsDataUri = localapi + "products";
+const expenseCategoriesDataUri = productsDataUri + "/categories";
+
+//contenido del response de products
+export interface Products {
+  products: ServerProduct[];
+  count: number;
+}
+
+//parametros del request
+export interface IProductFilters {
+  search: string;
+  category_id: number | null;
+  order: "name" | "sell_price" | "updated_at";
+}
+
+interface IProductRequestParams extends IProductFilters {
+  offset: number;
+  token: string;
+}
+
+interface IProductsServiceState extends IProductFilters {
+  offset: number;
+  count: number;
+  results: Service<Products>;
+  categories: ProductCategory[] | null;
+}
+
+const InitialState: IProductsServiceState = {
+  categories: null,
+  search: "",
+  category_id: null,
+  order: "name",
+  offset: 0,
+  count: 0,
+  results: {
+    status: "loading",
+    payload: null,
+    error: null,
+  },
+};
+
+const reducer = (
+  state: IProductsServiceState,
+  action: { type: string; payload?: any }
+) => {
+  switch (action.type) {
+    case SET_FILTERS:
+      const { search, category_id, order } = action.payload;
+      return { ...state, search, category_id, order, offset: 0 };
+    case SET_OFFSET:
+      return { ...state, offset: action.payload };
+    case SET_CATEGORIES:
+      return { ...state, categories: action.payload };
+    case SET_RESULTS:
+      console.log(SET_RESULTS, action.payload.results);
+      return {
+        ...state,
+        results: action.payload.results,
+        count: action.payload.count,
+        offset: 0,
+      };
+    case PUSH_RESULTS:
+      console.log(PUSH_RESULTS);
+      return {
+        ...state,
+        count: action.payload.count,
+        results: {
+          status: action.payload.results.status,
+          error: action.payload.results.error,
+          payload: [
+            ...state.results.payload,
+            ...action.payload.results.payload,
+          ],
+        },
+      };
+    default:
+      throw new Error();
+  }
+};
+
+//debería comenzar a hacer error handling con toasts
+
+const useProductsService = () => {
+  const [state, dispatch] = useReducer(reducer, InitialState);
+  const { search, category_id, order, offset, categories } = state;
+
+  //token para autorizar las peticiones
+  const {
+    store: { token },
+  } = useContext(UserContext);
+
+  //cambia los filtros usados en los parametros del request fetchProducts
+  //por el useEffect esta funcion triggerea el request mismo
+  const updateFilters = (filters: IProductFilters) => {
+    dispatch({ type: SET_FILTERS, payload: filters });
+  };
+
+  //al sumar al offset, se va a triggerear fetchProducts y va a pushear al arreglo de contactos ya existente
+  const loadMoreData = () => {
+    dispatch({ type: SET_OFFSET, payload: state.offset + 10 });
+  };
+
+  //funcion que obtiene los datos del server
+  const fetchProductCategories = useCallback(() => {
+    axios
+      .get(expenseCategoriesDataUri, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response: AxiosResponse<Products>) =>
+        dispatch({
+          type: SET_CATEGORIES,
+          payload: response.data,
+        })
+      )
+      .catch((error) => {
+        throw new Error("no se han podido obtener datos del server");
+      });
+  }, [token]);
+
+  //funcion que obtiene los datos del server
+  const fetchProducts = useCallback(
+    ({ search, category_id, order, offset, token }: IProductRequestParams) => {
+      axios
+        .get(productsDataUri, {
+          params: { search, category_id, order, offset: offset },
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response: AxiosResponse<Products>) =>
+          dispatch({
+            type: offset ? PUSH_RESULTS : SET_RESULTS,
+            payload: {
+              results: {
+                status: "loaded",
+                payload: response.data.products,
+                error: null,
+              },
+              count: response.data.count,
+            },
+          })
+        )
+        .catch((error) =>
+          dispatch({
+            type: SET_RESULTS,
+            payload: { status: "error", error, payload: null },
+          })
+        );
+    },
+    []
+  );
+
+  //actualiza un contacto y despues refresca los datos con offset en 0
+  const postOrUpdateProduct = (data: Product) => {
+    //el id es un discernible, la unica forma de que sea 0 es si estoy creando un contacto nuevo
+    console.log(data);
+    const method = data.expense_id === 0 ? "POST" : "PUT";
+    axios
+      .request({
+        url: productsDataUri,
+        method,
+        data,
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => console.log(response.status))
+      .catch((error) => console.log(error))
+      .finally(() =>
+        fetchProducts({ search, category_id, order, offset: 0, token })
+      );
+  };
+
+  //actualiza un contacto y despues refresca los datos con offset en 0
+  const postOrUpdateProductCategory = (data: ProductCategory) => {
+    //el id es un discernible, la unica forma de que sea 0 es si estoy creando un contacto nuevo
+    const method =
+      data.category_id === 0 || data.category_id === undefined ? "POST" : "PUT";
+    axios
+      .request({
+        url: expenseCategoriesDataUri,
+        method,
+        data,
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => console.log(response.status))
+      .catch((error) => console.log(error))
+      .finally(() => fetchProductCategories());
+  };
+
+  //elimina una categoria por id
+  const deleteProductCategoryById = (category_id: number) => {
+    console.log(category_id);
+    axios
+      .delete(expenseCategoriesDataUri, {
+        params: { category_id },
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => console.log(response.status))
+      .catch((error) => console.log(error))
+      .finally(() => fetchProductCategories());
+  };
+ 
+  //elimina un gasto por id
+  const deleteProductById = (expense_id: number) => {
+    console.log(expense_id);
+    axios
+      .delete(productsDataUri, {
+        params: { expense_id },
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => console.log(response.status))
+      .catch((error) => console.log(error))
+      .finally(() => fetchProducts({ search, category_id, order, offset: 0, token }));
+  };
+
+  //un listener que se triggerea en el primer render y cada vez que se cambian los filtros o el offset
+  useEffect(() => {
+    fetchProducts({ search, category_id, order, offset, token });
+  }, [search, category_id, order, offset, token, fetchProducts]);
+
+  return {
+    result: state.results,
+    count: state.count,
+    updateFilters,
+    loadMoreData,
+    postOrUpdateProduct,
+    fetchProductCategories,
+    postOrUpdateProductCategory,
+    deleteProductCategoryById,
+    deleteProductById,
+    categories,
+    category_id,
+  };
+};
+
+export default useProductsService;

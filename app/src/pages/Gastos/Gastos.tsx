@@ -35,7 +35,7 @@ export default function Gastos() {
     ClickedItemInitialState
   );
 
-  //menu de clickear items
+  //menu de clickear gastos
   const listItemDrawerState = useDisclosure();
 
   //menu de action button
@@ -158,6 +158,7 @@ export default function Gastos() {
         expenseData={clickedItem}
       />
       {/* FORMULARIO DE CREAR CATEGORIA DE GASTOS */}
+      {/* NO OLVIDARME DE HACER ERROR HANDLING PARA NOMBRES REPETIDOS */}
       <ExpenseCategoriesDrawerForm
         submitFunction={postOrUpdateExpenseCategory}
         expenseCategoryDrawerState={expenseCategoryDrawerState}
