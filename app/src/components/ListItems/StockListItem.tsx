@@ -1,12 +1,15 @@
 import React from "react";
-import { Box, Text } from "@chakra-ui/core";
+import { Box, Text, Flex } from "@chakra-ui/core";
 import { SubText, MoneyText, ListItemBox } from "../Layout";
+import { dateHelper } from "../../services";
+import { FaMapMarkedAlt, FaCartArrowDown, FaCoins } from "react-icons/fa";
 
 interface IStockListItemProps {
   title: string;
   ammount: number;
-  price: number;
-  updatedAt: string;
+  buyPrice: number;
+  sellPrice: number;
+  updatedAt: Date;
   onClick: () => void;
 }
 
@@ -14,22 +17,34 @@ interface IStockListItemProps {
 const StockListItem: React.FC<IStockListItemProps> = ({
   title,
   ammount,
-  price,
+  buyPrice,
+  sellPrice,
   updatedAt,
   onClick,
 }) => {
+  const updatedAtDate = new Date(updatedAt);
+  const formattedUpdatedAtDate = dateHelper(updatedAtDate);
   return (
-    <div onClick={()=>onClick()}>
+    <div onClick={() => onClick()}>
       <ListItemBox>
-        <Box display="flex" flexDirection="column" textAlign="left">
+        <Flex direction="column" textAlign="left">
           <Text>{title}</Text>
           <SubText>
             {ammount} {ammount > 1 ? "unidades" : "unidad"}
           </SubText>
-        </Box>
-        <Box display="flex" flexDirection="column" textAlign="right">
-          <MoneyText ammount={price}/>
-          <SubText>{updatedAt}</SubText>
+        </Flex>
+        <Box flexDirection="column" textAlign="right" alignItems="right" maxWidth="40%">
+          <Box display="flex" justifyContent="flex-end" flexWrap="wrap" maxWidth="100%" alignItems="right">
+            <Box display="flex" m="5px" mr="0" flexDirection="column" alignItems={buyPrice<10000?"center":"flex-end"} textAlign="center">
+              <Box mr={buyPrice<10000?"0":"1"} as={FaCartArrowDown}/>
+              <MoneyText red ammount={buyPrice} />
+            </Box>
+            <Box display="flex" m="5px" mr="0" flexDirection="column" alignItems={sellPrice<10000?"center":"flex-end"} textAlign="center">
+              <Box mr={sellPrice<10000?"0":"1"} as={FaCoins}/>
+              <MoneyText ammount={sellPrice} />
+            </Box>
+          </Box>
+          <SubText>{formattedUpdatedAtDate}</SubText>
         </Box>
       </ListItemBox>
     </div>

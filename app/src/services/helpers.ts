@@ -10,7 +10,7 @@ import {
   IServiceState,
   IServiceResponse,
   IServiceRequestParamsWithPagination,
-  ExpenseCategories,
+  Categories,
 } from "./interfaces";
 
 export function serverReducerFactory<Entity, Filters>() {
@@ -100,7 +100,7 @@ export function fetchCategoryFunctionFactory(
       .get(dataUri, {
         headers: { Authorization: `Bearer ${token}` },
       })
-      .then((response: AxiosResponse<ExpenseCategories>) =>{
+      .then((response: AxiosResponse<Categories>) =>{
         dispatch({
           type: SET_CATEGORIES,
           payload: response.data.result,
@@ -119,7 +119,7 @@ export function postFunctionFactory<Entity>(
 ) {
   return (data: Entity, identifier: number) => {
     //el id es un discernible, la unica forma de que sea 0 es si estoy creando un contacto nuevo
-    const method = identifier === 0 ? "POST" : "PUT";
+    const method = identifier === 0 || identifier === undefined || identifier === null ? "POST" : "PUT";
     axios
       .request({
         url: dataUri,
@@ -148,4 +148,17 @@ export function deleteByIdFunctionFactory(
       .then((response) => console.log(response.status))
       .catch((error) => console.log(error))
       .finally(() => update());
+}
+
+export function pageControlsFactory<Filters>(dispatch:any,offset:number){
+  const updateFilters = (filters:Filters) => {
+    dispatch({ type: SET_FILTERS, payload: filters });
+  };
+
+  //al sumar al offset, se va a triggerear fetch y va a pushear al arreglo ya existente
+  const loadMoreData = () => {
+    dispatch({ type: SET_OFFSET, payload: offset + 10 });
+  };
+
+  return {updateFilters,loadMoreData};
 }

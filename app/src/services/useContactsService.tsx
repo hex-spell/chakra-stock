@@ -8,11 +8,11 @@ import {
   IServiceRequestParamsWithPagination,
 } from "./interfaces";
 import { UserContext } from "../context/User";
-import { SET_FILTERS, SET_OFFSET } from "./constants";
 import {
   serverReducerFactory,
   fetchFunctionFactory,
   postFunctionFactory,
+  pageControlsFactory,
 } from "./helpers";
 
 const localapi = process.env.REACT_APP_ROOT_API;
@@ -43,16 +43,7 @@ const useContactsService = () => {
     store: { token },
   } = useContext(UserContext);
 
-  //cambia los filtros usados en los parametros del request fetchContacts
-  //por el useEffect esta funcion triggerea el request mismo
-  const updateFilters = (filters: IContactFilters) => {
-    dispatch({ type: SET_FILTERS, payload: filters });
-  };
-
-  //al sumar al offset, se va a triggerear fetchContacts y va a pushear al arreglo de contactos ya existente
-  const loadMoreData = () => {
-    dispatch({ type: SET_OFFSET, payload: state.offset + 10 });
-  };
+  const {updateFilters,loadMoreData} = pageControlsFactory<IContactFilters>(dispatch,offset);
 
   //funcion que obtiene los datos del server
   const fetchContacts = useCallback(

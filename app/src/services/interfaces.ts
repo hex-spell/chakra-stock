@@ -25,6 +25,31 @@ export interface Category {
   category_id: number;
 }
 
+export interface Product {
+  product_id:number;
+  name:string;
+  sell_price:number;
+  buy_price:number; 
+  stock:number;
+  category_id:number;
+}
+
+interface ProductHistory extends Timestamps {
+  name: string;
+  sell_price: number;
+  buy_price: number;
+  product_id: number;
+  product_history_id: number;
+}
+
+export interface ServerProduct extends Timestamps {
+  stock: number;
+  product_id: number;
+  product_history_id: number;
+  category_id: number;
+  current: ProductHistory;
+}
+
 export interface ServerContact extends Contact, Timestamps {}
 
 export interface ServerExpense extends Expense, Timestamps {}
@@ -64,20 +89,20 @@ export interface IServiceState<Entity, Filters> {
   categories?: Category[] | null;
 }
 
-export interface IServiceResponse<Entity>{
-  result:Entity[];
-  count:number;
+export interface IServiceResponse<Entity> {
+  result: Entity[];
+  count: number;
 }
 
 export interface IServiceRequestParamsWithPagination {
-  offset:number;
-  token:string;
+  offset: number;
+  token: string;
 }
 
 //CONTACTOS
 
 //contenido del response
-export interface Contacts extends IServiceResponse<ServerContact> {};
+export interface Contacts extends IServiceResponse<ServerContact> {}
 
 export interface IContactFilters {
   search: string;
@@ -86,7 +111,9 @@ export interface IContactFilters {
 }
 
 //parametros del request
-export interface IContactRequestParams extends IContactFilters, IServiceRequestParamsWithPagination {}
+export interface IContactRequestParams
+  extends IContactFilters,
+    IServiceRequestParamsWithPagination {}
 
 //GASTOS
 
@@ -98,10 +125,29 @@ export interface IExpenseFilters {
 }
 
 //parametros del request
-export interface IExpenseRequestParams extends IExpenseFilters, IServiceRequestParamsWithPagination {}
+export interface IExpenseRequestParams
+  extends IExpenseFilters,
+    IServiceRequestParamsWithPagination {}
 
 //contenido del response
-export interface Expenses extends IServiceResponse<ServerExpense> {};
+export interface Expenses extends IServiceResponse<ServerExpense> {}
 
 //contenido del response
-export interface ExpenseCategories extends IServiceResponse<Category> {};
+export interface Categories extends IServiceResponse<Category> {}
+
+//STOCK
+
+//filtros
+export interface IProductFilters {
+  search: string;
+  category_id: number | null;
+  order: "name" | "buy_price" | "sell_price" | "created_at" | "updated_at";
+}
+
+//parametros del request
+export interface IProductRequestParams
+  extends IProductFilters,
+    IServiceRequestParamsWithPagination {}
+
+//contenido del response
+export interface Products extends IServiceResponse<ServerProduct> {}

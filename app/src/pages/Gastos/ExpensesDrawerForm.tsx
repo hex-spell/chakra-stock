@@ -33,6 +33,21 @@ const ExpensesDrawerForm: React.FC<IExpensesDrawerFormProps> = ({
       }}
       inputs={[
         {
+          name: "category_id",
+          title: "Categoría",
+          defaultValue: expenseData.category_id,
+          options: categories,
+          validationRules: {
+            required:
+              "Parece que no has creado ninguna categoría, hace eso primero",
+            pattern: {
+              value: /^[1-9]\d*$/,
+              message:
+                "Parece que no has creado ninguna categoría, hace eso primero",
+            },
+          },
+        },
+        {
           name: "description",
           title: "Descripción",
           defaultValue: expenseData.description,
@@ -57,21 +72,6 @@ const ExpensesDrawerForm: React.FC<IExpensesDrawerFormProps> = ({
             pattern: {
               value: /^-?[0-9]*$/,
               message: "El dinero debe ser numérico",
-            },
-          },
-        },
-        {
-          name: "category_id",
-          title: "Categoría",
-          defaultValue:
-            expenseData.category_id,
-          options: categories,
-          validationRules: {
-            required:
-              "Parece que no has creado ninguna categoría, hace eso primero",
-            pattern: {
-              value: /^[1-9]\d*$/,
-              message: "Parece que no has creado ninguna categoría, hace eso primero",
             },
           },
         },

@@ -1,12 +1,12 @@
 import { useEffect, useContext, useReducer, useCallback } from "react";
 import {
-  ServerExpense,
-  Expenses,
+  ServerProduct,
+  Products,
   Category,
   IServiceState,
-  IExpenseFilters,
+  IProductFilters,
   IServiceRequestParamsWithPagination,
-  Expense,
+  Product,
 } from "./interfaces";
 import { UserContext } from "../context/User";
 import {
@@ -19,12 +19,12 @@ import {
 } from "./helpers";
 
 const localapi = process.env.REACT_APP_ROOT_API;
-const expensesDataUri = localapi + "expenses";
+const expensesDataUri = localapi + "products";
 const expenseCategoriesDataUri = expensesDataUri + "/categories";
 
-const InitialState: IServiceState<Expenses, IExpenseFilters> = {
+const InitialState: IServiceState<Products, IProductFilters> = {
   categories: null,
-  filters: { search: "", category_id: null, order: "created_at" },
+  filters: { search: "", category_id: null, order: "name" },
   offset: 0,
   count: 0,
   results: {
@@ -34,11 +34,11 @@ const InitialState: IServiceState<Expenses, IExpenseFilters> = {
   },
 };
 
-const reducer = serverReducerFactory<Expenses, IExpenseFilters>();
+const reducer = serverReducerFactory<Products, IProductFilters>();
 
 //debería comenzar a hacer error handling con toasts
 
-const useExpensesService = () => {
+const useProductsService = () => {
   const [state, dispatch] = useReducer(reducer, InitialState);
   const { filters, offset, categories } = state;
 
@@ -47,17 +47,17 @@ const useExpensesService = () => {
     store: { token },
   } = useContext(UserContext);
 
-  const {updateFilters,loadMoreData} = pageControlsFactory<IExpenseFilters>(dispatch,offset);
+  const {updateFilters,loadMoreData} = pageControlsFactory<IProductFilters>(dispatch,offset);
 
   //funcion que obtiene los datos del server
-  const fetchExpenseCategories = useCallback(() => {
+  const fetchProductCategories = useCallback(() => {
     fetchCategoryFunctionFactory(expenseCategoriesDataUri, token, dispatch)();
   }, [token]);
 
   //funcion que obtiene los datos del server
-  const fetchExpenses = useCallback(
-    (params: IServiceRequestParamsWithPagination, filters: IExpenseFilters) => {
-      fetchFunctionFactory<ServerExpense, IExpenseFilters>(
+  const fetchProducts = useCallback(
+    (params: IServiceRequestParamsWithPagination, filters: IProductFilters) => {
+      fetchFunctionFactory<ServerProduct, IProductFilters>(
         expensesDataUri,
         dispatch
       )(params, filters);
@@ -65,57 +65,57 @@ const useExpensesService = () => {
     []
   );
 
-  //actualiza un gasto y despues refresca los datos con offset en 0
-  const postOrUpdateExpense = (data: Expense) =>
-    postFunctionFactory<Expense>(
+  //actualiza un contacto y despues refresca los datos con offset en 0
+  const postOrUpdateProduct = (data: Product) =>
+    postFunctionFactory<Product>(
       expensesDataUri,
       token,
-      ()=>fetchExpenses({ token, offset: 0 }, filters)
-    )(data, data.expense_id);
+      ()=>fetchProducts({ token, offset: 0 }, filters)
+    )(data, data.product_id);
 
-  const postOrUpdateExpenseCategory = (data: Category) =>
+  const postOrUpdateProductCategory = (data: Category) =>
     postFunctionFactory<Category>(
       expenseCategoriesDataUri,
       token,
-      fetchExpenseCategories
+      fetchProductCategories
     )(data, data.category_id);
 
   //elimina una categoria por id
-  const deleteExpenseCategoryById = (id: number) =>
+  const deleteProductCategoryById = (id: number) =>
     deleteByIdFunctionFactory(
       expenseCategoriesDataUri,
       "category_id",
       token,
-      ()=>fetchExpenseCategories()
+      ()=>fetchProductCategories()
     )(id);
 
-  //elimina un gasto por id
-  const deleteExpenseById = (id: number) =>
+  //elimina un producto por id
+  const deleteProductById = (id: number) =>
   deleteByIdFunctionFactory(
     expensesDataUri,
-    "expense_id",
+    "product_id",
     token,
-    ()=>fetchExpenses({ token, offset: 0 }, filters)
+    ()=>fetchProducts({ token, offset: 0 }, filters)
   )(id);
 
   //un listener que se triggerea en el primer render y cada vez que se cambian los filtros o el offset
   useEffect(() => {
-    fetchExpenses({ token, offset: 0 }, filters)
-  }, [token, filters, fetchExpenses]);
+    fetchProducts({ token, offset: 0 }, filters)
+  }, [token, filters, fetchProducts]);
 
   return {
     result: state.results,
     count: state.count,
     updateFilters,
     loadMoreData,
-    postOrUpdateExpense,
-    fetchExpenseCategories,
-    postOrUpdateExpenseCategory,
-    deleteExpenseCategoryById,
-    deleteExpenseById,
+    postOrUpdateProduct,
+    fetchProductCategories,
+    postOrUpdateProductCategory,
+    deleteProductCategoryById,
+    deleteProductById,
     categories,
     category_id : filters.category_id,
   };
 };
 
-export default useExpensesService;
+export default useProductsService;
