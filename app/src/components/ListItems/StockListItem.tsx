@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Text, Flex } from "@chakra-ui/core";
 import { SubText, MoneyText, ListItemBox } from "../Layout";
 import { dateHelper } from "../../services";
-import { FaMapMarkedAlt, FaCartArrowDown, FaCoins } from "react-icons/fa";
+import { FaCartArrowDown, FaCoins } from "react-icons/fa";
 
 interface IStockListItemProps {
   title: string;
