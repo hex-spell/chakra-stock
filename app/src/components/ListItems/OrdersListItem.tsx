@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Text, Checkbox } from "@chakra-ui/core";
 import { SubText, MoneyText, ListItemBox } from "../Layout";
+import { dateHelper } from "../../services";
 
 interface IOrdersListItemProps {
   name: string;
@@ -8,7 +9,7 @@ interface IOrdersListItemProps {
   delivered: boolean;
   sum: number;
   debt: number;
-  updatedAt: string;
+  updatedAt: Date;
   onClick: () => void;
 }
 
@@ -22,6 +23,8 @@ const OrdersListItem: React.FC<IOrdersListItemProps> = ({
   updatedAt,
   onClick
 }) => {
+  const updatedAtDate = new Date(updatedAt);
+  const formattedUpdatedAtDate = dateHelper(updatedAtDate);
   return (
     <div onClick={() => onClick()}>
       <ListItemBox>
@@ -37,7 +40,7 @@ const OrdersListItem: React.FC<IOrdersListItemProps> = ({
         <Box display="flex" flexDirection="column" textAlign="right">
           <Box><Text display="inline"> Suma: </Text><MoneyText ammount={sum}/></Box>
           <Box><Text display="inline"> Falta pagar: </Text><MoneyText ammount={debt} red/></Box>
-          <SubText>{updatedAt}</SubText>
+          <SubText>{formattedUpdatedAtDate}</SubText>
         </Box>
       </ListItemBox>
     </div>

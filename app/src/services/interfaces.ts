@@ -4,55 +4,10 @@ export interface Timestamps {
   updated_at: Date;
 }
 
-export interface Contact {
-  address: string;
-  contact_id: number;
-  money: number;
-  name: string;
-  role: "c" | "p";
-  phone: string;
-}
-
-export interface Expense {
-  description: string;
-  expense_id: number;
-  category_id: number;
-  sum: number;
-}
-
 export interface Category {
   name: string;
   category_id: number;
 }
-
-export interface Product {
-  product_id:number;
-  name:string;
-  sell_price:number;
-  buy_price:number; 
-  stock:number;
-  category_id:number;
-}
-
-interface ProductHistory extends Timestamps {
-  name: string;
-  sell_price: number;
-  buy_price: number;
-  product_id: number;
-  product_history_id: number;
-}
-
-export interface ServerProduct extends Timestamps {
-  stock: number;
-  product_id: number;
-  product_history_id: number;
-  category_id: number;
-  current: ProductHistory;
-}
-
-export interface ServerContact extends Contact, Timestamps {}
-
-export interface ServerExpense extends Expense, Timestamps {}
 
 //pattern from https://dev.to/camilomejia/fetch-data-with-react-hooks-and-typescript-390c
 interface ServiceInit {
@@ -101,7 +56,20 @@ export interface IServiceRequestParamsWithPagination {
 
 //CONTACTOS
 
+
+export interface Contact {
+  address: string;
+  contact_id: number;
+  money: number;
+  name: string;
+  role: "c" | "p";
+  phone: string;
+}
+
 //contenido del response
+export interface ServerContact extends Contact, Timestamps {}
+
+//estructura con status
 export interface Contacts extends IServiceResponse<ServerContact> {}
 
 export interface IContactFilters {
@@ -116,6 +84,15 @@ export interface IContactRequestParams
     IServiceRequestParamsWithPagination {}
 
 //GASTOS
+
+export interface Expense {
+  description: string;
+  expense_id: number;
+  category_id: number;
+  sum: number;
+}
+
+export interface ServerExpense extends Expense, Timestamps {}
 
 //filtros
 export interface IExpenseFilters {
@@ -137,6 +114,30 @@ export interface Categories extends IServiceResponse<Category> {}
 
 //STOCK
 
+export interface Product {
+  product_id:number;
+  name:string;
+  sell_price:number;
+  buy_price:number; 
+  stock:number;
+  category_id:number;
+}
+
+interface ProductHistory extends Timestamps {
+  name: string;
+  sell_price: number;
+  buy_price: number;
+  product_id: number;
+  product_history_id: number;
+}
+
+export interface ServerProduct extends Timestamps {
+  stock: number;
+  product_id: number;
+  product_history_id: number;
+  category_id: number;
+  current: ProductHistory;
+}
 //filtros
 export interface IProductFilters {
   search: string;
@@ -151,3 +152,35 @@ export interface IProductRequestParams
 
 //contenido del response
 export interface Products extends IServiceResponse<ServerProduct> {}
+
+//PEDIDOS
+
+export interface Order {
+    order_id: number;
+    completed: boolean;
+    type: string;
+    contact_id: number;
+    products_count: number;
+    paid: number;
+    sum: number;
+    delivered: boolean;
+    contact: {
+      name: string;
+      address: string;
+      phone: string;
+      contact_id: number;
+    }
+}
+
+export interface ServerOrder extends Order, Timestamps {};
+
+export interface Orders extends IServiceResponse<ServerOrder> {};
+
+//filtros
+export interface IOrderFilters {
+  search: string;
+  completed: "completed"|"not_completed"|"all";
+  delivered: "delivered"|"not_delivered"|"all";
+  type: "a"|"b";
+  //order: "description" | "sum" | "created_at";
+}
