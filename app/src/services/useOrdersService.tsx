@@ -1,11 +1,11 @@
 import { useEffect, useContext, useReducer, useCallback } from "react";
 import {
-  Order,
   IServiceState,
   Orders,
   IOrderFilters,
   ServerOrder,
   IServiceRequestParamsWithPagination,
+  postOrUpdateOrder
 } from "./interfaces";
 import { UserContext } from "../context/User";
 import {
@@ -75,8 +75,8 @@ const useOrdersService = () => {
    )(id);
 
   //actualiza un ordero y despues refresca los datos con offset en 0
-  const postOrUpdateOrder = (data: Order) =>
-    postFunctionFactory<Order>(ordersDataUri, token, () =>
+  const postOrUpdateOrder = (data: postOrUpdateOrder) =>
+    postFunctionFactory<postOrUpdateOrder>(ordersDataUri, token, () =>
       fetchOrders({ token, offset: 0 }, filters)
     )(data, data.order_id);
 

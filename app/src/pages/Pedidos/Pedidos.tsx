@@ -3,12 +3,14 @@ import { Page, ActionButton } from "../../components/Layout";
 import { FaListUl } from "react-icons/fa";
 import { useDisclosure } from "@chakra-ui/core";
 import { LayoutContext } from "../../context/Layout";
-import { useOrdersService } from "../../services";
+import { useOrdersService, useContactsService, } from "../../services";
+import { postOrUpdateOrder } from "../../services/interfaces";
 import {
   OrdersFilterForm,
   OrdersList,
   OrdersItemMenu,
   OrdersMainMenu,
+  OrdersDrawerForm,
 } from "./";
 import { Order } from "../../services/interfaces";
 
@@ -28,12 +30,6 @@ const ClickedItemInitialState: Order = {
       contact_id: 0,
     }
 };
-
-interface IOrdersMenuState {
-  title: string;
-  mode: "error" | "edit" | "create";
-  category_id: number;
-}
 
 export default function Pedidos() {
   //guarda datos del gasto que clickeaste para usarlos en un formulario
@@ -90,6 +86,10 @@ export default function Pedidos() {
     deleteOrderById,
   } = useOrdersService();
 
+  const {
+    contactsMenu
+  } = useContactsService();
+
   return (
     <Page title="Pedidos">
       {/* DROPDOWNS Y BARRA DE BUSQUEDA */}
@@ -124,12 +124,13 @@ export default function Pedidos() {
         onAddOrderClick={(title) => onAddOrderClick(title)}
       />
       {/* FORMULARIO DE MODIFICAR/ELIMINAR PEDIDOS */}
-      {/* <OrdersDrawerForm
+      <OrdersDrawerForm
+        contacts={contactsMenu}
         orderDrawerState={orderDrawerState}
         orderDrawerFormState={orderDrawerFormState}
-        submitFunction={(data: Order) => postOrUpdateOrder(data)}
+        submitFunction={(data: postOrUpdateOrder) => postOrUpdateOrder(data)}
         orderData={clickedItem}
-      /> */}
+      />
     </Page>
   );
 }

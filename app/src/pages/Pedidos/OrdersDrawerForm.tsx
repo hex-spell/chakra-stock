@@ -5,14 +5,14 @@ import { Order } from "../../services/interfaces";
 import { MenuOption } from "../../components/Layout/FilterDropdown";
 
 interface IOrdersDrawerFormProps {
-  categories: MenuOption[] | null;
+  contacts: MenuOption[];
   orderDrawerState: UseDisclosureReturn;
   orderDrawerFormState: {
     title: string;
     mode: string;
   };
   orderData: Order;
-  submitFunction: (data: string) => void;
+  submitFunction: (data: {order_id:number,contact_id:number,type:"a"|"b"}) => void;
 }
 
 const OrdersDrawerForm: React.FC<IOrdersDrawerFormProps> = ({
@@ -20,7 +20,7 @@ const OrdersDrawerForm: React.FC<IOrdersDrawerFormProps> = ({
   orderDrawerFormState,
   orderData,
   submitFunction,
-  categories,
+  contacts,
 }) => {
   const { order_id } = orderData;
   return (
@@ -28,53 +28,31 @@ const OrdersDrawerForm: React.FC<IOrdersDrawerFormProps> = ({
       title={orderDrawerFormState.title}
       isOpen={orderDrawerState.isOpen}
       onClose={orderDrawerState.onClose}
-      onFormSubmit={({ sum, }) => {
-        submitFunction(sum);
+      onFormSubmit={({ contact_id, type }) => {
+        console.log({order_id, contact_id, type});
+        submitFunction({order_id, contact_id, type});
       }}
       inputs={[
-        /* {
-          name: "category_id",
-          title: "Categoría",
-          defaultValue: orderData.category_id,
-          options: categories,
+        {
+          name: "contact_id",
+          title: "Contacto",
+          defaultValue: orderData.contact.contact_id ? orderData.contact.contact_id : contacts[0],
+          options: contacts,
           validationRules: {
             required:
-              "Parece que no has creado ninguna categoría, hace eso primero",
-            pattern: {
-              value: /^[1-9]\d*$/,
-              message:
-                "Parece que no has creado ninguna categoría, hace eso primero",
-            },
+              "Parece que no has creado ningun contacto",
           },
         },
         {
-          name: "description",
-          title: "Descripción",
-          defaultValue: orderData.description,
+          name: "type",
+          title: "Tipo",
+          defaultValue: orderData.type ? orderData.type : "b",
+          options: [{name:"Compra",value:"a"},{name:"Venta",value:"b"}],
           validationRules: {
-            required: "Falta completar la descripcion",
-            minLength: {
-              value: 5,
-              message: "La descripcion debe tener mínimo 5 caracteres",
-            },
-            maxLength: {
-              value: 30,
-              message: "La descripcion debe tener máximo 30 caracteres",
-            },
+            required:
+              "Error en la seleccion de tipo",
           },
-        }, */
-        {
-          name: "sum",
-          title: "Suma",
-          defaultValue: orderData.sum,
-          validationRules: {
-            required: false,
-            pattern: {
-              value: /^-?[0-9]*$/,
-              message: "El dinero debe ser numérico",
-            },
-          },
-        },
+        }
       ]}
     />
   );

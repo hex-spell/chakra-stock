@@ -9,6 +9,8 @@ export interface Category {
   category_id: number;
 }
 
+
+
 //pattern from https://dev.to/camilomejia/fetch-data-with-react-hooks-and-typescript-390c
 interface ServiceInit {
   status: "init";
@@ -170,6 +172,12 @@ export interface Order {
       phone: string;
       contact_id: number;
     }
+}
+
+export interface postOrUpdateOrder {
+  order_id: number;
+  contact_id: number;
+  type: "a"|"b";
 }
 
 export interface ServerOrder extends Order, Timestamps {};

@@ -1,7 +1,6 @@
 import React from "react";
 import { ListItemStack, LoadMoreButton } from "../../components/Layout";
 import {
-  TransactionsListItem,
   OrdersListItem,
 } from "../../components/ListItems";
 import { ServerOrder, Order } from "../../services/interfaces";

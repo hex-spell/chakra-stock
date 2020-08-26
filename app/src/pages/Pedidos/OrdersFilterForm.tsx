@@ -32,24 +32,20 @@ const OrdersFilterForm: React.FC<IOrdersFilterFormProps> = ({
           {
             name: "completed",
             menu: [
-              {
-                name: "Completados y Pendientes",
-                value: "all",
-              },
-              { name: "Completados", value: "completed" },
               { name: "Pendientes", value: "not_completed" },
+              { name: "Completadas", value: "completed" },    
             ],
-            defaultValue: "all",
+            defaultValue: "not_completed",
           },
           {
             name: "delivered",
             menu: [
               {
-                name: "Entregados y Pendientes",
+                name: "Entregas finalizadas y pendientes",
                 value: "all",
               },
-              { name: "Entregados", value: "delivered" },
-              { name: "Pendientes", value: "not_delivered" },
+              { name: "Entregas finalizadas", value: "delivered" },
+              { name: "Entregas pendientes", value: "not_delivered" },
             ],
             defaultValue: "all",
           },

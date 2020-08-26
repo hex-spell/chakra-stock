@@ -12,6 +12,7 @@ import {
   IServiceRequestParamsWithPagination,
   Categories,
 } from "./interfaces";
+import { MenuOption } from "../components/Layout/FilterDropdown";
 
 export function serverReducerFactory<Entity, Filters>() {
   return (
@@ -105,6 +106,25 @@ export function fetchCategoryFunctionFactory(
           type: SET_CATEGORIES,
           payload: response.data.result,
         })}
+      )
+      .catch((error) => {
+        throw new Error("no se han podido obtener datos del server");
+      });
+  };
+}
+
+export function fetchMenuOptionFunctionFactory(
+  dataUri: string,
+  token: string,
+  setter: (data:MenuOption[])=>void
+) {
+  return () => {
+    axios
+      .get(dataUri, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response: AxiosResponse<{result:MenuOption[]}>) =>{
+        setter(response.data.result)}
       )
       .catch((error) => {
         throw new Error("no se han podido obtener datos del server");

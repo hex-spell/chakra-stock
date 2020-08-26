@@ -1,4 +1,4 @@
-import { useEffect, useContext, useReducer, useCallback } from "react";
+import { useEffect, useContext, useReducer, useCallback, useState } from "react";
 import {
   Contact,
   IServiceState,
@@ -13,7 +13,9 @@ import {
   fetchFunctionFactory,
   postFunctionFactory,
   pageControlsFactory,
+  fetchMenuOptionFunctionFactory,
 } from "./helpers";
+import { MenuOption } from "../components/Layout/FilterDropdown";
 
 const localapi = process.env.REACT_APP_ROOT_API;
 const contactsDataUri = localapi + "contacts";
@@ -56,6 +58,12 @@ const useContactsService = () => {
     []
   );
 
+  const [contactsMenu,setContactsMenu] = useState<MenuOption[]>([]);
+
+  const fetchContactsMinified = useCallback(()=>{
+    fetchMenuOptionFunctionFactory(`${contactsDataUri}/menu`,token,setContactsMenu)();
+  },[token])
+
   //actualiza un contacto y despues refresca los datos con offset en 0
   const postOrUpdateContact = (data: Contact) =>
     postFunctionFactory<Contact>(
@@ -67,7 +75,8 @@ const useContactsService = () => {
   //un listener que se triggerea en el primer render y cada vez que se cambian los filtros o el offset
   useEffect(() => {
     fetchContacts({ offset, token }, filters);
-  }, [filters, count, offset, token, fetchContacts]);
+    fetchContactsMinified();
+  }, [filters, count, offset, token, fetchContacts, fetchContactsMinified]);
 
   return {
     result: state.results,
@@ -75,6 +84,8 @@ const useContactsService = () => {
     updateFilters,
     loadMoreData,
     postOrUpdateContact,
+    contactsMenu,
+    fetchContactsMinified
   };
 };
 
