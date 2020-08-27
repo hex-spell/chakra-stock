@@ -49,7 +49,7 @@ const OrdersFilterForm: React.FC<IOrdersFilterFormProps> = ({
             ],
             defaultValue: "all",
           },
-          {
+          /* {
             name: "order",
             menu: [
               {
@@ -60,7 +60,7 @@ const OrdersFilterForm: React.FC<IOrdersFilterFormProps> = ({
               { name: "Ordenar por suma", value: "sum" },
             ],
             defaultValue: "created_at",
-          },
+          }, */
         ],
       }}
     />

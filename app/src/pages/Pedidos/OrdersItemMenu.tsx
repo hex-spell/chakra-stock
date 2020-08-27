@@ -7,8 +7,8 @@ import { Order } from "../../services/interfaces";
 interface IOrdersItemMenuProps {
   //estado de este drawer
   listItemDrawerState: UseDisclosureReturn;
-  //estado del drawer del formulario de modificar gastos
-  orderDrawerState: UseDisclosureReturn;
+  //estado del drawer del formulario de modificar items de pedido
+  orderProductsDrawerState: UseDisclosureReturn;
   //estado del drawer de "estas seguro?"
   confirmationDrawerState: UseDisclosureReturn;
   //datos del ordero clickeado
@@ -21,7 +21,7 @@ interface IOrdersItemMenuProps {
 
 const OrdersItemMenu: React.FC<IOrdersItemMenuProps> = ({
   listItemDrawerState,
-  orderDrawerState,
+  orderProductsDrawerState,
   confirmationDrawerState,
   orderData,
   setConfirmationMenuData,
@@ -35,8 +35,8 @@ const OrdersItemMenu: React.FC<IOrdersItemMenuProps> = ({
       title={`Menu: pedido de ${name}`}
       menu={[
         {
-          name: "Modificar",
-          action: () => orderDrawerState.onOpen(),
+          name: "Agregar Productos",
+          action: () => orderProductsDrawerState.onOpen(),
         },
         {
           name: "Eliminar",

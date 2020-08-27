@@ -13,6 +13,7 @@ import {
   OrdersDrawerForm,
 } from "./";
 import { Order } from "../../services/interfaces";
+import OrderProductsForm from "./OrderProductsForm";
 
 const ClickedItemInitialState: Order = {
   order_id: 0,
@@ -45,6 +46,9 @@ export default function Pedidos() {
 
   //menu de crear/modifcar gasto
   const orderDrawerState = useDisclosure();
+
+  //menu de modificar productos
+  const orderProductsDrawerState= useDisclosure();
 
 
   //define si el formulario de gastos va a ser usado para modificar uno existente o agregar uno nuevo
@@ -112,7 +116,7 @@ export default function Pedidos() {
       {/* MENU DE GASTO ESPECIFICO */}
       <OrdersItemMenu
         listItemDrawerState={listItemDrawerState}
-        orderDrawerState={orderDrawerState}
+        orderProductsDrawerState={orderProductsDrawerState}
         confirmationDrawerState={confirmationDrawerState}
         orderData={clickedItem}
         setConfirmationMenuData={setConfirmationMenuData}
@@ -130,6 +134,12 @@ export default function Pedidos() {
         orderDrawerFormState={orderDrawerFormState}
         submitFunction={(data: postOrUpdateOrder) => postOrUpdateOrder(data)}
         orderData={clickedItem}
+      />
+      <OrderProductsForm
+        isOpen={orderProductsDrawerState.isOpen}
+        onClose= {orderProductsDrawerState.onClose}
+        onFormSubmit={()=>alert("hello")}
+        deleteFunction={()=>alert("hello")}
       />
     </Page>
   );
