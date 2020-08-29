@@ -1,8 +1,7 @@
-import React, { ReactText } from "react";
+import React, { ReactText, useEffect } from "react";
 import { FilterStack } from "../../components/Layout";
 import { useForm, ValidationOptions, Controller } from "react-hook-form";
 import {
-  Input,
   FormControl,
   Drawer,
   DrawerOverlay,
@@ -10,28 +9,35 @@ import {
   DrawerHeader,
   DrawerContent,
   DrawerBody,
-  InputGroup,
   Button,
-  InputLeftAddon,
-  FormErrorMessage,
   Flex,
   Box,
   Stack,
   NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
   SliderTrack,
   Slider,
   SliderFilledTrack,
   SliderThumb,
+  Text,
 } from "@chakra-ui/core";
 import { FilterDropdown } from "../../components/Layout";
+import {
+  OrderProduct,
+  MinifiedProduct,
+  Order,
+} from "../../services/interfaces";
+import { MenuOption } from "../../components/Layout/FilterDropdown";
 
 interface IOrderProductsFormProps {
+  clickedItem: Order;
   isOpen: boolean;
   onClose: () => void;
+  fetchOrderProductsByOrderId: (order_id: number) => void;
+  orderProducts: OrderProduct[] | null;
+  minifiedProductsList: MinifiedProduct[] | null;
+  fetchMinifiedProductsList: () => void;
+  fetchProductCategories: () => void;
+  categories: MenuOption[] | null;
   onFormSubmit: (values: Record<string, any>) => void;
   deleteFunction?: (id: number) => void;
 }
@@ -41,7 +47,30 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
   onClose,
   onFormSubmit,
   deleteFunction,
+  fetchOrderProductsByOrderId,
+  orderProducts,
+  minifiedProductsList,
+  fetchMinifiedProductsList,
+  fetchProductCategories,
+  categories,
+  clickedItem: {
+    order_id,
+    contact: { name },
+  },
 }) => {
+  useEffect(() => {
+    if (order_id) {
+      fetchOrderProductsByOrderId(order_id);
+    }
+    fetchMinifiedProductsList();
+    fetchProductCategories();
+  }, [
+    fetchMinifiedProductsList,
+    fetchProductCategories,
+    fetchOrderProductsByOrderId,
+    order_id,
+  ]);
+
   const {
     register,
     handleSubmit,
@@ -58,7 +87,7 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
 
   //esto lo tengo que registrar con un controller, pero ahora esta para figurar
   const [value, setValue] = React.useState(0);
-  const handleChange = (value:any) => setValue(parseInt(value));
+  const handleChange = (value: any) => setValue(parseInt(value));
 
   const onDelete = (
     deleteFieldName: string,
@@ -74,8 +103,14 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>{"Productos del pedido"}</DrawerHeader>
+        <DrawerHeader>{`Productos del pedido de ${name}`}</DrawerHeader>
         <DrawerBody>
+          <Box>
+            {orderProducts &&
+              orderProducts.map((product: OrderProduct) => (
+                <Text>{product.product_version.name}</Text>
+              ))}
+          </Box>
           {/* ESTA MINIFUNCION EN EL FORMCONTROL BUSCA SI TIENE ERRORES EL OBJETO, HACIENDO TYPECASTING A BOOLEAN TODAS SUS PROPIEDADES */}
           <FormControl
             isInvalid={Object.values(errors).find((value) => !!value)}
@@ -90,10 +125,11 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
                       name="categoria"
                       as={({ onChange, value, name }) => (
                         <FilterDropdown
-                          menu={[
-                            { name: "Especias", value: 1 },
-                            { name: "Condimentos", value: 2 },
-                          ]}
+                          menu={
+                            categories
+                              ? categories
+                              : [{ name: "...", value: 1 }]
+                          }
                           onChange={(e) => onChange(e.target.value)}
                           defaultValue={value}
                           name={name}
@@ -108,10 +144,16 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
                       name="producto"
                       as={({ onChange, value, name }) => (
                         <FilterDropdown
-                          menu={[
-                            { name: "Mani 1kg", value: 1 },
-                            { name: "Arroz integral", value: 2 },
-                          ]}
+                          menu={
+                            minifiedProductsList
+                              ? minifiedProductsList.map(
+                                  ({ name, product_id }) => ({
+                                    name,
+                                    value: product_id,
+                                  })
+                                )
+                              : [{ name: "...", value: 1 }]
+                          }
                           onChange={(e) => onChange(e.target.value)}
                           defaultValue={value}
                           name={name}
@@ -120,25 +162,20 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
                     />
                   </Box>
                   <Box>
-                    {/* <NumberInput
-                      defaultValue={15}
-                      max={30}
-                      clampValueOnBlur={false}
-                    >
-                      <NumberInputField />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                    </NumberInput> */}
                     <Flex mr={3} mb={5}>
                       <NumberInput
                         maxW="100px"
                         mr="2rem"
                         value={value}
-                        onChange={(n:ReactText)=>handleChange(n)}
+                        onChange={(n: ReactText) => handleChange(n)}
                       />
-                      <Slider max={30} min={1} flex="1"  value={value} onChange={(n:ReactText)=>handleChange(n)}>
+                      <Slider
+                        max={30}
+                        min={1}
+                        flex="1"
+                        value={value}
+                        onChange={(n: ReactText) => handleChange(n)}
+                      >
                         <SliderTrack />
                         <SliderFilledTrack />
                         <SliderThumb

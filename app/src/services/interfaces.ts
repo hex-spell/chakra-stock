@@ -9,8 +9,6 @@ export interface Category {
   category_id: number;
 }
 
-
-
 //pattern from https://dev.to/camilomejia/fetch-data-with-react-hooks-and-typescript-390c
 interface ServiceInit {
   status: "init";
@@ -57,7 +55,6 @@ export interface IServiceRequestParamsWithPagination {
 }
 
 //CONTACTOS
-
 
 export interface Contact {
   address: string;
@@ -117,12 +114,20 @@ export interface Categories extends IServiceResponse<Category> {}
 //STOCK
 
 export interface Product {
-  product_id:number;
-  name:string;
-  sell_price:number;
-  buy_price:number; 
-  stock:number;
-  category_id:number;
+  product_id: number;
+  name: string;
+  sell_price: number;
+  buy_price: number;
+  stock: number;
+  category_id: number;
+}
+
+export interface MinifiedProduct {
+    name: string;
+    price: number;
+    stock: number;
+    product_id: number;
+    category_id: number;
 }
 
 interface ProductHistory extends Timestamps {
@@ -155,40 +160,60 @@ export interface IProductRequestParams
 //contenido del response
 export interface Products extends IServiceResponse<ServerProduct> {}
 
+export interface MinifiedProducts extends IServiceResponse<MinifiedProduct> {}
+
 //PEDIDOS
 
+export interface OrderProductHistory {
+  product_id: number;
+  product_history_id: number;
+  name: string;
+  sell_price: number;
+}
+
+export interface OrderProduct {
+  ammount: number;
+  delivered: number;
+  product_id: number;
+  product_history_id: number;
+  current_version?: OrderProductHistory;
+  product_version: OrderProductHistory;
+}
+
 export interface Order {
-    order_id: number;
-    completed: boolean;
-    type: string;
+  order_id: number;
+  completed: boolean;
+  type: string;
+  contact_id: number;
+  products_count: number;
+  paid: number;
+  sum: number;
+  delivered: boolean;
+  contact: {
+    name: string;
+    address: string;
+    phone: string;
     contact_id: number;
-    products_count: number;
-    paid: number;
-    sum: number;
-    delivered: boolean;
-    contact: {
-      name: string;
-      address: string;
-      phone: string;
-      contact_id: number;
-    }
+  };
 }
 
 export interface postOrUpdateOrder {
   order_id: number;
   contact_id: number;
-  type: "a"|"b";
+  type: "a" | "b";
 }
 
-export interface ServerOrder extends Order, Timestamps {};
+export interface ServerOrder extends Order, Timestamps {}
 
-export interface Orders extends IServiceResponse<ServerOrder> {};
+export interface Orders extends IServiceResponse<ServerOrder> {}
+
+export interface OrderProducts extends IServiceResponse<OrderProduct> {}
 
 //filtros
 export interface IOrderFilters {
   search: string;
-  completed: "completed"|"not_completed"|"all";
-  delivered: "delivered"|"not_delivered"|"all";
-  type: "a"|"b";
+  completed: "completed" | "not_completed" | "all";
+  delivered: "delivered" | "not_delivered" | "all";
+  type: "a" | "b";
   //order: "description" | "sum" | "created_at";
 }

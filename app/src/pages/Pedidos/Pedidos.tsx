@@ -3,7 +3,11 @@ import { Page, ActionButton } from "../../components/Layout";
 import { FaListUl } from "react-icons/fa";
 import { useDisclosure } from "@chakra-ui/core";
 import { LayoutContext } from "../../context/Layout";
-import { useOrdersService, useContactsService, } from "../../services";
+import {
+  useOrdersService,
+  useContactsService,
+  useProductsService,
+} from "../../services";
 import { postOrUpdateOrder } from "../../services/interfaces";
 import {
   OrdersFilterForm,
@@ -17,19 +21,19 @@ import OrderProductsForm from "./OrderProductsForm";
 
 const ClickedItemInitialState: Order = {
   order_id: 0,
-    completed: false,
-    type: "",
+  completed: false,
+  type: "",
+  contact_id: 0,
+  products_count: 0,
+  paid: 0,
+  sum: 0,
+  delivered: false,
+  contact: {
+    name: "",
+    address: "",
+    phone: "",
     contact_id: 0,
-    products_count: 0,
-    paid: 0,
-    sum: 0,
-    delivered: false,
-    contact: {
-      name: "",
-      address: "",
-      phone: "",
-      contact_id: 0,
-    }
+  },
 };
 
 export default function Pedidos() {
@@ -48,8 +52,7 @@ export default function Pedidos() {
   const orderDrawerState = useDisclosure();
 
   //menu de modificar productos
-  const orderProductsDrawerState= useDisclosure();
-
+  const orderProductsDrawerState = useDisclosure();
 
   //define si el formulario de gastos va a ser usado para modificar uno existente o agregar uno nuevo
   const [orderDrawerFormState, setOrderMenuFormState] = useState({
@@ -63,7 +66,7 @@ export default function Pedidos() {
   );
 
   //almacena los datos del item clickeado y modifica el estado del formulario de gastos
-  const onItemClick = (data:Order) => {
+  const onItemClick = (data: Order) => {
     setClickedItem(data);
     setOrderMenuFormState({
       title: `Modificar pedido de ${data.contact.name}`,
@@ -88,18 +91,25 @@ export default function Pedidos() {
     loadMoreData,
     postOrUpdateOrder,
     deleteOrderById,
+    fetchOrderProductsByOrderId,
+    orderProducts,
   } = useOrdersService();
 
+  //usar este servicios esta fetcheando datos al pedo, tengo que mover los useEffect del hook a las paginas
+  const { contactsMenu } = useContactsService();
+
+  //usar este servicios esta fetcheando datos al pedo, tengo que mover los useEffect del hook a las paginas
   const {
-    contactsMenu
-  } = useContactsService();
+    minifiedProductsList,
+    fetchMinifiedProductsList,
+    fetchProductCategories,
+    categories
+  } = useProductsService();
 
   return (
     <Page title="Pedidos">
       {/* DROPDOWNS Y BARRA DE BUSQUEDA */}
-      <OrdersFilterForm
-        updateFilters={updateFilters}
-      />
+      <OrdersFilterForm updateFilters={updateFilters} />
       {/* LISTA DE GASTOS */}
       <OrdersList
         result={result}
@@ -136,10 +146,17 @@ export default function Pedidos() {
         orderData={clickedItem}
       />
       <OrderProductsForm
+        clickedItem={clickedItem}
         isOpen={orderProductsDrawerState.isOpen}
-        onClose= {orderProductsDrawerState.onClose}
-        onFormSubmit={()=>alert("hello")}
-        deleteFunction={()=>alert("hello")}
+        onClose={orderProductsDrawerState.onClose}
+        fetchOrderProductsByOrderId={fetchOrderProductsByOrderId}
+        orderProducts={orderProducts}
+        minifiedProductsList={minifiedProductsList}
+        fetchMinifiedProductsList={fetchMinifiedProductsList}
+        fetchProductCategories={fetchProductCategories}
+        onFormSubmit={() => alert("hello")}
+        deleteFunction={() => alert("hello")}
+        categories={categories}
       />
     </Page>
   );

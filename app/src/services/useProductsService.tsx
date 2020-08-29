@@ -1,4 +1,10 @@
-import { useEffect, useContext, useReducer, useCallback } from "react";
+import {
+  useEffect,
+  useContext,
+  useReducer,
+  useCallback,
+  useState,
+} from "react";
 import {
   ServerProduct,
   Products,
@@ -7,6 +13,8 @@ import {
   IProductFilters,
   IServiceRequestParamsWithPagination,
   Product,
+  MinifiedProduct,
+  MinifiedProducts,
 } from "./interfaces";
 import { UserContext } from "../context/User";
 import {
@@ -17,10 +25,11 @@ import {
   deleteByIdFunctionFactory,
   pageControlsFactory,
 } from "./helpers";
+import Axios, { AxiosResponse } from "axios";
 
 const localapi = process.env.REACT_APP_ROOT_API;
-const expensesDataUri = localapi + "products";
-const expenseCategoriesDataUri = expensesDataUri + "/categories";
+export const productsDataUri = localapi + "products";
+export const productCategoriesDataUri = productsDataUri + "/categories";
 
 const InitialState: IServiceState<Products, IProductFilters> = {
   categories: null,
@@ -47,35 +56,48 @@ const useProductsService = () => {
     store: { token },
   } = useContext(UserContext);
 
-  const {updateFilters,loadMoreData} = pageControlsFactory<IProductFilters>(dispatch,offset);
+  const { updateFilters, loadMoreData } = pageControlsFactory<IProductFilters>(
+    dispatch,
+    offset
+  );
 
   //funcion que obtiene los datos del server
   const fetchProductCategories = useCallback(() => {
-    fetchCategoryFunctionFactory(expenseCategoriesDataUri, token, dispatch)();
+    fetchCategoryFunctionFactory(productCategoriesDataUri, token, dispatch)();
   }, [token]);
 
   //funcion que obtiene los datos del server
   const fetchProducts = useCallback(
     (params: IServiceRequestParamsWithPagination, filters: IProductFilters) => {
       fetchFunctionFactory<ServerProduct, IProductFilters>(
-        expensesDataUri,
+        productsDataUri,
         dispatch
       )(params, filters);
     },
     []
   );
 
-  //actualiza un contacto y despues refresca los datos con offset en 0
+  const [minifiedProductsList, setMinifiedProductsList] = useState<
+    MinifiedProduct[] | null
+  >(null);
+
+  const fetchMinifiedProductsList = useCallback(() => {
+    Axios.get(`${productsDataUri}/list`, {
+      headers: { Authorization: `Bearer ${token}` },
+    }).then((response: AxiosResponse<MinifiedProducts>) =>
+      setMinifiedProductsList(response.data.result)
+    );
+  }, [token]);
+
+  //actualiza un producto y despues refresca los datos con offset en 0
   const postOrUpdateProduct = (data: Product) =>
-    postFunctionFactory<Product>(
-      expensesDataUri,
-      token,
-      ()=>fetchProducts({ token, offset: 0 }, filters)
+    postFunctionFactory<Product>(productsDataUri, token, () =>
+      fetchProducts({ token, offset: 0 }, filters)
     )(data, data.product_id);
 
   const postOrUpdateProductCategory = (data: Category) =>
     postFunctionFactory<Category>(
-      expenseCategoriesDataUri,
+      productCategoriesDataUri,
       token,
       fetchProductCategories
     )(data, data.category_id);
@@ -83,24 +105,21 @@ const useProductsService = () => {
   //elimina una categoria por id
   const deleteProductCategoryById = (id: number) =>
     deleteByIdFunctionFactory(
-      expenseCategoriesDataUri,
+      productCategoriesDataUri,
       "category_id",
       token,
-      ()=>fetchProductCategories()
+      () => fetchProductCategories()
     )(id);
 
   //elimina un producto por id
   const deleteProductById = (id: number) =>
-  deleteByIdFunctionFactory(
-    expensesDataUri,
-    "product_id",
-    token,
-    ()=>fetchProducts({ token, offset: 0 }, filters)
-  )(id);
+    deleteByIdFunctionFactory(productsDataUri, "product_id", token, () =>
+      fetchProducts({ token, offset: 0 }, filters)
+    )(id);
 
   //un listener que se triggerea en el primer render y cada vez que se cambian los filtros o el offset
   useEffect(() => {
-    fetchProducts({ token, offset: 0 }, filters)
+    fetchProducts({ token, offset: 0 }, filters);
   }, [token, filters, fetchProducts]);
 
   return {
@@ -114,7 +133,9 @@ const useProductsService = () => {
     deleteProductCategoryById,
     deleteProductById,
     categories,
-    category_id : filters.category_id,
+    category_id: filters.category_id,
+    minifiedProductsList,
+    fetchMinifiedProductsList
   };
 };
 

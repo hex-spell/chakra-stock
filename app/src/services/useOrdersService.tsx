@@ -1,11 +1,21 @@
-import { useEffect, useContext, useReducer, useCallback } from "react";
+import {
+  useEffect,
+  useContext,
+  useReducer,
+  useCallback,
+  useState,
+} from "react";
 import {
   IServiceState,
   Orders,
   IOrderFilters,
   ServerOrder,
   IServiceRequestParamsWithPagination,
-  postOrUpdateOrder
+  postOrUpdateOrder,
+  OrderProduct,
+  OrderProducts,
+  MinifiedProduct,
+  MinifiedProducts,
 } from "./interfaces";
 import { UserContext } from "../context/User";
 import {
@@ -14,7 +24,13 @@ import {
   postFunctionFactory,
   pageControlsFactory,
   deleteByIdFunctionFactory,
+  fetchCategoryFunctionFactory,
 } from "./helpers";
+import Axios, { AxiosResponse } from "axios";
+import {
+  productsDataUri,
+  productCategoriesDataUri,
+} from "./useProductsService";
 
 const localapi = process.env.REACT_APP_ROOT_API;
 const ordersDataUri = localapi + "orders";
@@ -54,25 +70,41 @@ const useOrdersService = () => {
     offset
   );
 
+  //esto queda fuera del reducer porque es muy especifico
+  const [orderProducts, setOrderProducts] = useState<OrderProduct[] | null>(
+    null
+  );
+
   //funcion que obtiene los datos del server
   const fetchOrders = useCallback(
     (params: IServiceRequestParamsWithPagination, filters: IOrderFilters) => {
-      fetchFunctionFactory<ServerOrder, IOrderFilters>(
-        ordersDataUri,
-        dispatch
-      )(params, filters);
+      fetchFunctionFactory<ServerOrder, IOrderFilters>(ordersDataUri, dispatch)(
+        params,
+        filters
+      );
     },
     []
   );
 
-   //elimina un gasto por id
-   const deleteOrderById = (id: number) =>
-   deleteByIdFunctionFactory(
-     ordersDataUri,
-     "order_id",
-     token,
-     ()=>fetchOrders({ token, offset: 0 }, filters)
-   )(id);
+  //funcion que obtiene los productos de un pedido
+  const fetchOrderProductsByOrderId = useCallback(
+    (order_id: number) => {
+      Axios.get<OrderProducts>(`${ordersDataUri}/id/products`, {
+        headers: { Authorization: `Bearer ${token}` },
+        params: { order_id },
+      }).then((response: AxiosResponse<OrderProducts>) => {
+        setOrderProducts(response.data.result);
+        console.log(response);
+      });
+    },
+    [token]
+  );
+
+  //elimina un gasto por id
+  const deleteOrderById = (id: number) =>
+    deleteByIdFunctionFactory(ordersDataUri, "order_id", token, () =>
+      fetchOrders({ token, offset: 0 }, filters)
+    )(id);
 
   //actualiza un ordero y despues refresca los datos con offset en 0
   const postOrUpdateOrder = (data: postOrUpdateOrder) =>
@@ -91,7 +123,9 @@ const useOrdersService = () => {
     updateFilters,
     loadMoreData,
     postOrUpdateOrder,
-    deleteOrderById
+    deleteOrderById,
+    fetchOrderProductsByOrderId,
+    orderProducts,
   };
 };
 
