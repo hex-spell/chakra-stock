@@ -93,8 +93,8 @@ const DrawerForm: React.FC<IDrawerFormProps> = ({
                         <InputLeftAddon children={title} />
                         {/* SI EL OBJETO TIENE OPCIONES, TIENE QUE SER DROPDOWN */}
                         {options ? (
-                          <Controller
-                            defaultValue={defaultValue}
+                            <Controller
+                            defaultValue={options[0]? options[0].value : defaultValue}
                             rules={validationRules}
                             control={control}
                             name={name}
@@ -104,7 +104,7 @@ const DrawerForm: React.FC<IDrawerFormProps> = ({
                                 onChange={(e) => {
                                   onChange(e.target.value);
                                 }}
-                                defaultValue={defaultValue}
+                                defaultValue={value}
                                 name={name}
                               />
                             )}

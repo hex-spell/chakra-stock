@@ -1,4 +1,4 @@
-import React, { ReactText, useEffect } from "react";
+import React, { ReactText, useEffect, useState } from "react";
 import { FilterStack } from "../../components/Layout";
 import { useForm, ValidationOptions, Controller } from "react-hook-form";
 import {
@@ -19,12 +19,19 @@ import {
   SliderFilledTrack,
   SliderThumb,
   Text,
+  Accordion,
+  AccordionItem,
+  AccordionHeader,
+  AccordionPanel,
+  AccordionIcon,
+  FormLabel,
 } from "@chakra-ui/core";
 import { FilterDropdown } from "../../components/Layout";
 import {
   OrderProduct,
   MinifiedProduct,
   Order,
+  Category,
 } from "../../services/interfaces";
 import { MenuOption } from "../../components/Layout/FilterDropdown";
 
@@ -37,7 +44,7 @@ interface IOrderProductsFormProps {
   minifiedProductsList: MinifiedProduct[] | null;
   fetchMinifiedProductsList: () => void;
   fetchProductCategories: () => void;
-  categories: MenuOption[] | null;
+  categories: Category[] | null;
   onFormSubmit: (values: Record<string, any>) => void;
   deleteFunction?: (id: number) => void;
 }
@@ -58,27 +65,67 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
     contact: { name },
   },
 }) => {
-  useEffect(() => {
-    if (order_id) {
-      fetchOrderProductsByOrderId(order_id);
-    }
-    fetchMinifiedProductsList();
-    fetchProductCategories();
-  }, [
-    fetchMinifiedProductsList,
-    fetchProductCategories,
-    fetchOrderProductsByOrderId,
-    order_id,
-  ]);
-
   const {
     register,
     handleSubmit,
     formState,
     errors,
     control,
+    watch,
     getValues,
   } = useForm();
+
+  const [
+    filteredMinifiedProductsList,
+    setFilteredMinifiedProductsList,
+  ] = useState<MinifiedProduct[] | null>(null);
+
+  const selectedCategory = watch("category");
+
+  //obtiene categorias y productos del server
+  useEffect(() => {
+    fetchMinifiedProductsList();
+    fetchProductCategories();
+  }, [fetchMinifiedProductsList, fetchProductCategories]);
+
+  //obtiene los productos del pedido
+  useEffect(() => {
+    if (order_id) {
+      fetchOrderProductsByOrderId(order_id);
+    }
+  }, [fetchOrderProductsByOrderId, order_id]);
+
+  //filtra los menus por categoria y por productos que ya esten en el pedido
+  useEffect(() => {
+    console.log(selectedCategory);
+    console.log(categories);
+
+    let filteredMinifiedProductsList: MinifiedProduct[] = [];
+
+    if (
+      orderProducts &&
+      minifiedProductsList &&
+      (selectedCategory == 0 || selectedCategory === undefined)
+    ) {
+      filteredMinifiedProductsList = minifiedProductsList.filter(
+        (product) =>
+          !orderProducts.find(
+            (orderProduct) => orderProduct.product_id === product.product_id
+          )
+      );
+    }
+
+    if (orderProducts && minifiedProductsList && selectedCategory!=0 && selectedCategory!==undefined) {
+      filteredMinifiedProductsList = minifiedProductsList.filter(
+        (product) =>
+          !orderProducts.find(
+            (orderProduct) => orderProduct.product_id === product.product_id
+          ) && product.category_id == selectedCategory
+      );
+    }
+
+    setFilteredMinifiedProductsList(filteredMinifiedProductsList);
+  }, [orderProducts, minifiedProductsList, categories, selectedCategory]);
 
   const onSubmit = handleSubmit((values) => {
     onFormSubmit(values);
@@ -105,11 +152,34 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
         <DrawerCloseButton />
         <DrawerHeader>{`Productos del pedido de ${name}`}</DrawerHeader>
         <DrawerBody>
-          <Box>
-            {orderProducts &&
-              orderProducts.map((product: OrderProduct) => (
-                <Text>{product.product_version.name}</Text>
-              ))}
+          <Box height="30vh" overflowY="scroll">
+            {orderProducts && (
+              <Accordion allowToggle allowMultiple>
+                {orderProducts.map((product: OrderProduct) => (
+                  <AccordionItem>
+                    <AccordionHeader>
+                      <Box flex="1" textAlign="left">
+                        {`x${product.ammount} `}
+                        {product.product_version.name}
+                      </Box>
+                      <AccordionIcon />
+                    </AccordionHeader>
+                    <AccordionPanel pb={4}>
+                      <Stack direction="row">
+                        <Button
+                          variantColor="red"
+                          isLoading={formState.isSubmitting}
+                          onClick={() => alert("delete")}
+                          float="right"
+                        >
+                          Borrar
+                        </Button>
+                      </Stack>
+                    </AccordionPanel>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            )}
           </Box>
           {/* ESTA MINIFUNCION EN EL FORMCONTROL BUSCA SI TIENE ERRORES EL OBJETO, HACIENDO TYPECASTING A BOOLEAN TODAS SUS PROPIEDADES */}
           <FormControl
@@ -118,35 +188,41 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
             <form onSubmit={onSubmit}>
               <FilterStack>
                 <Stack justify="center">
+                  {categories && (
+                    <Box>
+                      <FormLabel htmlFor="category">Categoría</FormLabel>
+                      <Controller
+                        defaultValue={0}
+                        control={control}
+                        name="category"
+                        as={({ onChange, value, name }) => (
+                          <FilterDropdown
+                            menu={[
+                              { name: "Todas las categorías", value: 0 },
+                              ...categories.map((category: Category) => ({
+                                name: category.name,
+                                value: category.category_id,
+                              })),
+                            ]}
+                            onChange={(e) => onChange(e.target.value)}
+                            defaultValue={value}
+                            name={name}
+                          />
+                        )}
+                      />
+                    </Box>
+                  )}
                   <Box>
+                  <FormLabel htmlFor="product">Producto</FormLabel>
                     <Controller
                       defaultValue={1}
                       control={control}
-                      name="categoria"
+                      name="product"
                       as={({ onChange, value, name }) => (
                         <FilterDropdown
                           menu={
-                            categories
-                              ? categories
-                              : [{ name: "...", value: 1 }]
-                          }
-                          onChange={(e) => onChange(e.target.value)}
-                          defaultValue={value}
-                          name={name}
-                        />
-                      )}
-                    />
-                  </Box>
-                  <Box>
-                    <Controller
-                      defaultValue={1}
-                      control={control}
-                      name="producto"
-                      as={({ onChange, value, name }) => (
-                        <FilterDropdown
-                          menu={
-                            minifiedProductsList
-                              ? minifiedProductsList.map(
+                            filteredMinifiedProductsList /* minifiedProductsList */
+                              ? /* minifiedProductsList */ filteredMinifiedProductsList.map(
                                   ({ name, product_id }) => ({
                                     name,
                                     value: product_id,
@@ -162,6 +238,7 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
                     />
                   </Box>
                   <Box>
+                  <FormLabel htmlFor="ammount">Cantidad</FormLabel>
                     <Flex mr={3} mb={5}>
                       <NumberInput
                         maxW="100px"

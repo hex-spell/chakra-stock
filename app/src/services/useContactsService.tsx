@@ -75,8 +75,7 @@ const useContactsService = () => {
   //un listener que se triggerea en el primer render y cada vez que se cambian los filtros o el offset
   useEffect(() => {
     fetchContacts({ offset, token }, filters);
-    fetchContactsMinified();
-  }, [filters, count, offset, token, fetchContacts, fetchContactsMinified]);
+  }, [filters, count, offset, token, fetchContacts]);
 
   return {
     result: state.results,

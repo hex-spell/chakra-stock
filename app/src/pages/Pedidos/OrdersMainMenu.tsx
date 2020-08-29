@@ -15,7 +15,7 @@ const OrdersMainMenu: React.FC<IOrdersMainMenuProps> = ({
     <DynamicDrawerMenu
       isOpen={actionButtonDrawerState.isOpen}
       onClose={actionButtonDrawerState.onClose}
-      title="Menu: Gastos"
+      title="Menu: Pedidos"
       menu={[
         {
           name: "Registrar nuevo pedido",

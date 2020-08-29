@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Page, ActionButton } from "../../components/Layout";
 import { FaListUl } from "react-icons/fa";
 import { useDisclosure } from "@chakra-ui/core";
@@ -8,7 +8,7 @@ import {
   useContactsService,
   useProductsService,
 } from "../../services";
-import { postOrUpdateOrder } from "../../services/interfaces";
+import { postOrUpdateOrder, Category } from "../../services/interfaces";
 import {
   OrdersFilterForm,
   OrdersList,
@@ -96,14 +96,16 @@ export default function Pedidos() {
   } = useOrdersService();
 
   //usar este servicios esta fetcheando datos al pedo, tengo que mover los useEffect del hook a las paginas
-  const { contactsMenu } = useContactsService();
+  const { contactsMenu, fetchContactsMinified } = useContactsService();
+
+  useEffect(()=>{fetchContactsMinified()},[fetchContactsMinified]);
 
   //usar este servicios esta fetcheando datos al pedo, tengo que mover los useEffect del hook a las paginas
   const {
     minifiedProductsList,
     fetchMinifiedProductsList,
     fetchProductCategories,
-    categories
+    categories,
   } = useProductsService();
 
   return (
