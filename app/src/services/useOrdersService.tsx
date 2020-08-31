@@ -147,7 +147,7 @@ const useOrdersService = () => {
     fetchOrders({ offset, token }, filters);
   }, [filters, count, offset, token, fetchOrders]);
 
-  const update = () => fetchOrders({ offset, token }, filters);
+  const update = () => fetchOrders({ offset:0, token }, filters);
 
   return {
     result: state.results,
