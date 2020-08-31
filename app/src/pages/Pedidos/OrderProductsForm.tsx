@@ -25,6 +25,16 @@ import {
   AccordionIcon,
   FormLabel,
   IconButton,
+  List,
+  ListItem,
+  ListIcon,
+  Divider,
+  Stat,
+  StatLabel,
+  StatNumber,
+  StatHelpText,
+  StatArrow,
+  StatGroup,
 } from "@chakra-ui/core";
 import { FilterDropdown } from "../../components/Layout";
 import {
@@ -48,7 +58,7 @@ interface IOrderProductsFormProps {
   fetchMinifiedProductsList: () => void;
   fetchProductCategories: () => void;
   categories: Category[] | null;
-  onFormSubmit: (data: PostOrderProduct) => void;
+  onFormSubmit: (data: PostOrderProduct, callback: () => void) => void;
   deleteFunction: (data: DeleteOrderProduct) => void;
   update: () => void;
 }
@@ -154,18 +164,20 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
   ]);
 
   //busca el producto en el array y setea el maximo del slider
-  const findAndSetMax = useCallback((product_id:string|string,minifiedProductsList:MinifiedProduct[])=>{
-    const selectedProductInArray = minifiedProductsList.find(
-      (product) =>
-        product.product_id === parseInt(product_id)
-    );
-    setMaxProducts(
-      selectedProductInArray && selectedProductInArray.stock
-        ? selectedProductInArray.stock
-        : 0
-    );
-    setValue("ammount", 0)
-  },[setValue]);
+  const findAndSetMax = useCallback(
+    (product_id: string | string, minifiedProductsList: MinifiedProduct[]) => {
+      const selectedProductInArray = minifiedProductsList.find(
+        (product) => product.product_id === parseInt(product_id)
+      );
+      setMaxProducts(
+        selectedProductInArray && selectedProductInArray.stock
+          ? selectedProductInArray.stock
+          : 0
+      );
+      setValue("ammount", 1);
+    },
+    [setValue]
+  );
 
   //setea la cantidad maxima que podes definir en un orderproduct por el stock del producto y a la vez setea un producto si no esta seteado
   useEffect(() => {
@@ -177,25 +189,32 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
       !selectedProduct
     ) {
       setValue("product_id", filteredMinifiedProductsList[0].value);
-      findAndSetMax(filteredMinifiedProductsList[0].value,minifiedProductsList);
+      console.log("product", filteredMinifiedProductsList[0].value);
+      findAndSetMax(
+        filteredMinifiedProductsList[0].value,
+        minifiedProductsList
+      );
     }
-  }, [filteredMinifiedProductsList, setValue, minifiedProductsList, findAndSetMax, selectedProduct]);
-
+  }, [
+    filteredMinifiedProductsList,
+    setValue,
+    minifiedProductsList,
+    findAndSetMax,
+    selectedProduct,
+  ]);
 
   //setea la cantidad maxima que podes definir en un orderproduct por el stock del producto
   useEffect(() => {
     if (minifiedProductsList && selectedProduct) {
       findAndSetMax(selectedProduct, minifiedProductsList);
     }
-  }, [
-    minifiedProductsList,
-    findAndSetMax,
-    selectedProduct,
-  ]);
+  }, [minifiedProductsList, findAndSetMax, selectedProduct]);
 
   const onSubmit = handleSubmit(({ product_id, ammount }) => {
     console.log({ product_id, ammount, order_id });
-    onFormSubmit({ product_id, ammount, order_id });
+    onFormSubmit({ product_id, ammount, order_id }, () =>
+      setValue("product_id", undefined)
+    );
   });
 
   return (
@@ -208,11 +227,11 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
       placement="bottom"
     >
       <DrawerOverlay />
-      <DrawerContent>
+      <DrawerContent overflowY="scroll" maxHeight="100vh">
         <DrawerCloseButton />
         <DrawerHeader>{`Productos del pedido de ${name}`}</DrawerHeader>
         <DrawerBody>
-          <Box height="30vh" overflowY="scroll">
+          <Box height="25vh" overflowY="scroll">
             {orderProducts && (
               <Accordion allowToggle allowMultiple>
                 {orderProducts.map((product: OrderProduct) => (
@@ -225,6 +244,33 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
                       <AccordionIcon />
                     </AccordionHeader>
                     <AccordionPanel pb={4}>
+                      <List spacing={3}>
+                        <ListItem>
+                          <ListIcon icon="attachment" color="green.500" />
+                          Valor por unidad : $
+                          {product.product_version.sell_price}
+                        </ListItem>
+                        <ListItem>
+                          <ListIcon icon="attachment" color="green.500" />
+                          Valor total : $
+                          {product.product_version.sell_price * product.ammount}
+                        </ListItem>
+                        <ListItem>
+                          <ListIcon
+                            icon={
+                              product.delivered === product.ammount
+                                ? "check-circle"
+                                : "warning"
+                            }
+                            color={
+                              product.delivered === product.ammount
+                                ? "green.500"
+                                : "red.500"
+                            }
+                          />
+                          Entregados : {product.delivered}
+                        </ListItem>
+                      </List>
                       <Stack direction="row" justify="flex-end">
                         <IconButton
                           icon={FaTrashAlt}
@@ -249,108 +295,149 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
             )}
           </Box>
           {/* ESTA MINIFUNCION EN EL FORMCONTROL BUSCA SI TIENE ERRORES EL OBJETO, HACIENDO TYPECASTING A BOOLEAN TODAS SUS PROPIEDADES */}
-          <FormControl
-            isInvalid={Object.values(errors).find((value) => !!value)}
-          >
-            <form onSubmit={onSubmit}>
-              <FilterStack>
-                <Stack justify="center">
-                  {categories && (
-                    <Box>
-                      <FormLabel htmlFor="category">Categoría</FormLabel>
-                      <Controller
-                        defaultValue={0}
-                        control={control}
-                        name="category"
-                        as={({ onChange, value, name }) => (
-                          <FilterDropdown
-                            menu={[
-                              { name: "Todas las categorías", value: 0 },
-                              ...categories.map((category: Category) => ({
-                                name: category.name,
-                                value: category.category_id,
-                              })),
-                            ]}
-                            onChange={(e) => onChange(e.target.value)}
-                            defaultValue={value}
-                            name={name}
-                          />
-                        )}
-                      />
-                    </Box>
-                  )}
-                  {filteredMinifiedProductsList && (
-                    <Box>
-                      <FormLabel htmlFor="product_id">Producto</FormLabel>
-                      <Controller
-                        defaultValue={
-                          filteredMinifiedProductsList[0]
-                            ? filteredMinifiedProductsList[0].value
-                            : 1
-                        }
-                        control={control}
-                        name="product_id"
-                        as={({ onChange, value, name }) => (
-                          <FilterDropdown
-                            menu={filteredMinifiedProductsList}
-                            onChange={(e) => onChange(e.target.value)}
-                            defaultValue={value}
-                            name={name}
-                          />
-                        )}
-                      />
-                    </Box>
-                  )}
-                  {filteredMinifiedProductsList && (
-                    <Box>
-                      <FormLabel htmlFor="ammount">Cantidad</FormLabel>
-                      <Controller
-                        defaultValue={1}
-                        control={control}
-                        name="ammount"
-                        as={({ onChange, value, name }) => (
+          <Accordion allowToggle allowMultiple>
+            <AccordionItem>
+              <AccordionHeader>
+                <Box flex="1" textAlign="center">
+                  <FormLabel
+                    htmlFor="addproduct"
+                    textAlign="center"
+                    width="100%"
+                    fontWeight="bold"
+                  >
+                    Agregar un producto
+                  </FormLabel>
+                </Box>
+                <AccordionIcon />
+              </AccordionHeader>
+              <AccordionPanel>
+                <FormControl
+                  isInvalid={Object.values(errors).find((value) => !!value)}
+                >
+                  <form onSubmit={onSubmit} name="addproduct">
+                    <FilterStack>
+                      <Stack justify="center">
+                        {categories && (
                           <Box>
-                            <Flex mr={3} mb={5}>
-                              <NumberInput
-                                maxW="100px"
-                                mr="2rem"
-                                value={value}
-                                onChange={(n: ReactText) => onChange(n)}
-                              />
-                              <Slider
-                                max={maxProducts}
-                                min={1}
-                                flex="1"
-                                value={value}
-                                onChange={(n: ReactText) => onChange(n)}
-                              >
-                                <SliderTrack />
-                                <SliderFilledTrack />
-                                <SliderThumb
-                                  fontSize="sm"
-                                  width="32px"
-                                  height="20px"
-                                  children={value}
+                            <FormLabel htmlFor="category">Categoría</FormLabel>
+                            <Controller
+                              defaultValue={0}
+                              control={control}
+                              name="category"
+                              as={({ onChange, value, name }) => (
+                                <FilterDropdown
+                                  menu={[
+                                    { name: "Todas las categorías", value: 0 },
+                                    ...categories.map((category: Category) => ({
+                                      name: category.name,
+                                      value: category.category_id,
+                                    })),
+                                  ]}
+                                  onChange={(e) => onChange(e.target.value)}
+                                  defaultValue={value}
+                                  name={name}
                                 />
-                              </Slider>
-                            </Flex>
+                              )}
+                            />
                           </Box>
                         )}
-                      />
-                    </Box>
-                  )}
-                </Stack>
-                <Button
-                  variantColor="teal"
-                  isLoading={formState.isSubmitting}
-                  type="submit"
-                  float="right"
-                >
-                  Agregar
-                </Button>
-              </FilterStack>
-            </form>
-          </FormControl>
+                        {filteredMinifiedProductsList && (
+                          <Box>
+                            <FormLabel htmlFor="product_id">Producto</FormLabel>
+                            <Controller
+                              defaultValue={
+                                filteredMinifiedProductsList[0]
+                                  ? filteredMinifiedProductsList[0].value
+                                  : 1
+                              }
+                              control={control}
+                              name="product_id"
+                              as={({ onChange, value, name }) => (
+                                <FilterDropdown
+                                  menu={filteredMinifiedProductsList}
+                                  onChange={(e) => onChange(e.target.value)}
+                                  defaultValue={value}
+                                  name={name}
+                                />
+                              )}
+                            />
+                          </Box>
+                        )}
+                        {filteredMinifiedProductsList && (
+                          <Box>
+                            <FormLabel htmlFor="ammount">Cantidad</FormLabel>
+                            <Controller
+                              defaultValue={1}
+                              control={control}
+                              name="ammount"
+                              as={({ onChange, value, name }) => (
+                                <Box>
+                                  <Flex mr={3} mb={5}>
+                                    <NumberInput
+                                      maxW="100px"
+                                      mr="2rem"
+                                      value={value}
+                                      onChange={(n: ReactText) => onChange(n)}
+                                    />
+                                    <Slider
+                                      max={maxProducts}
+                                      min={1}
+                                      flex="1"
+                                      value={value}
+                                      onChange={(n: ReactText) => onChange(n)}
+                                    >
+                                      <SliderTrack />
+                                      <SliderFilledTrack />
+                                      <SliderThumb
+                                        fontSize="sm"
+                                        width="32px"
+                                        height="20px"
+                                        children={value}
+                                      />
+                                    </Slider>
+                                  </Flex>
+                                </Box>
+                              )}
+                            />
+                          </Box>
+                        )}
+                      </Stack>
+                      <Stack
+                        justify="space-between"
+                        direction="row"
+                        align="center"
+                      >
+                        {orderProducts && (
+                          <Stat>
+                            <StatLabel>Suma total del pedido</StatLabel>
+                            <StatNumber color="darkgreen">
+                              $
+                              {orderProducts.reduce(
+                                (acc, product) =>
+                                  acc +
+                                  product.ammount *
+                                    product.product_version.sell_price,
+                                0
+                              )}
+                            </StatNumber>
+                          </Stat>
+                        )}
+                        <Box>
+                          <Button
+                            variantColor="teal"
+                            isLoading={formState.isSubmitting}
+                            type="submit"
+                          >
+                            Agregar
+                          </Button>
+                        </Box>
+                      </Stack>
+                    </FilterStack>
+                  </form>
+                </FormControl>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
         </DrawerBody>
       </DrawerContent>
     </Drawer>

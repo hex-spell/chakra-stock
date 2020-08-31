@@ -8,6 +8,8 @@ import { ThemeProvider, CSSReset } from "@chakra-ui/core";
 import { UserContextProvider } from "./context/User";
 import LoginWrapper from "./components/Login";
 import { LayoutContextProvider } from "./context/Layout";
+import 'core-js/es/map';
+import 'core-js/es/set';
 
 
 //Raiz verdadera de la aplicacion. proveedores de los contextos, boilerplate de chakra y wrapper condicional de login

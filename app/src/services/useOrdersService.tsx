@@ -83,12 +83,15 @@ const useOrdersService = () => {
 
   //funcion que obtiene los productos de un pedido
   const fetchOrderProductsByOrderId = useCallback(
-    (order_id: number) => {
+    (order_id: number, callback?: () => void) => {
       Axios.get<OrderProducts>(`${ordersDataUri}/id/products`, {
         headers: { Authorization: `Bearer ${token}` },
         params: { order_id },
       }).then((response: AxiosResponse<OrderProducts>) => {
         setOrderProducts(response.data.result);
+        if (callback) {
+          callback();
+        }
         console.log(response);
       });
     },
@@ -96,15 +99,20 @@ const useOrdersService = () => {
   );
 
   const postOrderProduct = useCallback(
-    (data: PostOrderProduct) => {
+    (data: PostOrderProduct, callback?: () => void) => {
       Axios.request<PostOrderProduct>({
         url: `${ordersDataUri}/products`,
         method: "POST",
         data,
         headers: { Authorization: `Bearer ${token}` },
-      }).then(() => {
-        fetchOrderProductsByOrderId(data.order_id);
-      });
+      })
+        .then(() => {
+          fetchOrderProductsByOrderId(
+            data.order_id,
+            callback ? callback : () => ({})
+          );
+        })
+        .catch((err) => console.log(err));
     },
     [fetchOrderProductsByOrderId, token]
   );
@@ -122,7 +130,6 @@ const useOrdersService = () => {
     },
     [fetchOrderProductsByOrderId, token]
   );
-  
 
   const deleteOrderById = (id: number) =>
     deleteByIdFunctionFactory(ordersDataUri, "order_id", token, () =>
@@ -140,7 +147,7 @@ const useOrdersService = () => {
     fetchOrders({ offset, token }, filters);
   }, [filters, count, offset, token, fetchOrders]);
 
-  const update = () => fetchOrders({ offset:0, token }, filters);
+  const update = () => fetchOrders({ offset: 0, token }, filters);
 
   return {
     result: state.results,
@@ -153,7 +160,7 @@ const useOrdersService = () => {
     fetchOrderProductsByOrderId,
     orderProducts,
     postOrderProduct,
-    deleteOrderProduct
+    deleteOrderProduct,
   };
 };
 

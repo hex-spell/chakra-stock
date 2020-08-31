@@ -15,6 +15,7 @@ import {
   InputLeftAddon,
   FormErrorMessage,
   Flex,
+  Box,
 } from "@chakra-ui/core";
 import FilterDropdown, { MenuOption } from "../Layout/FilterDropdown";
 
@@ -89,12 +90,13 @@ const DrawerForm: React.FC<IDrawerFormProps> = ({
                           {errors[name].message}
                         </FormErrorMessage>
                       )}
-                      <InputGroup>
+                      <Box >
+                      <InputGroup >
                         <InputLeftAddon children={title} />
                         {/* SI EL OBJETO TIENE OPCIONES, TIENE QUE SER DROPDOWN */}
                         {options ? (
                             <Controller
-                            defaultValue={options[0]? options[0].value : defaultValue}
+                            defaultValue={defaultValue ? defaultValue : options[0] ? options[0].value : 0}
                             rules={validationRules}
                             control={control}
                             name={name}
@@ -117,6 +119,7 @@ const DrawerForm: React.FC<IDrawerFormProps> = ({
                           />
                         )}
                       </InputGroup>
+                      </Box>
                     </>
                   )
                 )}
