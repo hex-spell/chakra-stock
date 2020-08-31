@@ -1,6 +1,6 @@
 import React, { ReactText, useEffect, useState, useCallback } from "react";
 import { FilterStack } from "../../components/Layout";
-import { useForm, ValidationOptions, Controller } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import {
   FormControl,
   Drawer,
@@ -18,7 +18,6 @@ import {
   Slider,
   SliderFilledTrack,
   SliderThumb,
-  Text,
   Accordion,
   AccordionItem,
   AccordionHeader,
@@ -72,13 +71,11 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
   update,
 }) => {
   const {
-    register,
     handleSubmit,
     formState,
     errors,
     control,
     watch,
-    getValues,
     setValue,
   } = useForm();
 
@@ -115,7 +112,7 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
     if (
       orderProducts &&
       minifiedProductsList &&
-      (selectedCategory == 0 || selectedCategory === undefined)
+      (parseInt(selectedCategory) === 0 || selectedCategory === undefined)
     ) {
       filteredMinifiedProductsList = minifiedProductsList.filter(
         (product) =>
@@ -128,14 +125,14 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
     if (
       orderProducts &&
       minifiedProductsList &&
-      selectedCategory != 0 &&
+      parseInt(selectedCategory) !== 0 &&
       selectedCategory !== undefined
     ) {
       filteredMinifiedProductsList = minifiedProductsList.filter(
         (product) =>
           !orderProducts.find(
             (orderProduct) => orderProduct.product_id === product.product_id
-          ) && product.category_id == selectedCategory
+          ) && product.category_id === parseInt(selectedCategory)
       );
     }
 

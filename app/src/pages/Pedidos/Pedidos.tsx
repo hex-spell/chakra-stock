@@ -8,7 +8,7 @@ import {
   useContactsService,
   useProductsService,
 } from "../../services";
-import { postOrUpdateOrder, Category } from "../../services/interfaces";
+import { postOrUpdateOrder } from "../../services/interfaces";
 import {
   OrdersFilterForm,
   OrdersList,

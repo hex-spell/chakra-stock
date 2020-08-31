@@ -14,8 +14,6 @@ import {
   postOrUpdateOrder,
   OrderProduct,
   OrderProducts,
-  MinifiedProduct,
-  MinifiedProducts,
   PostOrderProduct,
   DeleteOrderProduct,
 } from "./interfaces";
@@ -26,13 +24,8 @@ import {
   postFunctionFactory,
   pageControlsFactory,
   deleteByIdFunctionFactory,
-  fetchCategoryFunctionFactory,
 } from "./helpers";
 import Axios, { AxiosResponse } from "axios";
-import {
-  productsDataUri,
-  productCategoriesDataUri,
-} from "./useProductsService";
 
 const localapi = process.env.REACT_APP_ROOT_API;
 const ordersDataUri = localapi + "orders";
