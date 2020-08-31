@@ -16,6 +16,8 @@ import {
   OrderProducts,
   MinifiedProduct,
   MinifiedProducts,
+  PostOrderProduct,
+  DeleteOrderProduct,
 } from "./interfaces";
 import { UserContext } from "../context/User";
 import {
@@ -100,13 +102,41 @@ const useOrdersService = () => {
     [token]
   );
 
-  //elimina un gasto por id
+  const postOrderProduct = useCallback(
+    (data: PostOrderProduct) => {
+      Axios.request<PostOrderProduct>({
+        url: `${ordersDataUri}/products`,
+        method: "POST",
+        data,
+        headers: { Authorization: `Bearer ${token}` },
+      }).then(() => {
+        fetchOrderProductsByOrderId(data.order_id);
+      });
+    },
+    [fetchOrderProductsByOrderId, token]
+  );
+
+  const deleteOrderProduct = useCallback(
+    (data: DeleteOrderProduct) => {
+      Axios.request<DeleteOrderProduct>({
+        url: `${ordersDataUri}/products`,
+        method: "DELETE",
+        data,
+        headers: { Authorization: `Bearer ${token}` },
+      }).then(() => {
+        fetchOrderProductsByOrderId(data.order_id);
+      });
+    },
+    [fetchOrderProductsByOrderId, token]
+  );
+  
+
   const deleteOrderById = (id: number) =>
     deleteByIdFunctionFactory(ordersDataUri, "order_id", token, () =>
       fetchOrders({ token, offset: 0 }, filters)
     )(id);
 
-  //actualiza un ordero y despues refresca los datos con offset en 0
+  //actualiza un pedido y despues refresca los datos con offset en 0
   const postOrUpdateOrder = (data: postOrUpdateOrder) =>
     postFunctionFactory<postOrUpdateOrder>(ordersDataUri, token, () =>
       fetchOrders({ token, offset: 0 }, filters)
@@ -117,15 +147,20 @@ const useOrdersService = () => {
     fetchOrders({ offset, token }, filters);
   }, [filters, count, offset, token, fetchOrders]);
 
+  const update = () => fetchOrders({ offset, token }, filters);
+
   return {
     result: state.results,
     count: state.count,
     updateFilters,
+    update,
     loadMoreData,
     postOrUpdateOrder,
     deleteOrderById,
     fetchOrderProductsByOrderId,
     orderProducts,
+    postOrderProduct,
+    deleteOrderProduct
   };
 };
 

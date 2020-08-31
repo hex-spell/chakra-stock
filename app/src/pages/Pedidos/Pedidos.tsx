@@ -93,6 +93,9 @@ export default function Pedidos() {
     deleteOrderById,
     fetchOrderProductsByOrderId,
     orderProducts,
+    postOrderProduct,
+    deleteOrderProduct,
+    update
   } = useOrdersService();
 
   //usar este servicios esta fetcheando datos al pedo, tengo que mover los useEffect del hook a las paginas
@@ -156,9 +159,10 @@ export default function Pedidos() {
         minifiedProductsList={minifiedProductsList}
         fetchMinifiedProductsList={fetchMinifiedProductsList}
         fetchProductCategories={fetchProductCategories}
-        onFormSubmit={() => alert("hello")}
-        deleteFunction={() => alert("hello")}
+        onFormSubmit={postOrderProduct}
+        deleteFunction={deleteOrderProduct}
         categories={categories}
+        update={update}
       />
     </Page>
   );

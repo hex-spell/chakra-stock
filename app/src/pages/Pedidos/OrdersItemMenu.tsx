@@ -35,7 +35,7 @@ const OrdersItemMenu: React.FC<IOrdersItemMenuProps> = ({
       title={`Menu: pedido de ${name}`}
       menu={[
         {
-          name: "Agregar Productos",
+          name: "Ver Productos",
           action: () => orderProductsDrawerState.onOpen(),
         },
         {

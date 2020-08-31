@@ -123,11 +123,11 @@ export interface Product {
 }
 
 export interface MinifiedProduct {
-    name: string;
-    price: number;
-    stock: number;
-    product_id: number;
-    category_id: number;
+  name: string;
+  price: number;
+  stock: number;
+  product_id: number;
+  category_id: number;
 }
 
 interface ProductHistory extends Timestamps {
@@ -178,6 +178,17 @@ export interface OrderProduct {
   product_history_id: number;
   current_version?: OrderProductHistory;
   product_version: OrderProductHistory;
+}
+
+export interface PostOrderProduct {
+  order_id: number;
+  product_id: number;
+  ammount: number;
+}
+
+export interface DeleteOrderProduct {
+  order_id: number;
+  product_id: number;
 }
 
 export interface Order {

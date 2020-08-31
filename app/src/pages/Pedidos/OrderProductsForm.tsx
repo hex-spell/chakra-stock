@@ -25,6 +25,7 @@ import {
   AccordionPanel,
   AccordionIcon,
   FormLabel,
+  IconButton,
 } from "@chakra-ui/core";
 import { FilterDropdown } from "../../components/Layout";
 import {
@@ -32,8 +33,11 @@ import {
   MinifiedProduct,
   Order,
   Category,
+  PostOrderProduct,
+  DeleteOrderProduct,
 } from "../../services/interfaces";
 import { MenuOption } from "../../components/Layout/FilterDropdown";
+import { FaTrashAlt } from "react-icons/fa";
 
 interface IOrderProductsFormProps {
   clickedItem: Order;
@@ -45,8 +49,9 @@ interface IOrderProductsFormProps {
   fetchMinifiedProductsList: () => void;
   fetchProductCategories: () => void;
   categories: Category[] | null;
-  onFormSubmit: (values: Record<string, any>) => void;
-  deleteFunction?: (id: number) => void;
+  onFormSubmit: (data: PostOrderProduct) => void;
+  deleteFunction: (data: DeleteOrderProduct) => void;
+  update: () => void;
 }
 
 const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
@@ -64,6 +69,7 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
     order_id,
     contact: { name },
   },
+  update,
 }) => {
   const {
     register,
@@ -73,12 +79,13 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
     control,
     watch,
     getValues,
+    setValue,
   } = useForm();
 
   const [
     filteredMinifiedProductsList,
     setFilteredMinifiedProductsList,
-  ] = useState<MinifiedProduct[] | null>(null);
+  ] = useState<MenuOption[] | null>(null);
 
   const selectedCategory = watch("category");
 
@@ -115,7 +122,12 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
       );
     }
 
-    if (orderProducts && minifiedProductsList && selectedCategory!=0 && selectedCategory!==undefined) {
+    if (
+      orderProducts &&
+      minifiedProductsList &&
+      selectedCategory != 0 &&
+      selectedCategory !== undefined
+    ) {
       filteredMinifiedProductsList = minifiedProductsList.filter(
         (product) =>
           !orderProducts.find(
@@ -124,17 +136,34 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
       );
     }
 
-    setFilteredMinifiedProductsList(filteredMinifiedProductsList);
-  }, [orderProducts, minifiedProductsList, categories, selectedCategory]);
+    const setFilteredMinifiedProductsListMenu = filteredMinifiedProductsList.map(
+      ({ name, product_id }) => ({
+        name,
+        value: product_id,
+      })
+    );
+    setFilteredMinifiedProductsList(setFilteredMinifiedProductsListMenu);
 
-  const onSubmit = handleSubmit((values) => {
-    onFormSubmit(values);
-    onClose();
+    setValue(
+      "product_id",
+      setFilteredMinifiedProductsListMenu[0]
+        ? setFilteredMinifiedProductsListMenu[0].value
+        : 1
+    );
+  }, [
+    orderProducts,
+    minifiedProductsList,
+    categories,
+    selectedCategory,
+    setValue,
+  ]);
+
+  const onSubmit = handleSubmit(({ product_id, ammount }) => {
+    /* onFormSubmit(values); */
+    console.log({ product_id, ammount, order_id });
+    onFormSubmit({ product_id, ammount, order_id });
+    /* onClose(); */
   });
-
-  //esto lo tengo que registrar con un controller, pero ahora esta para figurar
-  const [value, setValue] = React.useState(0);
-  const handleChange = (value: any) => setValue(parseInt(value));
 
   const onDelete = (
     deleteFieldName: string,
@@ -146,7 +175,14 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
   };
 
   return (
-    <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
+    <Drawer
+      isOpen={isOpen}
+      onClose={() => {
+        onClose();
+        update();
+      }}
+      placement="bottom"
+    >
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
@@ -165,15 +201,22 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
                       <AccordionIcon />
                     </AccordionHeader>
                     <AccordionPanel pb={4}>
-                      <Stack direction="row">
-                        <Button
+                      <Stack direction="row" justify="flex-end">
+                        <IconButton
+                          icon={FaTrashAlt}
                           variantColor="red"
                           isLoading={formState.isSubmitting}
-                          onClick={() => alert("delete")}
+                          onClick={() =>
+                            deleteFunction({
+                              product_id: product.product_id,
+                              order_id: order_id,
+                            })
+                          }
                           float="right"
+                          aria-label="borrar"
                         >
                           Borrar
-                        </Button>
+                        </IconButton>
                       </Stack>
                     </AccordionPanel>
                   </AccordionItem>
@@ -212,66 +255,62 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
                       />
                     </Box>
                   )}
-                  <Box>
-                  <FormLabel htmlFor="product">Producto</FormLabel>
-                    <Controller
-                      defaultValue={1}
-                      control={control}
-                      name="product"
-                      as={({ onChange, value, name }) => (
-                        <FilterDropdown
-                          menu={
-                            filteredMinifiedProductsList /* minifiedProductsList */
-                              ? /* minifiedProductsList */ filteredMinifiedProductsList.map(
-                                  ({ name, product_id }) => ({
-                                    name,
-                                    value: product_id,
-                                  })
-                                )
-                              : [{ name: "...", value: 1 }]
-                          }
-                          onChange={(e) => onChange(e.target.value)}
-                          defaultValue={value}
-                          name={name}
-                        />
-                      )}
-                    />
-                  </Box>
-                  <Box>
-                  <FormLabel htmlFor="ammount">Cantidad</FormLabel>
-                    <Flex mr={3} mb={5}>
-                      <NumberInput
-                        maxW="100px"
-                        mr="2rem"
-                        value={value}
-                        onChange={(n: ReactText) => handleChange(n)}
+                  {filteredMinifiedProductsList && (
+                    <Box>
+                      <FormLabel htmlFor="product_id">Producto</FormLabel>
+                      <Controller
+                        defaultValue={
+                          filteredMinifiedProductsList[0]
+                            ? filteredMinifiedProductsList[0].value
+                            : 1
+                        }
+                        control={control}
+                        name="product_id"
+                        as={({ onChange, value, name }) => (
+                          <FilterDropdown
+                            menu={filteredMinifiedProductsList}
+                            onChange={(e) => onChange(e.target.value)}
+                            defaultValue={value}
+                            name={name}
+                          />
+                        )}
                       />
-                      <Slider
-                        max={30}
-                        min={1}
-                        flex="1"
-                        value={value}
-                        onChange={(n: ReactText) => handleChange(n)}
-                      >
-                        <SliderTrack />
-                        <SliderFilledTrack />
-                        <SliderThumb
-                          fontSize="sm"
-                          width="32px"
-                          height="20px"
-                          children={value}
-                        />
-                      </Slider>
-                    </Flex>
-                  </Box>
-                  {/* <Button
-                    variantColor="red"
-                    isLoading={formState.isSubmitting}
-                    onClick={() => alert("delete")}
-                    float="right"
-                  >
-                    Borrar
-                  </Button> */}
+                    </Box>
+                  )}
+                  <FormLabel htmlFor="ammount">Cantidad</FormLabel>
+                  <Controller
+                    defaultValue={1}
+                    control={control}
+                    name="ammount"
+                    as={({ onChange, value, name }) => (
+                      <Box>
+                        <Flex mr={3} mb={5}>
+                          <NumberInput
+                            maxW="100px"
+                            mr="2rem"
+                            value={value}
+                            onChange={(n: ReactText) => onChange(n)}
+                          />
+                          <Slider
+                            max={30}
+                            min={1}
+                            flex="1"
+                            value={value}
+                            onChange={(n: ReactText) => onChange(n)}
+                          >
+                            <SliderTrack />
+                            <SliderFilledTrack />
+                            <SliderThumb
+                              fontSize="sm"
+                              width="32px"
+                              height="20px"
+                              children={value}
+                            />
+                          </Slider>
+                        </Flex>
+                      </Box>
+                    )}
+                  />
                 </Stack>
                 <Button
                   variantColor="teal"

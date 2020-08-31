@@ -47,7 +47,7 @@ const ModifyProductsDrawerForm: React.FC<IModifyProductsDrawerFormProps> = ({
             setConfirmationMenuData({
               title: `eliminar la categoría seleccionada`,
               subtitle:
-                "• Todos los gastos que son de esta categoría serán eliminados en el proceso.",
+                "• Todos los productos que son de esta categoría serán eliminados en el proceso.",
               action: () => deleteProductCategoryById(id),
             });
             confirmationDrawerState.onOpen();
