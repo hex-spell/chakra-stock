@@ -1,4 +1,4 @@
-import React, { ReactText, useEffect, useState } from "react";
+import React, { ReactText, useEffect, useState, useCallback } from "react";
 import { FilterStack } from "../../components/Layout";
 import { useForm, ValidationOptions, Controller } from "react-hook-form";
 import {
@@ -87,7 +87,10 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
     setFilteredMinifiedProductsList,
   ] = useState<MenuOption[] | null>(null);
 
+  const [maxProducts, setMaxProducts] = useState(0);
+
   const selectedCategory = watch("category");
+  const selectedProduct = watch("product_id");
 
   //obtiene categorias y productos del server
   useEffect(() => {
@@ -142,37 +145,61 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
         value: product_id,
       })
     );
-    setFilteredMinifiedProductsList(setFilteredMinifiedProductsListMenu);
 
-    setValue(
-      "product_id",
-      setFilteredMinifiedProductsListMenu[0]
-        ? setFilteredMinifiedProductsListMenu[0].value
-        : 1
-    );
+    setFilteredMinifiedProductsList(setFilteredMinifiedProductsListMenu);
   }, [
     orderProducts,
     minifiedProductsList,
     categories,
     selectedCategory,
     setValue,
+    selectedProduct,
+  ]);
+
+  //busca el producto en el array y setea el maximo del slider
+  const findAndSetMax = useCallback((product_id:string|string,minifiedProductsList:MinifiedProduct[])=>{
+    const selectedProductInArray = minifiedProductsList.find(
+      (product) =>
+        product.product_id === parseInt(product_id)
+    );
+    setMaxProducts(
+      selectedProductInArray && selectedProductInArray.stock
+        ? selectedProductInArray.stock
+        : 0
+    );
+    setValue("ammount", 0)
+  },[setValue]);
+
+  //setea la cantidad maxima que podes definir en un orderproduct por el stock del producto y a la vez setea un producto si no esta seteado
+  useEffect(() => {
+    if (
+      filteredMinifiedProductsList &&
+      filteredMinifiedProductsList[0] &&
+      filteredMinifiedProductsList[0].value &&
+      minifiedProductsList &&
+      !selectedProduct
+    ) {
+      setValue("product_id", filteredMinifiedProductsList[0].value);
+      findAndSetMax(filteredMinifiedProductsList[0].value,minifiedProductsList);
+    }
+  }, [filteredMinifiedProductsList, setValue, minifiedProductsList, findAndSetMax, selectedProduct]);
+
+
+  //setea la cantidad maxima que podes definir en un orderproduct por el stock del producto
+  useEffect(() => {
+    if (minifiedProductsList && selectedProduct) {
+      findAndSetMax(selectedProduct, minifiedProductsList);
+    }
+  }, [
+    minifiedProductsList,
+    findAndSetMax,
+    selectedProduct,
   ]);
 
   const onSubmit = handleSubmit(({ product_id, ammount }) => {
-    /* onFormSubmit(values); */
     console.log({ product_id, ammount, order_id });
     onFormSubmit({ product_id, ammount, order_id });
-    /* onClose(); */
   });
-
-  const onDelete = (
-    deleteFieldName: string,
-    deleteFunction: (id: number) => void
-  ) => {
-    const itemID = getValues(deleteFieldName);
-    deleteFunction(itemID);
-    onClose();
-  };
 
   return (
     <Drawer
@@ -277,40 +304,44 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
                       />
                     </Box>
                   )}
-                  <FormLabel htmlFor="ammount">Cantidad</FormLabel>
-                  <Controller
-                    defaultValue={1}
-                    control={control}
-                    name="ammount"
-                    as={({ onChange, value, name }) => (
-                      <Box>
-                        <Flex mr={3} mb={5}>
-                          <NumberInput
-                            maxW="100px"
-                            mr="2rem"
-                            value={value}
-                            onChange={(n: ReactText) => onChange(n)}
-                          />
-                          <Slider
-                            max={30}
-                            min={1}
-                            flex="1"
-                            value={value}
-                            onChange={(n: ReactText) => onChange(n)}
-                          >
-                            <SliderTrack />
-                            <SliderFilledTrack />
-                            <SliderThumb
-                              fontSize="sm"
-                              width="32px"
-                              height="20px"
-                              children={value}
-                            />
-                          </Slider>
-                        </Flex>
-                      </Box>
-                    )}
-                  />
+                  {filteredMinifiedProductsList && (
+                    <Box>
+                      <FormLabel htmlFor="ammount">Cantidad</FormLabel>
+                      <Controller
+                        defaultValue={1}
+                        control={control}
+                        name="ammount"
+                        as={({ onChange, value, name }) => (
+                          <Box>
+                            <Flex mr={3} mb={5}>
+                              <NumberInput
+                                maxW="100px"
+                                mr="2rem"
+                                value={value}
+                                onChange={(n: ReactText) => onChange(n)}
+                              />
+                              <Slider
+                                max={maxProducts}
+                                min={1}
+                                flex="1"
+                                value={value}
+                                onChange={(n: ReactText) => onChange(n)}
+                              >
+                                <SliderTrack />
+                                <SliderFilledTrack />
+                                <SliderThumb
+                                  fontSize="sm"
+                                  width="32px"
+                                  height="20px"
+                                  children={value}
+                                />
+                              </Slider>
+                            </Flex>
+                          </Box>
+                        )}
+                      />
+                    </Box>
+                  )}
                 </Stack>
                 <Button
                   variantColor="teal"
