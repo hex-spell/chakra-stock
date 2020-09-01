@@ -186,6 +186,16 @@ export interface PostOrderProduct {
   ammount: number;
 }
 
+interface ProductDelivery {
+  product_id: number;
+  ammount: number;
+}
+
+export interface PostMarkDelivered {
+  order_id: number;
+  products: ProductDelivery[];
+}
+
 export interface DeleteOrderProduct {
   order_id: number;
   product_id: number;

@@ -28,13 +28,9 @@ import {
   List,
   ListItem,
   ListIcon,
-  Divider,
   Stat,
   StatLabel,
-  StatNumber,
-  StatHelpText,
-  StatArrow,
-  StatGroup,
+  StatNumber
 } from "@chakra-ui/core";
 import { FilterDropdown } from "../../components/Layout";
 import {
@@ -52,7 +48,6 @@ interface IOrderProductsFormProps {
   clickedItem: Order;
   isOpen: boolean;
   onClose: () => void;
-  fetchOrderProductsByOrderId: (order_id: number) => void;
   orderProducts: OrderProduct[] | null;
   minifiedProductsList: MinifiedProduct[] | null;
   fetchMinifiedProductsList: () => void;
@@ -68,7 +63,6 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
   onClose,
   onFormSubmit,
   deleteFunction,
-  fetchOrderProductsByOrderId,
   orderProducts,
   minifiedProductsList,
   fetchMinifiedProductsList,
@@ -105,12 +99,7 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
     fetchProductCategories();
   }, [fetchMinifiedProductsList, fetchProductCategories]);
 
-  //obtiene los productos del pedido
-  useEffect(() => {
-    if (order_id) {
-      fetchOrderProductsByOrderId(order_id);
-    }
-  }, [fetchOrderProductsByOrderId, order_id]);
+ 
 
   //filtra los menus por categoria y por productos que ya esten en el pedido
   useEffect(() => {

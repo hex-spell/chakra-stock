@@ -13,6 +13,7 @@ interface IOrdersItemMenuProps {
   confirmationDrawerState: UseDisclosureReturn;
   //datos del ordero clickeado
   orderData: Order;
+  deliveredProductsDrawerState:UseDisclosureReturn;
   //dispatch para abrir el drawer de confirmacion
   setConfirmationMenuData: (confirmationDrawerState: IConfirmationMenu) => void;
   //funcion de eliminar gasto por id
@@ -23,6 +24,7 @@ const OrdersItemMenu: React.FC<IOrdersItemMenuProps> = ({
   listItemDrawerState,
   orderProductsDrawerState,
   confirmationDrawerState,
+  deliveredProductsDrawerState,
   orderData,
   setConfirmationMenuData,
   deleteFunction
@@ -35,7 +37,15 @@ const OrdersItemMenu: React.FC<IOrdersItemMenuProps> = ({
       title={`Menu: pedido de ${name}`}
       menu={[
         {
-          name: "Ver Productos",
+          name: "Ver productos",
+          action: () => orderProductsDrawerState.onOpen(),
+        },
+        {
+          name: "Registrar entrega",
+          action: () => deliveredProductsDrawerState.onOpen(),
+        },
+        {
+          name: "Registrar cobro",
           action: () => orderProductsDrawerState.onOpen(),
         },
         {

@@ -15,6 +15,7 @@ import {
   OrdersItemMenu,
   OrdersMainMenu,
   OrdersDrawerForm,
+  DeliveredProductsDrawerForm,
 } from "./";
 import { Order } from "../../services/interfaces";
 import OrderProductsForm from "./OrderProductsForm";
@@ -42,19 +43,22 @@ export default function Pedidos() {
     ClickedItemInitialState
   );
 
-  //menu de clickear gastos
+  //menu de clickear pedido
   const listItemDrawerState = useDisclosure();
 
   //menu de action button
   const actionButtonDrawerState = useDisclosure();
 
-  //menu de crear/modifcar gasto
+  //menu de crear/modifcar pedido
   const orderDrawerState = useDisclosure();
+
+  //menu de crear/modifcar pedido
+  const deliveredProductsDrawerState = useDisclosure();
 
   //menu de modificar productos
   const orderProductsDrawerState = useDisclosure();
 
-  //define si el formulario de gastos va a ser usado para modificar uno existente o agregar uno nuevo
+  //define si el formulario de pedido va a ser usado para modificar uno existente o agregar uno nuevo
   const [orderDrawerFormState, setOrderMenuFormState] = useState({
     title: "error",
     mode: "error",
@@ -65,13 +69,16 @@ export default function Pedidos() {
     LayoutContext
   );
 
-  //almacena los datos del item clickeado y modifica el estado del formulario de gastos
+  //almacena los datos del item clickeado y modifica el estado del formulario de pedido
   const onItemClick = (data: Order) => {
     setClickedItem(data);
     setOrderMenuFormState({
       title: `Modificar pedido de ${data.contact.name}`,
       mode: "edit",
     });
+    if (data.order_id) {
+      fetchOrderProductsByOrderId(data.order_id);
+    }
     listItemDrawerState.onOpen();
   };
 
@@ -95,13 +102,15 @@ export default function Pedidos() {
     orderProducts,
     postOrderProduct,
     deleteOrderProduct,
-    update
+    update,
   } = useOrdersService();
 
   //usar este servicios esta fetcheando datos al pedo, tengo que mover los useEffect del hook a las paginas
   const { contactsMenu, fetchContactsMinified } = useContactsService();
 
-  useEffect(()=>{fetchContactsMinified()},[fetchContactsMinified]);
+  useEffect(() => {
+    fetchContactsMinified();
+  }, [fetchContactsMinified]);
 
   //usar este servicios esta fetcheando datos al pedo, tengo que mover los useEffect del hook a las paginas
   const {
@@ -133,6 +142,7 @@ export default function Pedidos() {
         listItemDrawerState={listItemDrawerState}
         orderProductsDrawerState={orderProductsDrawerState}
         confirmationDrawerState={confirmationDrawerState}
+        deliveredProductsDrawerState={deliveredProductsDrawerState}
         orderData={clickedItem}
         setConfirmationMenuData={setConfirmationMenuData}
         deleteFunction={deleteOrderById}
@@ -154,7 +164,6 @@ export default function Pedidos() {
         clickedItem={clickedItem}
         isOpen={orderProductsDrawerState.isOpen}
         onClose={orderProductsDrawerState.onClose}
-        fetchOrderProductsByOrderId={fetchOrderProductsByOrderId}
         orderProducts={orderProducts}
         minifiedProductsList={minifiedProductsList}
         fetchMinifiedProductsList={fetchMinifiedProductsList}
@@ -163,6 +172,11 @@ export default function Pedidos() {
         deleteFunction={deleteOrderProduct}
         categories={categories}
         update={update}
+      />
+      <DeliveredProductsDrawerForm
+        deliveredProductsDrawerState={deliveredProductsDrawerState}
+        orderProducts={orderProducts}
+        clickedItem={clickedItem}
       />
     </Page>
   );
