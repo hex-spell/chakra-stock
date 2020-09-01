@@ -87,9 +87,7 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
   const [
     filteredMinifiedProductsList,
     setFilteredMinifiedProductsList,
-  ] = useState<MinifiedProduct[] | null>(null);
-
-  const [filteredMenu, setFilteredMenu] = useState<MenuOption[]>();
+  ] = useState<MenuOption[] | null>(null);
 
   const [maxProducts, setMaxProducts] = useState(0);
 
@@ -104,17 +102,54 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
 
   //filtra los menus por categoria y por productos que ya esten en el pedido
   useEffect(() => {
-    if (orderProducts && minifiedProductsList) {
-      setFilteredMinifiedProductsList(
-        minifiedProductsList.filter(
-          (product) =>
-            !orderProducts.find(
-              (orderProduct) => orderProduct.product_id === product.product_id
-            )
-        )
+    console.log(selectedCategory);
+    console.log(categories);
+
+    let filteredMinifiedProductsList: MinifiedProduct[] = [];
+
+    if (
+      orderProducts &&
+      minifiedProductsList &&
+      (parseInt(selectedCategory) === 0 || selectedCategory === undefined)
+    ) {
+      filteredMinifiedProductsList = minifiedProductsList.filter(
+        (product) =>
+          !orderProducts.find(
+            (orderProduct) => orderProduct.product_id === product.product_id
+          )
       );
     }
-  }, [orderProducts, minifiedProductsList]);
+
+    if (
+      orderProducts &&
+      minifiedProductsList &&
+      parseInt(selectedCategory) !== 0 &&
+      selectedCategory !== undefined
+    ) {
+      filteredMinifiedProductsList = minifiedProductsList.filter(
+        (product) =>
+          !orderProducts.find(
+            (orderProduct) => orderProduct.product_id === product.product_id
+          ) && product.category_id === parseInt(selectedCategory)
+      );
+    }
+
+    const setFilteredMinifiedProductsListMenu = filteredMinifiedProductsList.map(
+      ({ name, product_id }) => ({
+        name,
+        value: product_id,
+      })
+    );
+
+    setFilteredMinifiedProductsList(setFilteredMinifiedProductsListMenu);
+  }, [
+    orderProducts,
+    minifiedProductsList,
+    categories,
+    selectedCategory,
+    setValue,
+    selectedProduct,
+  ]);
 
   //busca el producto en el array y setea el maximo del slider
   const findAndSetMax = useCallback(
@@ -132,45 +167,29 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
     [setValue]
   );
 
-  const onChangeCategory = useCallback(
-    (category: string) => {
-      if (
-        orderProducts &&
-        minifiedProductsList &&
-        filteredMinifiedProductsList
-      ) {
-        const productsListFilteredByCategory = parseInt(category)
-          ? filteredMinifiedProductsList.filter(
-              (product) => product.category_id === parseInt(category)
-            )
-          : filteredMinifiedProductsList;
-        const newMenu = productsListFilteredByCategory.map(
-          ({ name, product_id }) => ({
-            name,
-            value: product_id,
-          })
-        );
-        console.log(newMenu);
-        setFilteredMenu(newMenu);
-        const newDefaultProduct = newMenu[0] ? newMenu[0].value : 0;
-        setValue("product_id", newDefaultProduct);
-        findAndSetMax(`${newDefaultProduct}`, minifiedProductsList);
-      }
-    },
-    [
-      filteredMinifiedProductsList,
-      findAndSetMax,
-      minifiedProductsList,
-      orderProducts,
-      setValue,
-    ]
-  );
-
+  //setea la cantidad maxima que podes definir en un orderproduct por el stock del producto y a la vez setea un producto si no esta seteado
   useEffect(() => {
-    if (filteredMinifiedProductsList) {
-      onChangeCategory("0");
+    if (
+      filteredMinifiedProductsList &&
+      filteredMinifiedProductsList[0] &&
+      filteredMinifiedProductsList[0].value &&
+      minifiedProductsList &&
+      !selectedProduct
+    ) {
+      setValue("product_id", filteredMinifiedProductsList[0].value);
+      console.log("product", filteredMinifiedProductsList[0].value);
+      findAndSetMax(
+        filteredMinifiedProductsList[0].value,
+        minifiedProductsList
+      );
     }
-  }, [categories, filteredMinifiedProductsList, onChangeCategory]);
+  }, [
+    filteredMinifiedProductsList,
+    setValue,
+    minifiedProductsList,
+    findAndSetMax,
+    selectedProduct,
+  ]);
 
   //setea la cantidad maxima que podes definir en un orderproduct por el stock del producto
   useEffect(() => {
@@ -181,10 +200,9 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
 
   const onSubmit = handleSubmit(({ product_id, ammount }) => {
     console.log({ product_id, ammount, order_id });
-    onFormSubmit({ product_id, ammount, order_id }, () => {
-      setValue("product_id", undefined);
-      setValue("category", 0);
-    });
+    onFormSubmit({ product_id, ammount, order_id }, () =>
+      setValue("product_id", undefined)
+    );
   });
 
   return (
@@ -303,10 +321,7 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
                                       value: category.category_id,
                                     })),
                                   ]}
-                                  onChange={(e) => {
-                                    onChange(e.target.value);
-                                    onChangeCategory(e.target.value);
-                                  }}
+                                  onChange={(e) =>{onChange(e.target.value)}}
                                   defaultValue={value}
                                   name={name}
                                 />
@@ -319,17 +334,15 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
                             <FormLabel htmlFor="product_id">Producto</FormLabel>
                             <Controller
                               defaultValue={
-                                filteredMenu
-                                  ? filteredMenu[0]
-                                    ? filteredMenu[0].value
-                                    : 1
+                                filteredMinifiedProductsList[0]
+                                  ? filteredMinifiedProductsList[0].value
                                   : 1
                               }
                               control={control}
                               name="product_id"
                               as={({ onChange, value, name }) => (
                                 <FilterDropdown
-                                  menu={filteredMenu ? filteredMenu : []}
+                                  menu={filteredMinifiedProductsList}
                                   onChange={(e) => onChange(e.target.value)}
                                   defaultValue={value}
                                   name={name}
@@ -337,8 +350,8 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
                               )}
                             />
                             <FormHelperText mb="10px">
-                              {`En stock: ${maxProducts}`}
-                            </FormHelperText>
+                                    {`En stock: ${maxProducts}`}
+                                  </FormHelperText>
                           </Box>
                         )}
                         {filteredMinifiedProductsList && (

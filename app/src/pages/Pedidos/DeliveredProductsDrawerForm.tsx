@@ -2,7 +2,6 @@ import React from "react";
 import { DrawerForm } from "../../components/Forms";
 import { UseDisclosureReturn } from "@chakra-ui/core/dist/useDisclosure";
 import { Order, OrderProduct, PostMarkDelivered } from "../../services/interfaces";
-import { FormHelperText } from "@chakra-ui/core";
 
 interface IDeliveredProductsDrawerFormProps {
   deliveredProductsDrawerState: UseDisclosureReturn;
