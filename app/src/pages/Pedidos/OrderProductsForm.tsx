@@ -71,6 +71,7 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
   categories,
   clickedItem: {
     order_id,
+    type,
     contact: { name },
   },
   update,
@@ -218,12 +219,24 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
                         <ListItem>
                           <ListIcon icon="attachment" color="green.500" />
                           Valor por unidad : $
-                          {product.product_version.sell_price}
+                          {
+                            //checkea si es compra o venta
+                            type === "a"
+                              ? product.product_version.buy_price
+                              : product.product_version.sell_price
+                          }
                         </ListItem>
                         <ListItem>
                           <ListIcon icon="attachment" color="green.500" />
                           Suma : $
-                          {product.product_version.sell_price * product.ammount}
+                          {
+                            //checkea si es compra o venta
+                            type === "a"
+                              ? product.product_version.buy_price *
+                                product.ammount
+                              : product.product_version.sell_price *
+                                product.ammount
+                          }
                         </ListItem>
                         <ListItem>
                           <ListIcon
@@ -358,7 +371,10 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
                                       onChange={(n: ReactText) => onChange(n)}
                                     />
                                     <Slider
-                                      max={maxProducts}
+                                      max={
+                                        //checkea si es compra o venta
+                                        type === "b" ? maxProducts : 20
+                                      }
                                       min={1}
                                       flex="1"
                                       value={value}
@@ -392,9 +408,14 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
                               $
                               {orderProducts.reduce(
                                 (acc, product) =>
-                                  acc +
-                                  product.ammount *
-                                    product.product_version.sell_price,
+                                  //checkea si es compra o venta
+                                  type === "a"
+                                    ? acc +
+                                      product.ammount *
+                                        product.product_version.buy_price
+                                    : acc +
+                                      product.ammount *
+                                        product.product_version.sell_price,
                                 0
                               )}
                             </StatNumber>

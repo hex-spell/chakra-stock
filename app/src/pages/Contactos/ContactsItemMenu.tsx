@@ -40,7 +40,7 @@ const ContactsItemMenu: React.FC<IContactsItemMenuProps> = ({
         },
         {
           name: "Modificar",
-          action: () => /* alert(`Modificar ${name}`) */ contactMenu.onOpen(),
+          action: () => contactMenu.onOpen(),
         },
         {
           name: "Saldar deuda",

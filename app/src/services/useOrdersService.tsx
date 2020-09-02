@@ -160,10 +160,12 @@ const useOrdersService = () => {
     )(id);
 
   //actualiza un pedido y despues refresca los datos con offset en 0
-  const postOrUpdateOrder = (data: postOrUpdateOrder) =>
+  const postOrUpdateOrder = (data: postOrUpdateOrder) => {
     postFunctionFactory<postOrUpdateOrder>(ordersDataUri, token, () =>
       fetchOrders({ token, offset: 0 }, filters)
     )(data, data.order_id);
+    console.log(data);
+  };
 
   //un listener que se triggerea en el primer render y cada vez que se cambian los filtros o el offset
   useEffect(() => {
@@ -182,7 +184,7 @@ const useOrdersService = () => {
     orderProducts,
     postOrderProduct,
     deleteOrderProduct,
-    markDelivered
+    markDelivered,
   };
 };
 

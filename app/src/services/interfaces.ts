@@ -124,7 +124,8 @@ export interface Product {
 
 export interface MinifiedProduct {
   name: string;
-  price: number;
+  sell_price: number;
+  buy_price: number;
   stock: number;
   product_id: number;
   category_id: number;
@@ -169,6 +170,7 @@ export interface OrderProductHistory {
   product_history_id: number;
   name: string;
   sell_price: number;
+  buy_price: number;
 }
 
 export interface OrderProduct {

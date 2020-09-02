@@ -113,7 +113,7 @@ const DrawerForm: React.FC<IDrawerFormProps> = ({
                       )}
                       <Box>
                         <InputGroup display="flex">
-                          <InputLeftAddon children={title} flexGrow={1}/>
+                          <InputLeftAddon children={title} flexGrow={1} />
                           {/* SI EL OBJETO TIENE OPCIONES, TIENE QUE SER DROPDOWN */}
                           {options ? (
                             <Controller
@@ -122,6 +122,8 @@ const DrawerForm: React.FC<IDrawerFormProps> = ({
                                   ? defaultValue
                                   : options[0]
                                   ? options[0].value
+                                    ? options[0].value
+                                    : 0
                                   : 0
                               }
                               rules={validationRules}

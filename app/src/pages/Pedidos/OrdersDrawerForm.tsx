@@ -36,7 +36,7 @@ const OrdersDrawerForm: React.FC<IOrdersDrawerFormProps> = ({
         {
           name: "contact_id",
           title: "Contacto",
-          defaultValue: orderData.contact.contact_id ? orderData.contact.contact_id : contacts[0],
+          defaultValue: orderData.contact.contact_id ? orderData.contact.contact_id : contacts[0] ? contacts[0].value : 0,
           options: contacts,
           validationRules: {
             required:
