@@ -35,6 +35,10 @@ const ContactsItemMenu: React.FC<IContactsItemMenuProps> = ({
       title={`Menu: ${name}`}
       menu={[
         {
+          name:"Llamar",
+          action: () => {window.open(`tel:+540${contactData.phone}`, '_blank');}
+        },
+        {
           name: "Modificar",
           action: () => /* alert(`Modificar ${name}`) */ contactMenu.onOpen(),
         },

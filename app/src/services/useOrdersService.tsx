@@ -16,6 +16,7 @@ import {
   OrderProducts,
   PostOrderProduct,
   DeleteOrderProduct,
+  PostMarkDelivered,
 } from "./interfaces";
 import { UserContext } from "../context/User";
 import {
@@ -81,6 +82,12 @@ const useOrdersService = () => {
     []
   );
 
+  const update = useCallback(() => fetchOrders({ offset: 0, token }, filters), [
+    fetchOrders,
+    filters,
+    token,
+  ]);
+
   //funcion que obtiene los productos de un pedido
   const fetchOrderProductsByOrderId = useCallback(
     (order_id: number, callback?: () => void) => {
@@ -131,6 +138,22 @@ const useOrdersService = () => {
     [fetchOrderProductsByOrderId, token]
   );
 
+  const markDelivered = useCallback(
+    (data: PostMarkDelivered) => {
+      Axios.request<PostMarkDelivered>({
+        url: `${ordersDataUri}/products/delivered`,
+        method: "POST",
+        data,
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then(() => {
+          update();
+        })
+        .catch((err) => console.log(err));
+    },
+    [token, update]
+  );
+
   const deleteOrderById = (id: number) =>
     deleteByIdFunctionFactory(ordersDataUri, "order_id", token, () =>
       fetchOrders({ token, offset: 0 }, filters)
@@ -147,8 +170,6 @@ const useOrdersService = () => {
     fetchOrders({ offset, token }, filters);
   }, [filters, count, offset, token, fetchOrders]);
 
-  const update = () => fetchOrders({ offset: 0, token }, filters);
-
   return {
     result: state.results,
     count: state.count,
@@ -161,6 +182,7 @@ const useOrdersService = () => {
     orderProducts,
     postOrderProduct,
     deleteOrderProduct,
+    markDelivered
   };
 };
 

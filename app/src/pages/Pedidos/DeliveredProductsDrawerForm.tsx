@@ -7,13 +7,13 @@ interface IDeliveredProductsDrawerFormProps {
   deliveredProductsDrawerState: UseDisclosureReturn;
   clickedItem: Order;
   orderProducts: OrderProduct[] | null;
-  //submitFunction: (data: PostMarkDelivered) => void;
+  submitFunction: (data: PostMarkDelivered) => void;
 }
 
 const DeliveredProductsDrawerForm: React.FC<IDeliveredProductsDrawerFormProps> = ({
   deliveredProductsDrawerState,
   orderProducts,
-  //submitFunction,
+  submitFunction,
   clickedItem: {order_id,contact:{name}}
 }) => {
   return (
@@ -25,8 +25,8 @@ const DeliveredProductsDrawerForm: React.FC<IDeliveredProductsDrawerFormProps> =
       onClose={deliveredProductsDrawerState.onClose}
       onFormSubmit={(productsForm) =>{
         //mapea el formulario en el formato que necesito para el backend
-        const products = Object.entries(productsForm).map((entry)=>({product_id:entry[0],ammount:entry[1]}));
-        console.log({ order_id, products})}
+        const products = Object.entries(productsForm).map((entry)=>({product_id:parseInt(entry[0]),ammount:parseInt(entry[1])}));
+        submitFunction({ order_id, products})}
       }
       inputs={
         orderProducts ? 
