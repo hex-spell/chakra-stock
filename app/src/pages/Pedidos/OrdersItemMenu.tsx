@@ -14,6 +14,7 @@ interface IOrdersItemMenuProps {
   //datos del ordero clickeado
   orderData: Order;
   deliveredProductsDrawerState:UseDisclosureReturn;
+  orderTransactionDrawerState:UseDisclosureReturn;
   //dispatch para abrir el drawer de confirmacion
   setConfirmationMenuData: (confirmationDrawerState: IConfirmationMenu) => void;
   //funcion de eliminar gasto por id
@@ -27,6 +28,7 @@ const OrdersItemMenu: React.FC<IOrdersItemMenuProps> = ({
   deliveredProductsDrawerState,
   orderData,
   setConfirmationMenuData,
+  orderTransactionDrawerState,
   deleteFunction
 }) => {
   const {contact:{name}, order_id} = orderData;
@@ -46,7 +48,7 @@ const OrdersItemMenu: React.FC<IOrdersItemMenuProps> = ({
         },
         {
           name: "Registrar cobro",
-          action: () => orderProductsDrawerState.onOpen(),
+          action: () => orderTransactionDrawerState.onOpen(),
         },
         {
           name: "Eliminar",

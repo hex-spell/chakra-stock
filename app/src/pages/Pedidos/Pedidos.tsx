@@ -8,7 +8,7 @@ import {
   useContactsService,
   useProductsService,
 } from "../../services";
-import { postOrUpdateOrder } from "../../services/interfaces";
+import { postOrUpdateOrder, PostTransaction } from "../../services/interfaces";
 import {
   OrdersFilterForm,
   OrdersList,
@@ -16,6 +16,7 @@ import {
   OrdersMainMenu,
   OrdersDrawerForm,
   DeliveredProductsDrawerForm,
+  OrderTransactionDrawerForm,
 } from "./";
 import { Order } from "../../services/interfaces";
 import OrderProductsForm from "./OrderProductsForm";
@@ -57,6 +58,9 @@ export default function Pedidos() {
 
   //menu de modificar productos
   const orderProductsDrawerState = useDisclosure();
+
+  //menu de crear transaccion
+  const orderTransactionDrawerState = useDisclosure();
 
   //define si el formulario de pedido va a ser usado para modificar uno existente o agregar uno nuevo
   const [orderDrawerFormState, setOrderMenuFormState] = useState({
@@ -103,7 +107,8 @@ export default function Pedidos() {
     postOrderProduct,
     deleteOrderProduct,
     update,
-    markDelivered
+    markDelivered,
+    postTransaction
   } = useOrdersService();
 
   //usar este servicios esta fetcheando datos al pedo, tengo que mover los useEffect del hook a las paginas
@@ -144,6 +149,7 @@ export default function Pedidos() {
         orderProductsDrawerState={orderProductsDrawerState}
         confirmationDrawerState={confirmationDrawerState}
         deliveredProductsDrawerState={deliveredProductsDrawerState}
+        orderTransactionDrawerState={orderTransactionDrawerState}
         orderData={clickedItem}
         setConfirmationMenuData={setConfirmationMenuData}
         deleteFunction={deleteOrderById}
@@ -179,6 +185,11 @@ export default function Pedidos() {
         orderProducts={orderProducts}
         clickedItem={clickedItem}
         submitFunction={markDelivered}
+      />
+      <OrderTransactionDrawerForm
+        orderTransactionDrawerState={orderTransactionDrawerState}
+        submitFunction={postTransaction}
+        orderData={clickedItem}
       />
     </Page>
   );

@@ -17,6 +17,7 @@ import {
   PostOrderProduct,
   DeleteOrderProduct,
   PostMarkDelivered,
+  PostTransaction,
 } from "./interfaces";
 import { UserContext } from "../context/User";
 import {
@@ -154,6 +155,22 @@ const useOrdersService = () => {
     [token, update]
   );
 
+  const postTransaction = useCallback(
+    (data: PostTransaction) => {
+      Axios.request<PostTransaction>({
+        url: `${ordersDataUri}/transactions`,
+        method: "POST",
+        data,
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then(() => {
+          update();
+        })
+        .catch((err) => console.log(err));
+    },
+    [token, update]
+  );
+
   const deleteOrderById = (id: number) =>
     deleteByIdFunctionFactory(ordersDataUri, "order_id", token, () =>
       fetchOrders({ token, offset: 0 }, filters)
@@ -185,6 +202,7 @@ const useOrdersService = () => {
     postOrderProduct,
     deleteOrderProduct,
     markDelivered,
+    postTransaction
   };
 };
 

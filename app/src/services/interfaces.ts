@@ -188,6 +188,11 @@ export interface PostOrderProduct {
   ammount: number;
 }
 
+export interface PostTransaction {
+  order_id: number;
+  sum: number;
+}
+
 interface ProductDelivery {
   product_id: number;
   ammount: number;
