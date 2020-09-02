@@ -21,7 +21,7 @@ const OrdersListItem: React.FC<IOrdersListItemProps> = ({
   sum,
   debt,
   updatedAt,
-  onClick
+  onClick,
 }) => {
   const updatedAtDate = new Date(updatedAt);
   const formattedUpdatedAtDate = dateHelper(updatedAtDate);
@@ -31,15 +31,30 @@ const OrdersListItem: React.FC<IOrdersListItemProps> = ({
         <Box display="flex" flexDirection="column" textAlign="left">
           <Text>{name}</Text>
           <SubText>
-            {itemAmmount} {itemAmmount>1 ? "items" : "item"}
+            {itemAmmount} {itemAmmount > 1 ? "items" : "item"}
           </SubText>
           <SubText>
-            <Checkbox isChecked={delivered} size="sm">Entregado</Checkbox>
+            <Checkbox isChecked={delivered} size="sm">
+              Entregado
+            </Checkbox>
           </SubText>
         </Box>
         <Box display="flex" flexDirection="column" textAlign="right">
-          <Box><Text display="inline"> Suma: </Text><MoneyText ammount={sum}/></Box>
-          <Box><Text display="inline"> Falta pagar: </Text><MoneyText ammount={debt} red/></Box>
+          <Box>
+            <Text display="inline"> Suma: </Text>
+            <MoneyText ammount={sum} />
+          </Box>
+          {
+            debt >=0 ?
+            <Box>
+              <Text display="inline"> Falta pagar: </Text>
+              <MoneyText ammount={debt} red />
+            </Box> :
+            <Box>
+            <Text display="inline"> Quedó a favor: </Text>
+            <MoneyText ammount={-debt} />
+          </Box>
+          }
           <SubText>{formattedUpdatedAtDate}</SubText>
         </Box>
       </ListItemBox>

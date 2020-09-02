@@ -18,6 +18,7 @@ import {
   DeleteOrderProduct,
   PostMarkDelivered,
   PostTransaction,
+  PostMarkCompleted,
 } from "./interfaces";
 import { UserContext } from "../context/User";
 import {
@@ -35,8 +36,8 @@ const ordersDataUri = localapi + "orders";
 const InitialState: IServiceState<Orders, IOrderFilters> = {
   filters: {
     search: "",
-    type: "a",
-    completed: "all",
+    type: "b",
+    completed: "not_completed",
     delivered: "all" /* , order: "name" */,
   },
   offset: 0,
@@ -171,6 +172,23 @@ const useOrdersService = () => {
     [token, update]
   );
 
+  const markCompleted = useCallback(
+    (data: PostMarkCompleted) => {
+      Axios.request<PostMarkCompleted>({
+        url: `${ordersDataUri}/completed`,
+        method: "POST",
+        data,
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then(() => {
+          update();
+        })
+        .catch((err) => console.log(err));
+    },
+    [token, update]
+  );
+
+
   const deleteOrderById = (id: number) =>
     deleteByIdFunctionFactory(ordersDataUri, "order_id", token, () =>
       fetchOrders({ token, offset: 0 }, filters)
@@ -202,7 +220,8 @@ const useOrdersService = () => {
     postOrderProduct,
     deleteOrderProduct,
     markDelivered,
-    postTransaction
+    postTransaction,
+    markCompleted
   };
 };
 

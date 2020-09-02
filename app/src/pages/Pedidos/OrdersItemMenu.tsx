@@ -2,7 +2,7 @@ import React from "react";
 import { DynamicDrawerMenu } from "../../components/Layout";
 import { UseDisclosureReturn } from "@chakra-ui/core/dist/useDisclosure";
 import { IConfirmationMenu } from "../../context/Layout";
-import { Order } from "../../services/interfaces";
+import { Order, PostMarkCompleted } from "../../services/interfaces";
 
 interface IOrdersItemMenuProps {
   //estado de este drawer
@@ -13,12 +13,13 @@ interface IOrdersItemMenuProps {
   confirmationDrawerState: UseDisclosureReturn;
   //datos del ordero clickeado
   orderData: Order;
-  deliveredProductsDrawerState:UseDisclosureReturn;
-  orderTransactionDrawerState:UseDisclosureReturn;
+  deliveredProductsDrawerState: UseDisclosureReturn;
+  orderTransactionDrawerState: UseDisclosureReturn;
   //dispatch para abrir el drawer de confirmacion
   setConfirmationMenuData: (confirmationDrawerState: IConfirmationMenu) => void;
   //funcion de eliminar gasto por id
-  deleteFunction: (order_id:number)=>void;
+  deleteFunction: (order_id: number) => void;
+  markCompleted: (data:PostMarkCompleted) => void;
 }
 
 const OrdersItemMenu: React.FC<IOrdersItemMenuProps> = ({
@@ -29,9 +30,13 @@ const OrdersItemMenu: React.FC<IOrdersItemMenuProps> = ({
   orderData,
   setConfirmationMenuData,
   orderTransactionDrawerState,
-  deleteFunction
+  markCompleted,
+  deleteFunction,
 }) => {
-  const {contact:{name}, order_id} = orderData;
+  const {
+    contact: { name },
+    order_id,
+  } = orderData;
   return (
     <DynamicDrawerMenu
       isOpen={listItemDrawerState.isOpen}
@@ -42,20 +47,32 @@ const OrdersItemMenu: React.FC<IOrdersItemMenuProps> = ({
           name: "Ver productos",
           action: () => orderProductsDrawerState.onOpen(),
         },
-        {
+        ...(!orderData.completed ? [{
           name: "Registrar entrega",
           action: () => deliveredProductsDrawerState.onOpen(),
-        },
-        {
+        }] : []),
+        ...(!orderData.completed ? [{
           name: "Registrar cobro",
           action: () => orderTransactionDrawerState.onOpen(),
-        },
+        }] : []),
+        ...(!orderData.completed ? [{
+          name: "Finalizar pedido",
+          action: () => {
+            //manda titulo y funcion para ejecutar al drawer de confirmacion, y lo abre
+            setConfirmationMenuData({
+              title: `finalizar este pedido de ${name}`,
+              subtitle: "No se podran realizarle más modificaciones",
+              action: () => markCompleted({order_id}),
+            });
+            confirmationDrawerState.onOpen();
+          },
+        }] : []),
         {
           name: "Eliminar",
           action: () => {
             //manda titulo y funcion para ejecutar al drawer de confirmacion, y lo abre
             setConfirmationMenuData({
-              title: `eliminar pedido de ${name}`,
+              title: `eliminar este pedido de ${name}`,
               action: () => deleteFunction(order_id),
             });
             confirmationDrawerState.onOpen();

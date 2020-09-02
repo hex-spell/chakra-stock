@@ -52,7 +52,9 @@ const FilterForm: React.FC<IFilterFormProps> = ({
             filtersData.dropdowns.map(({ name, menu, defaultValue }) => {
               return (
                 <Controller
-                  defaultValue={defaultValue}
+                  defaultValue={
+                    defaultValue
+                  }
                   control={control}
                   name={name}
                   as={({ onChange, value, name }) => (

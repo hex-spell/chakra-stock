@@ -27,7 +27,7 @@ const OrdersFilterForm: React.FC<IOrdersFilterFormProps> = ({
               },
               { name: "Ventas", value: "b" },
             ],
-            defaultValue: "a",
+            defaultValue: "b",
           },
           {
             name: "completed",

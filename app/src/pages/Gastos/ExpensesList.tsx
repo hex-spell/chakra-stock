@@ -34,7 +34,7 @@ const ExpensesList: React.FC<IExpensesListProps> = ({
           }: ServerExpense) => (
             <TransactionsListItem
               title={description}
-              sum={sum}
+              sum={-sum}
               //sisi, voy a cambiar esto
               createdAt={created_at}
               onClick={() =>

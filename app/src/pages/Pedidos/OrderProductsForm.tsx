@@ -73,6 +73,7 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
     order_id,
     type,
     contact: { name },
+    completed
   },
   update,
 }) => {
@@ -238,7 +239,7 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
                                 product.ammount
                           }
                         </ListItem>
-                        <ListItem>
+                        {!completed && <ListItem>
                           <ListIcon
                             icon={
                               product.delivered === product.ammount
@@ -252,9 +253,9 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
                             }
                           />
                           Entregados : {product.delivered}
-                        </ListItem>
+                        </ListItem>}
                       </List>
-                      <Stack direction="row" justify="flex-end">
+                      {!completed && <Stack direction="row" justify="flex-end">
                         <IconButton
                           icon={FaTrashAlt}
                           variantColor="red"
@@ -270,7 +271,7 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
                         >
                           Borrar
                         </IconButton>
-                      </Stack>
+                      </Stack>}
                     </AccordionPanel>
                   </AccordionItem>
                 ))}
@@ -278,7 +279,7 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
             )}
           </Box>
           {/* ESTA MINIFUNCION EN EL FORMCONTROL BUSCA SI TIENE ERRORES EL OBJETO, HACIENDO TYPECASTING A BOOLEAN TODAS SUS PROPIEDADES */}
-          <Accordion allowToggle allowMultiple>
+          {!completed && <Accordion allowToggle allowMultiple>
             <AccordionItem>
               <AccordionHeader>
                 <Box flex="1" textAlign="center">
@@ -436,7 +437,7 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
                 </FormControl>
               </AccordionPanel>
             </AccordionItem>
-          </Accordion>
+          </Accordion>}
         </DrawerBody>
       </DrawerContent>
     </Drawer>

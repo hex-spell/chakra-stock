@@ -193,6 +193,10 @@ export interface PostTransaction {
   sum: number;
 }
 
+export interface PostMarkCompleted {
+  order_id:number;
+}
+
 interface ProductDelivery {
   product_id: number;
   ammount: number;

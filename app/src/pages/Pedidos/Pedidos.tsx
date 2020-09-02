@@ -108,7 +108,8 @@ export default function Pedidos() {
     deleteOrderProduct,
     update,
     markDelivered,
-    postTransaction
+    postTransaction,
+    markCompleted
   } = useOrdersService();
 
   //usar este servicios esta fetcheando datos al pedo, tengo que mover los useEffect del hook a las paginas
@@ -152,6 +153,7 @@ export default function Pedidos() {
         orderTransactionDrawerState={orderTransactionDrawerState}
         orderData={clickedItem}
         setConfirmationMenuData={setConfirmationMenuData}
+        markCompleted={markCompleted}
         deleteFunction={deleteOrderById}
       />
       {/* MENU PRINCIPAL */}

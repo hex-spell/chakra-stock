@@ -14,7 +14,7 @@ const MoneyText: React.FC<IMoneyTextProps> = ({ ammount, red }) => {
   return (
     <Text color={color} fontWeight="600" display="inline">
       {/* RE-ACOMODA EL SIGNO MENOS EN LA SINTAXIS */}
-      {ammount<0 ? `-$${-ammount}` : `$${ammount}`}
+      {ammount<0 ? `$${-ammount}` : `$${ammount}`}
     </Text>
   );
 };
