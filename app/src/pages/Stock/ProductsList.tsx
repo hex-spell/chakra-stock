@@ -26,14 +26,12 @@ const ProductsList: React.FC<IProductsListProps> = ({
         result.payload &&
         result.payload.map(
           ({
-            current: {
-              name,
-              buy_price,
-              sell_price,
-              created_at,
-              updated_at,
-              product_history_id,
-            },
+            name,
+            buy_price,
+            sell_price,
+            created_at,
+            updated_at,
+            product_history_id,
             product_id,
             category_id,
             stock,
@@ -52,7 +50,8 @@ const ProductsList: React.FC<IProductsListProps> = ({
                   sell_price,
                   product_id,
                   category_id,
-                  stock
+                  product_history_id,
+                  stock,
                 })
               }
             />

@@ -2,7 +2,7 @@ export { default as Inicio } from "./Inicio";
 export { default as Stock } from "./Stock/Stock";
 export { default as Pedidos } from "./Pedidos/Pedidos";
 export { default as Contactos } from "./Contactos/Contactos";
-export { default as Transacciones } from "./Transacciones";
+export { default as Transacciones } from "./Transacciones/Transacciones";
 export { default as Gastos } from "./Gastos/Gastos";
 export { default as Configuracion } from "./Configuracion";
 export const stockData = [

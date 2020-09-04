@@ -120,8 +120,19 @@ export interface Product {
   buy_price: number;
   stock: number;
   category_id: number;
+  product_history_id: number;
 }
 
+export interface PostProduct {
+  product_id: number;
+  name: string;
+  sell_price: number;
+  buy_price: number;
+  stock: number;
+  category_id: number;
+}
+
+//esto esta al pedo, mas tarde lo cambio
 export interface MinifiedProduct {
   name: string;
   sell_price: number;
@@ -131,26 +142,31 @@ export interface MinifiedProduct {
   category_id: number;
 }
 
-interface ProductHistory extends Timestamps {
+/* interface ProductHistory extends Timestamps {
   name: string;
   sell_price: number;
   buy_price: number;
   product_id: number;
-  product_history_id: number;
+  product_history_id: number; 
 }
-
+*/
+/* 
+VERSION VIEJA SIN JOINS
 export interface ServerProduct extends Timestamps {
   stock: number;
   product_id: number;
   product_history_id: number;
   category_id: number;
   current: ProductHistory;
-}
+} */
+
+export interface ServerProduct extends Timestamps, Product {}
+
 //filtros
 export interface IProductFilters {
   search: string;
   category_id: number | null;
-  order: "name" | "buy_price" | "sell_price" | "created_at" | "updated_at";
+  order: "name" | "buy_price" | "sell_price" | "updated_at";
 }
 
 //parametros del request
@@ -194,7 +210,7 @@ export interface PostTransaction {
 }
 
 export interface PostMarkCompleted {
-  order_id:number;
+  order_id: number;
 }
 
 interface ProductDelivery {
@@ -249,3 +265,36 @@ export interface IOrderFilters {
   type: "a" | "b";
   //order: "description" | "sum" | "created_at";
 }
+
+//TRANSACCIONES
+
+export interface Transaction {
+  sum: number;
+  transaction_id: number;
+  contact_id: number;
+  order_id: number;
+  name: string;
+  type: "a" | "b";
+}
+
+export interface UpdateTransaction {
+  transaction_id: number;
+  sum: number;
+}
+
+export interface ServerTransaction extends Transaction, Timestamps {}
+
+//filtros
+export interface ITransactionFilters {
+  search: string;
+  type: "a" | "b";
+  order: "name" | "sum" | "created_at";
+}
+
+//parametros del request
+export interface ITransactionRequestParams
+  extends ITransactionFilters,
+    IServiceRequestParamsWithPagination {}
+
+//contenido del response
+export interface Transactions extends IServiceResponse<ServerTransaction> {}

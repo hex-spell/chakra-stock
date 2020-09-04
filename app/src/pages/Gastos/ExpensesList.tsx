@@ -35,7 +35,6 @@ const ExpensesList: React.FC<IExpensesListProps> = ({
             <TransactionsListItem
               title={description}
               sum={-sum}
-              //sisi, voy a cambiar esto
               createdAt={created_at}
               onClick={() =>
                 onItemClick({ description, expense_id, category_id, sum })

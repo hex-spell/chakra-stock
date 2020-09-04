@@ -1,7 +1,7 @@
 import React from "react";
 import { DrawerForm } from "../../components/Forms";
 import { UseDisclosureReturn } from "@chakra-ui/core/dist/useDisclosure";
-import { Product } from "../../services/interfaces";
+import { Product, PostProduct } from "../../services/interfaces";
 import { MenuOption } from "../../components/Layout/FilterDropdown";
 
 interface IProductsDrawerFormProps {
@@ -12,7 +12,7 @@ interface IProductsDrawerFormProps {
     mode: string;
   };
   productData: Product;
-  submitFunction: (data: Product) => void;
+  submitFunction: (data: PostProduct) => void;
 }
 
 const ProductsDrawerForm: React.FC<IProductsDrawerFormProps> = ({
@@ -35,7 +35,7 @@ const ProductsDrawerForm: React.FC<IProductsDrawerFormProps> = ({
           sell_price,
           stock,
           category_id,
-          product_id,
+          product_id
         });
       }}
       inputs={[

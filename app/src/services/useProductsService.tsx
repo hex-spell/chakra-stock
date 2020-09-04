@@ -15,6 +15,7 @@ import {
   Product,
   MinifiedProduct,
   MinifiedProducts,
+  PostProduct,
 } from "./interfaces";
 import { UserContext } from "../context/User";
 import {
@@ -90,8 +91,8 @@ const useProductsService = () => {
   }, [token]);
 
   //actualiza un producto y despues refresca los datos con offset en 0
-  const postOrUpdateProduct = (data: Product) =>
-    postFunctionFactory<Product>(productsDataUri, token, () =>
+  const postOrUpdateProduct = (data: PostProduct) =>
+    postFunctionFactory<PostProduct>(productsDataUri, token, () =>
       fetchProducts({ token, offset: 0 }, filters)
     )(data, data.product_id);
 

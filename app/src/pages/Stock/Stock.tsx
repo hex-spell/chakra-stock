@@ -13,7 +13,7 @@ import {
   ProductsDrawerForm,
   ModifyProductCategoriesDrawerForm,
 } from "./";
-import { Product, Category } from "../../services/interfaces";
+import { Product, Category, PostProduct } from "../../services/interfaces";
 import { MenuOption } from "../../components/Layout/FilterDropdown";
 
 const ClickedItemInitialState: Product = {
@@ -22,7 +22,8 @@ const ClickedItemInitialState: Product = {
   name: "",
   buy_price: 0,
   sell_price: 0,
-  stock:0
+  stock:0,
+  product_history_id:0
 };
 
 interface IProductsMenuState {
@@ -156,7 +157,7 @@ export default function Stock() {
         categories={categoryDropdown}
         productDrawerState={productDrawerState}
         productDrawerFormState={productDrawerFormState}
-        submitFunction={(data: Product) => postOrUpdateProduct(data)}
+        submitFunction={(data: PostProduct) => postOrUpdateProduct(data)}
         productData={clickedItem}
       />
       {/* FORMULARIO DE CREAR CATEGORIA DE GASTOS */}

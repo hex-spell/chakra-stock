@@ -33,10 +33,7 @@ const ProductsFilterForm: React.FC<IProductsFilterFormProps> = ({
             name: "order",
             menu: [
               { name: "Ordenar por nombre", value: "name" },
-              {
-                name: "Ordenar por fecha de creación",
-                value: "created_at",
-              },
+              { name: "Ordenar por stock", value: "stock" },
               {
                 name: "Ordenar por fecha de actualización",
                 value: "updated_at",
