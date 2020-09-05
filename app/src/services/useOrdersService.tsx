@@ -102,7 +102,7 @@ const useOrdersService = () => {
           callback();
         }
         console.log(response);
-      });
+      }).catch(err=>console.log(err));
     },
     [token]
   );

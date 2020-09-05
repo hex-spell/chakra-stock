@@ -17,6 +17,7 @@ interface IContactsItemMenuProps {
   setConfirmationMenuData: (confirmationDrawerState: IConfirmationMenu) => void;
   //funcion de actualizar contactos, la uso para reiniciar el contador de dinero a 0
   postOrUpdateContact: (data: Contact) => void;
+  deleteContactById: (id:number) => void;
 }
 
 const ContactsItemMenu: React.FC<IContactsItemMenuProps> = ({
@@ -25,7 +26,8 @@ const ContactsItemMenu: React.FC<IContactsItemMenuProps> = ({
   confirmationDrawerState,
   contactData,
   setConfirmationMenuData,
-  postOrUpdateContact
+  postOrUpdateContact,
+  deleteContactById
 }) => {
   const {name} = contactData;
   return (
@@ -62,7 +64,7 @@ const ContactsItemMenu: React.FC<IContactsItemMenuProps> = ({
             //manda titulo y funcion para ejecutar al drawer de confirmacion, y lo abre
             setConfirmationMenuData({
               title: `eliminar a ${name}`,
-              action: () => alert(`${name} eliminado`),
+              action: () => deleteContactById(contactData.contact_id),
             });
             confirmationDrawerState.onOpen();
           },

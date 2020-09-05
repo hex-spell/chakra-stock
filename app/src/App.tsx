@@ -54,8 +54,8 @@ const App: React.FC = () => {
           { name: "Pedidos", link: "/pedidos", icon: FaListUl },
           { name: "Contactos", link: "/contactos", icon: FaUsers },
           { name: "Transacciones", link: "/transacciones", icon: FaDonate },
-          { name: "Gastos", link: "/gastos", icon: FaBookOpen },
-          { name: "Configuracion", link: "/configuracion", icon: FaCog },
+          { name: "Gastos", link: "/gastos", icon: FaBookOpen },/* 
+          { name: "Configuracion", link: "/configuracion", icon: FaCog }, */
         ]}
       />
       <Switch>

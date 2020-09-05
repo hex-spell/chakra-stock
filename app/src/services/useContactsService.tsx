@@ -1,4 +1,10 @@
-import { useEffect, useContext, useReducer, useCallback, useState } from "react";
+import {
+  useEffect,
+  useContext,
+  useReducer,
+  useCallback,
+  useState,
+} from "react";
 import {
   Contact,
   IServiceState,
@@ -14,6 +20,7 @@ import {
   postFunctionFactory,
   pageControlsFactory,
   fetchMenuOptionFunctionFactory,
+  deleteByIdFunctionFactory,
 } from "./helpers";
 import { MenuOption } from "../components/Layout/FilterDropdown";
 
@@ -45,7 +52,10 @@ const useContactsService = () => {
     store: { token },
   } = useContext(UserContext);
 
-  const {updateFilters,loadMoreData} = pageControlsFactory<IContactFilters>(dispatch,offset);
+  const { updateFilters, loadMoreData } = pageControlsFactory<IContactFilters>(
+    dispatch,
+    offset
+  );
 
   //funcion que obtiene los datos del server
   const fetchContacts = useCallback(
@@ -58,19 +68,26 @@ const useContactsService = () => {
     []
   );
 
-  const [contactsMenu,setContactsMenu] = useState<MenuOption[]>([]);
+  const [contactsMenu, setContactsMenu] = useState<MenuOption[]>([]);
 
-  const fetchContactsMinified = useCallback(()=>{
-    fetchMenuOptionFunctionFactory(`${contactsDataUri}/menu`,token,setContactsMenu)();
-  },[token])
+  const fetchContactsMinified = useCallback(() => {
+    fetchMenuOptionFunctionFactory(
+      `${contactsDataUri}/menu`,
+      token,
+      setContactsMenu
+    )();
+  }, [token]);
 
   //actualiza un contacto y despues refresca los datos con offset en 0
   const postOrUpdateContact = (data: Contact) =>
-    postFunctionFactory<Contact>(
-      contactsDataUri,
-      token,
-      ()=>fetchContacts({ token, offset: 0 }, filters)
+    postFunctionFactory<Contact>(contactsDataUri, token, () =>
+      fetchContacts({ token, offset: 0 }, filters)
     )(data, data.contact_id);
+
+  const deleteContactById = (id: number) =>
+    deleteByIdFunctionFactory(contactsDataUri, "contact_id", token, () =>
+      fetchContacts({ token, offset: 0 }, filters)
+    )(id);
 
   //un listener que se triggerea en el primer render y cada vez que se cambian los filtros o el offset
   useEffect(() => {
@@ -84,7 +101,8 @@ const useContactsService = () => {
     loadMoreData,
     postOrUpdateContact,
     contactsMenu,
-    fetchContactsMinified
+    fetchContactsMinified,
+    deleteContactById
   };
 };
 

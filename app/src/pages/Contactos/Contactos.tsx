@@ -83,6 +83,7 @@ export default function Contactos() {
     updateFilters,
     loadMoreData,
     postOrUpdateContact,
+    deleteContactById
   } = useContactsService();
 
   return (
@@ -110,6 +111,7 @@ export default function Contactos() {
         contactData={clickedItem}
         setConfirmationMenuData={setConfirmationMenuData}
         postOrUpdateContact={(data: Contact) => postOrUpdateContact(data)}
+        deleteContactById={deleteContactById}
       />
       {/* MENU PRINCIPAL */}
       <ContactsMainMenu
