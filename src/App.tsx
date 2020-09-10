@@ -13,7 +13,7 @@ import {
   FaCog,
   FaBookOpen,
 } from "react-icons/fa";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import {
   Inicio,
   Stock,
