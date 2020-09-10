@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "./master/docs/static/css/main.69eda509.chunk.css",
-    "main.js": "./master/docs/static/js/main.7690db7b.chunk.js",
-    "main.js.map": "./master/docs/static/js/main.7690db7b.chunk.js.map",
-    "runtime-main.js": "./master/docs/static/js/runtime-main.e7ac0734.js",
-    "runtime-main.js.map": "./master/docs/static/js/runtime-main.e7ac0734.js.map",
-    "static/js/2.31b63cbf.chunk.js": "./master/docs/static/js/2.31b63cbf.chunk.js",
-    "static/js/2.31b63cbf.chunk.js.map": "./master/docs/static/js/2.31b63cbf.chunk.js.map",
-    "index.html": "./master/docs/index.html",
-    "precache-manifest.8100678078e6726c03df7529879bc8e5.js": "./master/docs/precache-manifest.8100678078e6726c03df7529879bc8e5.js",
-    "service-worker.js": "./master/docs/service-worker.js",
-    "static/css/main.69eda509.chunk.css.map": "./master/docs/static/css/main.69eda509.chunk.css.map",
-    "static/js/2.31b63cbf.chunk.js.LICENSE.txt": "./master/docs/static/js/2.31b63cbf.chunk.js.LICENSE.txt"
+    "main.css": "/Vagus-art/chakra-stock/master/docs/static/css/main.69eda509.chunk.css",
+    "main.js": "/Vagus-art/chakra-stock/master/docs/static/js/main.196b43c4.chunk.js",
+    "main.js.map": "/Vagus-art/chakra-stock/master/docs/static/js/main.196b43c4.chunk.js.map",
+    "runtime-main.js": "/Vagus-art/chakra-stock/master/docs/static/js/runtime-main.1711ed30.js",
+    "runtime-main.js.map": "/Vagus-art/chakra-stock/master/docs/static/js/runtime-main.1711ed30.js.map",
+    "static/js/2.63a19d00.chunk.js": "/Vagus-art/chakra-stock/master/docs/static/js/2.63a19d00.chunk.js",
+    "static/js/2.63a19d00.chunk.js.map": "/Vagus-art/chakra-stock/master/docs/static/js/2.63a19d00.chunk.js.map",
+    "index.html": "/Vagus-art/chakra-stock/master/docs/index.html",
+    "precache-manifest.aba079965dfe97674ddd83388256ee6f.js": "/Vagus-art/chakra-stock/master/docs/precache-manifest.aba079965dfe97674ddd83388256ee6f.js",
+    "service-worker.js": "/Vagus-art/chakra-stock/master/docs/service-worker.js",
+    "static/css/main.69eda509.chunk.css.map": "/Vagus-art/chakra-stock/master/docs/static/css/main.69eda509.chunk.css.map",
+    "static/js/2.63a19d00.chunk.js.LICENSE.txt": "/Vagus-art/chakra-stock/master/docs/static/js/2.63a19d00.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.e7ac0734.js",
-    "static/js/2.31b63cbf.chunk.js",
+    "static/js/runtime-main.1711ed30.js",
+    "static/js/2.63a19d00.chunk.js",
     "static/css/main.69eda509.chunk.css",
-    "static/js/main.7690db7b.chunk.js"
+    "static/js/main.196b43c4.chunk.js"
   ]
 }

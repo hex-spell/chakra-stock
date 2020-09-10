@@ -1,7 +1,7 @@
 {
   "name": "app",
   "version": "0.1.0",
-  "homepage": "./master/docs/",
+  "homepage": "https://raw.githubusercontent.com/Vagus-art/chakra-stock/master/docs/",
   "private": true,
   "dependencies": {
     "@chakra-ui/core": "^0.8.0",
