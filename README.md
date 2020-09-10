@@ -3,7 +3,7 @@ Actualmente consumiendo la versión del backend hosteada en heroku, con base de 
 
 ## Probala
 [Webapp](https://vagus-art.github.io/chakra-stock/) |
-[Backend](https://chakra-stock.herokuapp.com/) | [Código fuente del backend](https://github.com/Vagus-art/lumen-rest)
+[Backend](https://chakra-stock.herokuapp.com/) | [Código fuente y documentación del backend](https://github.com/Vagus-art/lumen-rest)
 
 ## Hosteala
 
