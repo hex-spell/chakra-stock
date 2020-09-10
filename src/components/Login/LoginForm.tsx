@@ -26,13 +26,15 @@ const LoginForm: React.FC = () => {
   //Peticion al server, guarda token en UserContext, para ser manejado por LoginWrapper
   const onSubmit = handleSubmit(({ email, password }) => {
     console.log(loginUri);
+
     axios
-      .post(loginUri, {
-        email,
-        password,
+      .request({
+        url: loginUri,
+        method: "POST",
+        data: { email, password },
       })
-      .then((res: any) =>
-        dispatch({ type: SAVE_TOKEN, payload: res.data.token })
+      .then((res: any) =>{console.log(res);
+        dispatch({ type: SAVE_TOKEN, payload: res.data.token })}
       )
       .catch((err) => console.log(err));
   });

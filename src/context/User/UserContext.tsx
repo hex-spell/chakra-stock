@@ -8,7 +8,7 @@ export const UserContext: any = createContext({});
 export type UserData = {
   name: string;
   email: string;
-  id: number;
+  user_id: number;
 };
 
 export interface IUserState {
@@ -20,7 +20,7 @@ export interface IUserState {
 const initialUserState: UserData = {
   name: "",
   email: "",
-  id: 0,
+  user_id: 0,
 };
 
 const initialState: IUserState = {
@@ -37,6 +37,8 @@ const reducer = (state: IUserState, action: { type: string; payload: any }) => {
     case SAVE_TOKEN:
       return { ...state, token: action.payload };
     case SAVE_USER:
+      console.log(action.payload);
+      console.log({ ...state, user: action.payload });
       return { ...state, user: action.payload };
     case LOG_OUT:
       //borra el token del almacenamiento y retorna a defaults el estado del usuario en la app

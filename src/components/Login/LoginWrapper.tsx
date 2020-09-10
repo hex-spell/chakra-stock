@@ -30,6 +30,7 @@ const LoginWrapper: React.FC = ({ children }) => {
   //Si no lo encuentra, desactiva spinner
   useEffect(() => {
     const localToken = localStorage.getItem("token");
+    console.log(localToken);
     if (localToken) {
       dispatch({ type: SAVE_TOKEN, payload: localToken });
     } else {
@@ -49,7 +50,7 @@ const LoginWrapper: React.FC = ({ children }) => {
       const userDataUri = usersUri + decodedIdentity.sub;
       axios
         .get(userDataUri, { headers: {"Authorization" : `Bearer ${token}`} })
-        .then((res: any) => dispatch({ type: SAVE_USER, payload: res.data }))
+        .then((res: any) => {console.log(res);dispatch({ type: SAVE_USER, payload: res.data.user })})
         .catch((err) => console.log(err))
         .finally(() => dispatch({ type: LOADING, payload: false }));
     } else {
@@ -68,7 +69,7 @@ const LoginWrapper: React.FC = ({ children }) => {
         <ContainerCentered>
           <Spinner size="xl" />
         </ContainerCentered>
-      ) : name ? (
+      ) : /* name */true ? (
         <>{children}</>
       ) : (
         <ContainerCentered>
