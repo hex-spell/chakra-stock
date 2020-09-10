@@ -11,7 +11,7 @@ const ContainerCentered: React.FC = ({ children }) => {
       justifyContent="center"
       alignItems="center"
     >
-      <Box>{children}</Box>
+      <Box p="20px" bg="white" rounded="md">{children}</Box>
     </Box>
   );
 };

@@ -10,6 +10,7 @@ import LoginWrapper from "./components/Login";
 import { LayoutContextProvider } from "./context/Layout";
 import 'core-js/es/map';
 import 'core-js/es/set';
+import background from './img/background.jpeg';
 
 
 //Raiz verdadera de la aplicacion. proveedores de los contextos, boilerplate de chakra y wrapper condicional de login
@@ -18,11 +19,13 @@ ReactDOM.render(
     <UserContextProvider>
       <ThemeProvider theme={customTheme}>
         <CSSReset />
-        <LoginWrapper>
-          <LayoutContextProvider>
-            <App />
-          </LayoutContextProvider>
-        </LoginWrapper>
+        <div style={{height:"100vh",backgroundImage:`url(${background})`, backgroundSize: "cover"}}>
+          <LoginWrapper>
+            <LayoutContextProvider>
+              <App />
+            </LayoutContextProvider>
+          </LoginWrapper>
+        </div>
       </ThemeProvider>
     </UserContextProvider>
   //</React.StrictMode>,

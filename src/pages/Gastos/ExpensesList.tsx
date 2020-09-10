@@ -21,7 +21,7 @@ const ExpensesList: React.FC<IExpensesListProps> = ({
   loadMoreData,
 }) => {
   return (
-    <ListItemStack maxHeight="63vh">
+    <ListItemStack maxHeight="63vh" noResult={(count===0&&!!result.payload)}>
       {result.status==="loaded" && result.payload &&
         result.payload.map(
           ({

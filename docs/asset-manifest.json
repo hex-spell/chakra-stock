@@ -1,22 +1,23 @@
 {
   "files": {
     "main.css": "/chakra-stock/static/css/main.69eda509.chunk.css",
-    "main.js": "/chakra-stock/static/js/main.1b1546ed.chunk.js",
-    "main.js.map": "/chakra-stock/static/js/main.1b1546ed.chunk.js.map",
+    "main.js": "/chakra-stock/static/js/main.30b4e0a3.chunk.js",
+    "main.js.map": "/chakra-stock/static/js/main.30b4e0a3.chunk.js.map",
     "runtime-main.js": "/chakra-stock/static/js/runtime-main.c886b0e4.js",
     "runtime-main.js.map": "/chakra-stock/static/js/runtime-main.c886b0e4.js.map",
-    "static/js/2.b99ad1d6.chunk.js": "/chakra-stock/static/js/2.b99ad1d6.chunk.js",
-    "static/js/2.b99ad1d6.chunk.js.map": "/chakra-stock/static/js/2.b99ad1d6.chunk.js.map",
+    "static/js/2.77b9f8b5.chunk.js": "/chakra-stock/static/js/2.77b9f8b5.chunk.js",
+    "static/js/2.77b9f8b5.chunk.js.map": "/chakra-stock/static/js/2.77b9f8b5.chunk.js.map",
     "index.html": "/chakra-stock/index.html",
-    "precache-manifest.6361e6cf5781bb7bfea51289b819faaa.js": "/chakra-stock/precache-manifest.6361e6cf5781bb7bfea51289b819faaa.js",
+    "precache-manifest.ad7b290d1c554aedf5b909acc51bd423.js": "/chakra-stock/precache-manifest.ad7b290d1c554aedf5b909acc51bd423.js",
     "service-worker.js": "/chakra-stock/service-worker.js",
     "static/css/main.69eda509.chunk.css.map": "/chakra-stock/static/css/main.69eda509.chunk.css.map",
-    "static/js/2.b99ad1d6.chunk.js.LICENSE.txt": "/chakra-stock/static/js/2.b99ad1d6.chunk.js.LICENSE.txt"
+    "static/js/2.77b9f8b5.chunk.js.LICENSE.txt": "/chakra-stock/static/js/2.77b9f8b5.chunk.js.LICENSE.txt",
+    "static/media/background.jpeg": "/chakra-stock/static/media/background.d6e9d6e2.jpeg"
   },
   "entrypoints": [
     "static/js/runtime-main.c886b0e4.js",
-    "static/js/2.b99ad1d6.chunk.js",
+    "static/js/2.77b9f8b5.chunk.js",
     "static/css/main.69eda509.chunk.css",
-    "static/js/main.1b1546ed.chunk.js"
+    "static/js/main.30b4e0a3.chunk.js"
   ]
 }

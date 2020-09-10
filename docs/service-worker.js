@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/chakra-stock/precache-manifest.6361e6cf5781bb7bfea51289b819faaa.js"
+  "/chakra-stock/precache-manifest.ad7b290d1c554aedf5b909acc51bd423.js"
 );
 
 self.addEventListener('message', (event) => {

@@ -8,7 +8,11 @@ const FilterStack: React.FC = ({ children }) => {
     <Stack
       spacing={1}
       shouldWrapChildren={true}
-      py="10px"
+      my="5px"
+      p="10px"
+      bg="white"
+      rounded="md"
+      shadow="md"
     >
       {children}
     </Stack>

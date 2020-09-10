@@ -1,9 +1,8 @@
 import React from "react";
 import { ListItemStack, LoadMoreButton } from "../../components/Layout";
-import {
-  OrdersListItem,
-} from "../../components/ListItems";
+import { OrdersListItem } from "../../components/ListItems";
 import { ServerOrder, Order } from "../../services/interfaces";
+import { Heading } from "@chakra-ui/core";
 
 interface IOrdersListProps {
   result: {
@@ -23,9 +22,10 @@ const OrdersList: React.FC<IOrdersListProps> = ({
   loadMoreData,
 }) => {
   return (
-    <ListItemStack maxHeight="63vh">
+    <ListItemStack maxHeight="63vh" noResult={(count===0&&!!result.payload)}>
       {result.status === "loaded" &&
         result.payload &&
+        result.payload.length > 0 &&
         result.payload.map((data: ServerOrder) => {
           const {
             contact,

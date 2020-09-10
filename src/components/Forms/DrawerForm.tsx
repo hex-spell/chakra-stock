@@ -18,6 +18,7 @@ import {
   Box,
   FormHelperText,
   Text,
+  Stack,
 } from "@chakra-ui/core";
 import FilterDropdown, { MenuOption } from "../Layout/FilterDropdown";
 
@@ -94,7 +95,7 @@ const DrawerForm: React.FC<IDrawerFormProps> = ({
             isInvalid={Object.values(errors).find((value) => !!value)}
           >
             <form onSubmit={onSubmit}>
-              <FilterStack>
+              <Stack spacing="5px">
                 {inputs.map(
                   ({
                     name,
@@ -182,7 +183,7 @@ const DrawerForm: React.FC<IDrawerFormProps> = ({
                     Guardar
                   </Button>
                 </Flex>
-              </FilterStack>
+              </Stack>
             </form>
           </FormControl>
         </DrawerBody>

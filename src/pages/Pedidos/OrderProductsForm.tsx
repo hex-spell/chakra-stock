@@ -299,7 +299,7 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
                   isInvalid={Object.values(errors).find((value) => !!value)}
                 >
                   <form onSubmit={onSubmit} name="addproduct">
-                    <FilterStack>
+                    <Stack>
                       <Stack justify="center">
                         {categories && (
                           <Box>
@@ -432,7 +432,7 @@ const OrderProductsForm: React.FC<IOrderProductsFormProps> = ({
                           </Button>
                         </Box>
                       </Stack>
-                    </FilterStack>
+                    </Stack>
                   </form>
                 </FormControl>
               </AccordionPanel>

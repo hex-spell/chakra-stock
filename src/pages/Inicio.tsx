@@ -23,13 +23,13 @@ export default function Inicio() {
   return (
     <Page title="Inicio">
       <Stack spacing={5} mt="5px">
-        <Box p="10px" shadow="md">
+        <Box p="10px" shadow="md" bg="white" rounded="md">
           <Heading size="sm">
             Bienvenido/a {name}! Actualmente tenés 0 pedidos pendientes.
           </Heading>
         </Box>
         <Divider/>
-        <Box p="10px" shadow="md">
+        <Box p="10px" shadow="md" bg="white" rounded="md">
           <StatGroup>
             <Stat>
               <StatLabel>Gasto mensual</StatLabel>
@@ -49,7 +49,7 @@ export default function Inicio() {
           </StatGroup>
         </Box>
         <Divider />
-        <Box p="10px" shadow="md">
+        <Box p="10px" shadow="md" bg="white" rounded="md">
           <StatGroup>
             <Stat>
               <StatLabel>Deuda propia</StatLabel>

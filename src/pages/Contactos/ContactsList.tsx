@@ -21,7 +21,7 @@ const ContactsList: React.FC<IContactsListProps> = ({
   loadMoreData,
 }) => {
   return (
-    <ListItemStack maxHeight="63vh">
+    <ListItemStack maxHeight="63vh" noResult={(count===0&&!!result.payload)}>
       {result.status==="loaded" && result.payload &&
         result.payload.map(
           ({
@@ -46,9 +46,9 @@ const ContactsList: React.FC<IContactsListProps> = ({
           )
         )}
       {/* BOTON DE CARGAR MAS */}
-      {result.payload && result.payload.length < count && (
-        <LoadMoreButton action={loadMoreData} />
-      )}
+    {result.payload && result.payload.length < count && (
+      <LoadMoreButton action={loadMoreData} />
+    )}
     </ListItemStack>
   );
 };

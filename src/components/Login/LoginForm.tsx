@@ -39,9 +39,9 @@ const LoginForm: React.FC = () => {
       .catch((err) => console.log(err));
   });
   return (
-    <div>
+    <Box>
       <Box textAlign="center">
-        <Heading as="h3">Login</Heading>
+        <Heading as="h3">Admin de Stock</Heading>
       </Box>
       <Divider />
       <form onSubmit={onSubmit}>
@@ -73,7 +73,7 @@ const LoginForm: React.FC = () => {
           </Button>
         </FormControl>
       </form>
-    </div>
+    </Box>
   );
 };
 

@@ -13,6 +13,7 @@ const ListItemBox: React.FC = ({ children }) => {
       rounded="md"
       px="5"
       py="2"
+      bg="white"
     >
       {children}
     </Box>
