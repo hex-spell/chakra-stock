@@ -22,7 +22,7 @@ const OrdersList: React.FC<IOrdersListProps> = ({
   loadMoreData,
 }) => {
   return (
-    <ListItemStack maxHeight="63vh" noResult={(count===0&&!!result.payload)}>
+    <ListItemStack maxHeight="55vh" noResult={(count===0&&!!result.payload)}>
       {result.status === "loaded" &&
         result.payload &&
         result.payload.length > 0 &&
