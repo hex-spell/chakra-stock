@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/chakra-stock/static/css/main.69eda509.chunk.css",
-    "main.js": "/chakra-stock/static/js/main.8e940221.chunk.js",
-    "main.js.map": "/chakra-stock/static/js/main.8e940221.chunk.js.map",
-    "runtime-main.js": "/chakra-stock/static/js/runtime-main.c886b0e4.js",
-    "runtime-main.js.map": "/chakra-stock/static/js/runtime-main.c886b0e4.js.map",
-    "static/js/2.75776734.chunk.js": "/chakra-stock/static/js/2.75776734.chunk.js",
-    "static/js/2.75776734.chunk.js.map": "/chakra-stock/static/js/2.75776734.chunk.js.map",
-    "index.html": "/chakra-stock/index.html",
-    "precache-manifest.7a0b2273ac7040a0d3134d1a124e7a29.js": "/chakra-stock/precache-manifest.7a0b2273ac7040a0d3134d1a124e7a29.js",
-    "service-worker.js": "/chakra-stock/service-worker.js",
-    "static/css/main.69eda509.chunk.css.map": "/chakra-stock/static/css/main.69eda509.chunk.css.map",
-    "static/js/2.75776734.chunk.js.LICENSE.txt": "/chakra-stock/static/js/2.75776734.chunk.js.LICENSE.txt"
+    "main.css": "https://vagus-art.github.io/chakra-stock/static/css/main.69eda509.chunk.css",
+    "main.js": "https://vagus-art.github.io/chakra-stock/static/js/main.49c57270.chunk.js",
+    "main.js.map": "https://vagus-art.github.io/chakra-stock/static/js/main.49c57270.chunk.js.map",
+    "runtime-main.js": "https://vagus-art.github.io/chakra-stock/static/js/runtime-main.6b6b9e6c.js",
+    "runtime-main.js.map": "https://vagus-art.github.io/chakra-stock/static/js/runtime-main.6b6b9e6c.js.map",
+    "static/js/2.e8597452.chunk.js": "https://vagus-art.github.io/chakra-stock/static/js/2.e8597452.chunk.js",
+    "static/js/2.e8597452.chunk.js.map": "https://vagus-art.github.io/chakra-stock/static/js/2.e8597452.chunk.js.map",
+    "index.html": "https://vagus-art.github.io/chakra-stock/index.html",
+    "precache-manifest.484a14ef52f673cfbc820d45f7aabd34.js": "https://vagus-art.github.io/chakra-stock/precache-manifest.484a14ef52f673cfbc820d45f7aabd34.js",
+    "service-worker.js": "https://vagus-art.github.io/chakra-stock/service-worker.js",
+    "static/css/main.69eda509.chunk.css.map": "https://vagus-art.github.io/chakra-stock/static/css/main.69eda509.chunk.css.map",
+    "static/js/2.e8597452.chunk.js.LICENSE.txt": "https://vagus-art.github.io/chakra-stock/static/js/2.e8597452.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.c886b0e4.js",
-    "static/js/2.75776734.chunk.js",
+    "static/js/runtime-main.6b6b9e6c.js",
+    "static/js/2.e8597452.chunk.js",
     "static/css/main.69eda509.chunk.css",
-    "static/js/main.8e940221.chunk.js"
+    "static/js/main.49c57270.chunk.js"
   ]
 }
