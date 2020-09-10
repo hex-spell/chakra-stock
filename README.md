@@ -2,7 +2,7 @@ Frontend de lumen rest/ PHPStockREST.
 Actualmente consumiendo la versión hosteada en heroku, con base de datos postgres
 
 ## Probala
-[Webapp](https://vagus-art.github.io/chakra-stock/)
+[Webapp](https://vagus-art.github.io/chakra-stock/) |
 [Backend](https://chakra-stock.herokuapp.com/) | [Código fuente del backend](https://github.com/Vagus-art/lumen-rest)
 
 ## Hosteala
