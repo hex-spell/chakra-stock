@@ -5,6 +5,8 @@ Actualmente consumiendo la versión del backend hosteada en heroku, con base de 
 [Webapp](https://vagus-art.github.io/chakra-stock/) |
 [Backend](https://chakra-stock.herokuapp.com/) | [Código fuente y documentación del backend](https://github.com/Vagus-art/lumen-rest)
 
+- usuario de prueba: `email: cecilia@gmail.com | password: cecilia`
+
 ## Hosteala
 
 - modificá el `.env` para definir la url del backend.
