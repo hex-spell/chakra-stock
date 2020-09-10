@@ -69,7 +69,7 @@ const LoginWrapper: React.FC = ({ children }) => {
         <ContainerCentered>
           <Spinner size="xl" />
         </ContainerCentered>
-      ) : /* name */true ? (
+      ) : name ? (
         <>{children}</>
       ) : (
         <ContainerCentered>
