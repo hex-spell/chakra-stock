@@ -36,7 +36,7 @@ const App: React.FC = () => {
     confirmationDrawerState,
   } = useContext(LayoutContext);
   return (
-    <Router basename={process.env.PUBLIC_URL}>
+    <Router basename={process.env.PUBLIC_URI}>
       <Navbar onMenuClick={onOpen} />
       <ConfirmationMenu
         isOpen={confirmationDrawerState.isOpen}
