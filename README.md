@@ -16,3 +16,7 @@ Actualmente consumiendo la versión del backend hosteada en heroku, con base de 
 - modificá el `.env` para definir la url del backend.
 - ejecutá el comando `yarn build` en el directorio raíz del repositorio.
 - hostea la carpeta `build` como raíz.
+
+## Más info
+
+- [Quehaceres](https://trello.com/b/PnLwPmH8/app-de-stock) **(tablero de trello)**
