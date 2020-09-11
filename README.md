@@ -1,3 +1,7 @@
+# Gestor de stock
+
+![App](img/app.png)
+
 Frontend de lumen rest/ PHPStockREST.
 Actualmente consumiendo la versión del backend hosteada en heroku, con base de datos postgres
 
