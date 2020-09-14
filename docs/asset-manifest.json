@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/chakra-stock/static/css/main.69eda509.chunk.css",
-    "main.js": "/chakra-stock/static/js/main.1434c464.chunk.js",
-    "main.js.map": "/chakra-stock/static/js/main.1434c464.chunk.js.map",
+    "main.js": "/chakra-stock/static/js/main.9ff73fd6.chunk.js",
+    "main.js.map": "/chakra-stock/static/js/main.9ff73fd6.chunk.js.map",
     "runtime-main.js": "/chakra-stock/static/js/runtime-main.c886b0e4.js",
     "runtime-main.js.map": "/chakra-stock/static/js/runtime-main.c886b0e4.js.map",
     "static/js/2.77b9f8b5.chunk.js": "/chakra-stock/static/js/2.77b9f8b5.chunk.js",
     "static/js/2.77b9f8b5.chunk.js.map": "/chakra-stock/static/js/2.77b9f8b5.chunk.js.map",
     "index.html": "/chakra-stock/index.html",
-    "precache-manifest.06dd3f28a9d68194af30abaf00f5506a.js": "/chakra-stock/precache-manifest.06dd3f28a9d68194af30abaf00f5506a.js",
+    "precache-manifest.20eb2f613c9f74cfee2aebc3c48bb8c9.js": "/chakra-stock/precache-manifest.20eb2f613c9f74cfee2aebc3c48bb8c9.js",
     "service-worker.js": "/chakra-stock/service-worker.js",
     "static/css/main.69eda509.chunk.css.map": "/chakra-stock/static/css/main.69eda509.chunk.css.map",
     "static/js/2.77b9f8b5.chunk.js.LICENSE.txt": "/chakra-stock/static/js/2.77b9f8b5.chunk.js.LICENSE.txt",
@@ -18,6 +18,6 @@
     "static/js/runtime-main.c886b0e4.js",
     "static/js/2.77b9f8b5.chunk.js",
     "static/css/main.69eda509.chunk.css",
-    "static/js/main.1434c464.chunk.js"
+    "static/js/main.9ff73fd6.chunk.js"
   ]
 }

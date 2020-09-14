@@ -30,6 +30,7 @@ import Axios, { AxiosResponse } from "axios";
 
 const localapi = process.env.REACT_APP_ROOT_API;
 export const productsDataUri = localapi + "products";
+const productsListPDFDataUri = productsDataUri + "/pdf";
 export const productCategoriesDataUri = productsDataUri + "/categories";
 
 const InitialState: IServiceState<Products, IProductFilters> = {
@@ -118,6 +119,10 @@ const useProductsService = () => {
       fetchProducts({ token, offset: 0 }, filters)
     )(id);
 
+  const getProductsPDF = () => {
+    window.open(productsListPDFDataUri,'_blank')
+  }
+
   //un listener que se triggerea en el primer render y cada vez que se cambian los filtros o el offset
   useEffect(() => {
     fetchProducts({ token, offset: 0 }, filters);
@@ -136,7 +141,8 @@ const useProductsService = () => {
     categories,
     category_id: filters.category_id,
     minifiedProductsList,
-    fetchMinifiedProductsList
+    fetchMinifiedProductsList,
+    getProductsPDF
   };
 };
 

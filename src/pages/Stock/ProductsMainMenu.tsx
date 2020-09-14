@@ -7,13 +7,15 @@ interface IProductsMainMenuProps {
   onAddProductClick: (title: string) => void;
   onAddProductCategoryClick: UseDisclosureReturn;
   onModifyProductCategoryClick: UseDisclosureReturn;
+  getProductsPDF: () => void;
 }
 
 const ProductsMainMenu: React.FC<IProductsMainMenuProps> = ({
   actionButtonDrawerState,
   onAddProductClick,
   onAddProductCategoryClick,
-  onModifyProductCategoryClick
+  onModifyProductCategoryClick,
+  getProductsPDF
 }) => {
   return (
     <DynamicDrawerMenu
@@ -39,6 +41,12 @@ const ProductsMainMenu: React.FC<IProductsMainMenuProps> = ({
             onAddProductClick("Registrar nuevo producto");
           },
         },
+        {
+          name: "Generar lista de precios",
+          action: () => {
+            getProductsPDF();
+          },
+        }
       ]}
     />
   );

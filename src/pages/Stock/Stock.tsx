@@ -94,7 +94,8 @@ export default function Stock() {
     deleteProductCategoryById,
     deleteProductById,
     categories,
-    category_id
+    category_id,
+    getProductsPDF
   } = useProductsService();
 
   useEffect(() => {
@@ -151,6 +152,7 @@ export default function Stock() {
         onAddProductClick={(title) => onAddProductClick(title)}
         onAddProductCategoryClick={productCategoryDrawerState}
         onModifyProductCategoryClick={modifyProductCategoryDrawerState}
+        getProductsPDF={getProductsPDF}
       />
       {/* FORMULARIO DE MODIFICAR/ELIMINAR GASTOS */}
       <ProductsDrawerForm
