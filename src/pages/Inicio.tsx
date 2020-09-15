@@ -32,18 +32,18 @@ export default function Inicio() {
         <Box p="10px" shadow="md" bg="white" rounded="md">
           <StatGroup>
             <Stat>
-              <StatLabel>Gasto mensual</StatLabel>
-              <StatNumber>£0.00</StatNumber>
+              <StatLabel>Gasto total</StatLabel>
+              <StatNumber>$0.00</StatNumber>
               <StatHelpText>Feb 1 - Feb 28</StatHelpText>
             </Stat>
             <Stat>
-              <StatLabel>Ganancia mensual bruta</StatLabel>
-              <StatNumber>£0.00</StatNumber>
+              <StatLabel>Ganancia bruta</StatLabel>
+              <StatNumber>$0.00</StatNumber>
               <StatHelpText>Feb 1 - Feb 28</StatHelpText>
             </Stat>
             <Stat>
-              <StatLabel>Ganancia total</StatLabel>
-              <StatNumber>£0.00</StatNumber>
+              <StatLabel>Ganancia neta</StatLabel>
+              <StatNumber>$0.00</StatNumber>
               <StatHelpText>Feb 1 - Feb 28</StatHelpText>
             </Stat>
           </StatGroup>
@@ -53,12 +53,12 @@ export default function Inicio() {
           <StatGroup>
             <Stat>
               <StatLabel>Deuda propia</StatLabel>
-              <StatNumber>£0.00</StatNumber>
+              <StatNumber>$0.00</StatNumber>
               <StatHelpText>Feb 12 - Feb 28</StatHelpText>
             </Stat>
             <Stat>
               <StatLabel>Deuda de clientes</StatLabel>
-              <StatNumber>£0.00</StatNumber>
+              <StatNumber>$0.00</StatNumber>
               <StatHelpText>Feb 12 - Feb 28</StatHelpText>
             </Stat>
           </StatGroup>

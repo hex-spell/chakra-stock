@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "c1b8b35b87ac2fce521ee1e9b05e243d",
+    "revision": "b7453c77ff66d9e95f4af4e71f61482e",
     "url": "/chakra-stock/index.html"
   },
   {
-    "revision": "d85538b3f651fef193cb",
+    "revision": "914b6d3fbfcc76ef8212",
     "url": "/chakra-stock/static/css/main.69eda509.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/chakra-stock/static/js/2.77b9f8b5.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "d85538b3f651fef193cb",
-    "url": "/chakra-stock/static/js/main.9ff73fd6.chunk.js"
+    "revision": "914b6d3fbfcc76ef8212",
+    "url": "/chakra-stock/static/js/main.2fac5276.chunk.js"
   },
   {
     "revision": "d879df82bbe95a88bd41",

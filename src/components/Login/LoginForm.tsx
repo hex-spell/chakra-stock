@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { UserContext, SAVE_TOKEN } from "../../context/User";
 import {
   FormControl,
@@ -10,6 +10,8 @@ import {
   Divider,
   Heading,
   Box,
+  FormErrorMessage,
+  Spinner,
 } from "@chakra-ui/core";
 
 //Enlace del server backend, guardado en las variables de entorno.
@@ -21,22 +23,28 @@ const loginUri = localapi + "login";
 const LoginForm: React.FC = () => {
   const { dispatch } = useContext(UserContext);
 
-  const { register, handleSubmit, errors, formState } = useForm();
+  const { register, handleSubmit, errors, formState, setError } = useForm();
+
+  const [isFormLoading, setFormLoadingState] = useState(false);
 
   //Peticion al server, guarda token en UserContext, para ser manejado por LoginWrapper
   const onSubmit = handleSubmit(({ email, password }) => {
     console.log(loginUri);
-
+    setFormLoadingState(true);
     axios
       .request({
         url: loginUri,
         method: "POST",
         data: { email, password },
       })
-      .then((res: any) =>{console.log(res);
-        dispatch({ type: SAVE_TOKEN, payload: res.data.token })}
-      )
-      .catch((err) => console.log(err));
+      .then((res: any) => {
+        dispatch({ type: SAVE_TOKEN, payload: res.data.token });
+      })
+      .catch((err: AxiosError) => {
+        setError("email", "El email o la contraseña son invalidos");
+        console.log(err);
+      })
+      .finally(() => setFormLoadingState(false));
   });
   return (
     <Box>
@@ -45,7 +53,10 @@ const LoginForm: React.FC = () => {
       </Box>
       <Divider />
       <form onSubmit={onSubmit}>
-        <FormControl isInvalid={errors.email && errors.password}>
+        <FormControl isInvalid={errors.email || errors.password}>
+          {errors && errors.email && (
+            <FormErrorMessage>{errors.email.type}</FormErrorMessage>
+          )}
           <FormLabel htmlFor="email">Email</FormLabel>
           <Input
             type="email"
@@ -62,15 +73,16 @@ const LoginForm: React.FC = () => {
               required: true,
             })}
           />
-          <Button
-            mt={4}
-            variantColor="teal"
-            isLoading={formState.isSubmitting}
-            type="submit"
-            float="right"
-          >
-            Submit
-          </Button>
+          <Box mt={4} width="100%" display="flex" flexDirection="row-reverse" justifyContent="space-between" alignItems="center">
+            <Button
+              variantColor="teal"
+              isLoading={formState.isSubmitting}
+              type="submit"
+            >
+              Submit
+            </Button>
+            {isFormLoading && <Spinner size="md"/>}
+          </Box>
         </FormControl>
       </form>
     </Box>
