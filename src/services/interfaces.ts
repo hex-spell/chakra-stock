@@ -298,3 +298,13 @@ export interface ITransactionRequestParams
 
 //contenido del response
 export interface Transactions extends IServiceResponse<ServerTransaction> {}
+
+export interface IStats {
+  pending_orders: number;
+  expenses_sum: number;
+  transactions_in: number;
+  transactions_out: number;
+  benefits: number;
+  contacts_debt: number;
+  own_debt: number;
+}

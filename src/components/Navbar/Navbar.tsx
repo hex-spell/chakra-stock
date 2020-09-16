@@ -23,6 +23,7 @@ const Navbar: React.FC<INavbarProps> = ({ onMenuClick }) => {
       bg="teal.500"
       color="white"
       position="relative"
+      zIndex={3}
     >
       {/* ESTE HEADER TOMA EL ESTADO DE UN CONTEXT, QUE CAMBIA CON LOS BOTONES DEL MAINDRAWER */}
       <Box position="absolute" width="100%" textAlign="center">

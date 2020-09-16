@@ -10,6 +10,9 @@ const ContainerCentered: React.FC = ({ children }) => {
       display="flex"
       justifyContent="center"
       alignItems="center"
+      position="absolute"
+      top="0"
+      left="0"
     >
       <Box p="20px" bg="white" rounded="md">{children}</Box>
     </Box>

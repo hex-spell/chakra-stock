@@ -182,3 +182,18 @@ export function pageControlsFactory<Filters>(dispatch:any,offset:number){
 
   return {updateFilters,loadMoreData};
 }
+
+export const dateHelper = (date:Date) => {
+  return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} - ${date.getHours()}:${date.getMinutes()<10 ? `0${date.getMinutes()}` : date.getMinutes()}`;
+
+}
+
+export const getCurrentMonthName = () => {
+  const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+];
+  const today = new Date();
+  const month = today.getMonth();
+  const day = today.getDate();
+  return `${monthNames[month]} 1 - ${day}`;
+}

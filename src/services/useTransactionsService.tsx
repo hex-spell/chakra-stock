@@ -19,7 +19,7 @@ import {
 import { MenuOption } from "../components/Layout/FilterDropdown";
 
 const localapi = process.env.REACT_APP_ROOT_API;
-const contactsDataUri = localapi + "transactions";
+const transactionsDataUri = localapi + "transactions";
 
 const InitialState: IServiceState<Transactions, ITransactionFilters> = {
   filters: { search: "", type: "b", order: "name" },
@@ -52,7 +52,7 @@ const useTransactionsService = () => {
   const fetchTransactions = useCallback(
     (params: IServiceRequestParamsWithPagination, filters: ITransactionFilters) => {
       fetchFunctionFactory<ServerTransaction, ITransactionFilters>(
-        contactsDataUri,
+        transactionsDataUri,
         dispatch
       )(params, filters);
     },
@@ -62,7 +62,7 @@ const useTransactionsService = () => {
   //actualiza un contacto y despues refresca los datos con offset en 0
   const UpdateTransactionByID = (data: UpdateTransaction) =>
     postFunctionFactory<UpdateTransaction>(
-      contactsDataUri,
+      transactionsDataUri,
       token,
       ()=>fetchTransactions({ token, offset: 0 }, filters)
     )(data, data.transaction_id);
