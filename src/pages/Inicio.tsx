@@ -35,8 +35,9 @@ export default function Inicio() {
         <Stack spacing={5} mt="5px">
           <Box p="10px" shadow="md" bg="white" rounded="md">
             <Heading size="sm">
-              Bienvenido/a {name}! Tenés {payload.pending_orders} pedidos
-              pendientes.
+              ¡Hola {name.trim()}!{" "}
+              {/* el trimming del nombre tendria que haberlo hecho antes desde el server, pero ahora el usuario ya tiene el nombre con espacios */}
+              Tenés {payload.pending_orders} pedidos pendientes.
             </Heading>
           </Box>
           <Divider />

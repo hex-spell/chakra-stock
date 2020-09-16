@@ -18,6 +18,7 @@ const reducer = (
 ): Service<IStats> => {
   switch (action.type) {
     case "SET_RESULTS":
+      console.log(action.payload);
       return {
         ...state,
         status: "loaded",
