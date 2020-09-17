@@ -8,7 +8,7 @@ import {
   useContactsService,
   useProductsService,
 } from "../../services";
-import { postOrUpdateOrder, PostTransaction } from "../../services/interfaces";
+import { postOrUpdateOrder, PostTransaction, ServerOrder } from "../../services/interfaces";
 import {
   OrdersFilterForm,
   OrdersList,
@@ -18,10 +18,9 @@ import {
   DeliveredProductsDrawerForm,
   OrderTransactionDrawerForm,
 } from "./";
-import { Order } from "../../services/interfaces";
 import OrderProductsForm from "./OrderProductsForm";
 
-const ClickedItemInitialState: Order = {
+const ClickedItemInitialState: ServerOrder = {
   order_id: 0,
   completed: false,
   type: "",
@@ -36,11 +35,14 @@ const ClickedItemInitialState: Order = {
     phone: "",
     contact_id: 0,
   },
+  created_at: new Date(),
+  deleted_at: null,
+  updated_at: new Date()
 };
 
 export default function Pedidos() {
   //guarda datos del gasto que clickeaste para usarlos en un formulario
-  const [clickedItem, setClickedItem] = useState<Order>(
+  const [clickedItem, setClickedItem] = useState<ServerOrder>(
     ClickedItemInitialState
   );
 
@@ -74,7 +76,7 @@ export default function Pedidos() {
   );
 
   //almacena los datos del item clickeado y modifica el estado del formulario de pedido
-  const onItemClick = (data: Order) => {
+  const onItemClick = (data: ServerOrder) => {
     setClickedItem(data);
     setOrderMenuFormState({
       title: `Modificar pedido de ${data.contact.name}`,
@@ -109,7 +111,8 @@ export default function Pedidos() {
     update,
     markDelivered,
     postTransaction,
-    markCompleted
+    markCompleted,
+    getOrderProductsPDFByOrderID
   } = useOrdersService();
 
   //usar este servicios esta fetcheando datos al pedo, tengo que mover los useEffect del hook a las paginas
@@ -155,6 +158,7 @@ export default function Pedidos() {
         setConfirmationMenuData={setConfirmationMenuData}
         markCompleted={markCompleted}
         deleteFunction={deleteOrderById}
+        getOrderProductsPDFByOrderID={getOrderProductsPDFByOrderID}
       />
       {/* MENU PRINCIPAL */}
       <OrdersMainMenu

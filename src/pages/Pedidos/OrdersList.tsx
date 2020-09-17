@@ -1,8 +1,7 @@
 import React from "react";
 import { ListItemStack, LoadMoreButton } from "../../components/Layout";
 import { OrdersListItem } from "../../components/ListItems";
-import { ServerOrder, Order } from "../../services/interfaces";
-import { Heading } from "@chakra-ui/core";
+import { ServerOrder } from "../../services/interfaces";
 
 interface IOrdersListProps {
   result: {
@@ -11,7 +10,7 @@ interface IOrdersListProps {
     error: any;
   };
   count: number;
-  onItemClick: (data: Order) => void;
+  onItemClick: (data: ServerOrder) => void;
   loadMoreData: () => void;
 }
 
@@ -33,11 +32,7 @@ const OrdersList: React.FC<IOrdersListProps> = ({
             delivered,
             sum,
             paid,
-            updated_at,
-            order_id,
-            completed,
-            type,
-            contact_id,
+            updated_at
           } = data;
           return (
             <OrdersListItem
@@ -48,17 +43,7 @@ const OrdersList: React.FC<IOrdersListProps> = ({
               debt={sum - paid}
               updatedAt={updated_at}
               onClick={() =>
-                onItemClick({
-                  contact,
-                  products_count,
-                  delivered,
-                  sum,
-                  paid,
-                  order_id,
-                  completed,
-                  type,
-                  contact_id,
-                })
+                onItemClick(data)
               }
             />
           );

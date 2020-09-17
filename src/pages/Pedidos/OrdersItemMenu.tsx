@@ -2,7 +2,8 @@ import React from "react";
 import { DynamicDrawerMenu } from "../../components/Layout";
 import { UseDisclosureReturn } from "@chakra-ui/core/dist/useDisclosure";
 import { IConfirmationMenu } from "../../context/Layout";
-import { Order, PostMarkCompleted } from "../../services/interfaces";
+import { PostMarkCompleted, ServerOrder } from "../../services/interfaces";
+import { dateHelperMin } from "../../services";
 
 interface IOrdersItemMenuProps {
   //estado de este drawer
@@ -12,14 +13,15 @@ interface IOrdersItemMenuProps {
   //estado del drawer de "estas seguro?"
   confirmationDrawerState: UseDisclosureReturn;
   //datos del ordero clickeado
-  orderData: Order;
+  orderData: ServerOrder;
   deliveredProductsDrawerState: UseDisclosureReturn;
   orderTransactionDrawerState: UseDisclosureReturn;
   //dispatch para abrir el drawer de confirmacion
   setConfirmationMenuData: (confirmationDrawerState: IConfirmationMenu) => void;
   //funcion de eliminar gasto por id
   deleteFunction: (order_id: number) => void;
-  markCompleted: (data:PostMarkCompleted) => void;
+  markCompleted: (data: PostMarkCompleted) => void;
+  getOrderProductsPDFByOrderID: (order_id: number, filename: string) => void;
 }
 
 const OrdersItemMenu: React.FC<IOrdersItemMenuProps> = ({
@@ -32,6 +34,7 @@ const OrdersItemMenu: React.FC<IOrdersItemMenuProps> = ({
   orderTransactionDrawerState,
   markCompleted,
   deleteFunction,
+  getOrderProductsPDFByOrderID,
 }) => {
   const {
     contact: { name },
@@ -47,26 +50,52 @@ const OrdersItemMenu: React.FC<IOrdersItemMenuProps> = ({
           name: "Ver productos",
           action: () => orderProductsDrawerState.onOpen(),
         },
-        ...(!orderData.completed ? [{
-          name: "Registrar entrega",
-          action: () => deliveredProductsDrawerState.onOpen(),
-        }] : []),
-        ...(!orderData.completed ? [{
-          name: "Registrar cobro",
-          action: () => orderTransactionDrawerState.onOpen(),
-        }] : []),
-        ...(!orderData.completed ? [{
-          name: "Finalizar pedido",
-          action: () => {
-            //manda titulo y funcion para ejecutar al drawer de confirmacion, y lo abre
-            setConfirmationMenuData({
-              title: `finalizar este pedido de ${name}`,
-              subtitle: "No se podran realizarle más modificaciones",
-              action: () => markCompleted({order_id}),
-            });
-            confirmationDrawerState.onOpen();
-          },
-        }] : []),
+        ...(!(orderData.type === "a")
+          ? [
+              {
+                name: "Generar ticket",
+                action: () =>
+                  getOrderProductsPDFByOrderID(
+                    order_id,
+                    `${orderData.contact.name}-${dateHelperMin(
+                      new Date(orderData.created_at)
+                    )}.pdf`
+                  ),
+              },
+            ]
+          : []),
+        ...(!orderData.completed
+          ? [
+              {
+                name: "Registrar entrega",
+                action: () => deliveredProductsDrawerState.onOpen(),
+              },
+            ]
+          : []),
+        ...(!orderData.completed
+          ? [
+              {
+                name: "Registrar cobro",
+                action: () => orderTransactionDrawerState.onOpen(),
+              },
+            ]
+          : []),
+        ...(!orderData.completed
+          ? [
+              {
+                name: "Finalizar pedido",
+                action: () => {
+                  //manda titulo y funcion para ejecutar al drawer de confirmacion, y lo abre
+                  setConfirmationMenuData({
+                    title: `finalizar este pedido de ${name}`,
+                    subtitle: "No se podran realizarle más modificaciones",
+                    action: () => markCompleted({ order_id }),
+                  });
+                  confirmationDrawerState.onOpen();
+                },
+              },
+            ]
+          : []),
         {
           name: "Eliminar",
           action: () => {

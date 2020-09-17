@@ -27,6 +27,7 @@ import {
   postFunctionFactory,
   pageControlsFactory,
   deleteByIdFunctionFactory,
+  showFile,
 } from "./helpers";
 import Axios, { AxiosResponse } from "axios";
 
@@ -96,13 +97,30 @@ const useOrdersService = () => {
       Axios.get<OrderProducts>(`${ordersDataUri}/id/products`, {
         headers: { Authorization: `Bearer ${token}` },
         params: { order_id },
-      }).then((response: AxiosResponse<OrderProducts>) => {
-        setOrderProducts(response.data.result);
-        if (callback) {
-          callback();
-        }
-        console.log(response);
-      }).catch(err=>console.log(err));
+      })
+        .then((response: AxiosResponse<OrderProducts>) => {
+          setOrderProducts(response.data.result);
+          if (callback) {
+            callback();
+          }
+          console.log(response);
+        })
+        .catch((err) => console.log(err));
+    },
+    [token]
+  );
+
+  const getOrderProductsPDFByOrderID = useCallback(
+    (order_id: number, filename:string) => {
+      Axios.get(`${ordersDataUri}/id/products/pdf`, {
+        headers: { Authorization: `Bearer ${token}`,"Access-Control-Expose-Headers":"content-disposition"},
+        params: { order_id },
+        responseType: 'blob'
+      })
+        .then((response: AxiosResponse) => {
+          showFile(response.data,filename);
+        })
+        .catch((err) => console.log(err));
     },
     [token]
   );
@@ -188,7 +206,6 @@ const useOrdersService = () => {
     [token, update]
   );
 
-
   const deleteOrderById = (id: number) =>
     deleteByIdFunctionFactory(ordersDataUri, "order_id", token, () =>
       fetchOrders({ token, offset: 0 }, filters)
@@ -221,7 +238,8 @@ const useOrdersService = () => {
     deleteOrderProduct,
     markDelivered,
     postTransaction,
-    markCompleted
+    markCompleted,
+    getOrderProductsPDFByOrderID
   };
 };
 

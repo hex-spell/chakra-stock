@@ -188,6 +188,11 @@ export const dateHelper = (date:Date) => {
 
 }
 
+export const dateHelperMin = (date:Date) => {
+  return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`;
+
+}
+
 export const getCurrentMonthName = () => {
   const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
   "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
@@ -196,4 +201,31 @@ export const getCurrentMonthName = () => {
   const month = today.getMonth();
   const day = today.getDate();
   return `${monthNames[month]} 1 - ${day}`;
+}
+
+
+//funcion sacada de https://blog.jayway.com/2017/07/13/open-pdf-downloaded-api-javascript/
+export const showFile = (blob:Blob,filename:string) =>{
+  // It is necessary to create a new blob object with mime-type explicitly set
+  // otherwise only Chrome works like it should
+  var newBlob = new Blob([blob], {type: "application/pdf"})
+
+  // IE doesn't allow using a blob object directly as link href
+  // instead it is necessary to use msSaveOrOpenBlob
+  if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+    window.navigator.msSaveOrOpenBlob(newBlob);
+    return;
+  } 
+
+  // For other browsers: 
+  // Create a link pointing to the ObjectURL containing the blob.
+  const data = window.URL.createObjectURL(newBlob);
+  var link = document.createElement('a');
+  link.href = data;
+  link.download=filename;
+  link.click();
+  setTimeout(function(){
+    // For Firefox it is necessary to delay revoking the ObjectURL
+    window.URL.revokeObjectURL(data);
+  }, 100);
 }
