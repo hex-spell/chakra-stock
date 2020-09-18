@@ -62,7 +62,7 @@ const LoginForm: React.FC = () => {
             type="email"
             name="email"
             ref={register({
-              required: true,
+              required: "Este campo es requerido.",
             })}
           />
           <FormLabel htmlFor="password">Password</FormLabel>
@@ -70,7 +70,7 @@ const LoginForm: React.FC = () => {
             type="password"
             name="password"
             ref={register({
-              required: true,
+              required: "Este campo es requerido.",
             })}
           />
           <Box mt={4} width="100%" display="flex" flexDirection="row-reverse" justifyContent="space-between" alignItems="center">
